@@ -22,6 +22,7 @@ import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { DeleteConfirmDialog } from "@/components/admin/DeleteConfirmDialog";
 import { ResourceCard } from "@/components/admin/ResourceCard";
 import { StatsCards } from "@/components/admin/StatsCards";
+import { EditResourceModal } from "@/components/admin/EditResourceModal";
 import { User, Session } from "@supabase/supabase-js";
 
 type ResourceType = "notes" | "cie1" | "cie2" | "cie3" | "see" | "book";
@@ -101,6 +102,10 @@ const Admin = () => {
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; id: number; title: string }>({
     open: false, id: 0, title: "",
   });
+
+  // Edit dialog
+  const [editResource, setEditResource] = useState<Resource | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   // Active admin tab
   const [activeTab, setActiveTab] = useState("add");
@@ -299,7 +304,7 @@ const Admin = () => {
 
   // Process Google Drive URL
   const processDriveUrl = (url: string): string => {
-    let processedUrl = url.trim();
+    const processedUrl = url.trim();
     let fileId = null;
 
     const viewMatch = processedUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
@@ -374,6 +379,33 @@ const Admin = () => {
       toast({
         title: "Error",
         description: error.message || "Failed to delete",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Update resource mutation
+  const updateResourceMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: { title: string; file_url: string; type: ResourceType; unit: string | null; year: number | null } }) => {
+      const { error } = await supabase
+        .from("resources")
+        .update(data)
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "✅ Updated",
+        description: "Resource updated successfully",
+      });
+      setIsEditOpen(false);
+      setEditResource(null);
+      queryClient.invalidateQueries({ queryKey: ["resources", selectedSubject] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update",
         variant: "destructive",
       });
     },
@@ -1057,6 +1089,10 @@ const Admin = () => {
                           unit={resource.unit}
                           year={resource.year}
                           file_url={resource.file_url}
+                          onEdit={(r) => {
+                            setEditResource(r as Resource);
+                            setIsEditOpen(true);
+                          }}
                           onDelete={(id, title) => setDeleteDialog({ open: true, id, title })}
                         />
                       ))}
@@ -1091,6 +1127,18 @@ const Admin = () => {
         isDeleting={deleteResourceMutation.isPending}
         onClose={() => setDeleteDialog({ open: false, id: 0, title: "" })}
         onConfirm={() => deleteResourceMutation.mutate(deleteDialog.id)}
+      />
+
+      {/* Edit Resource Modal */}
+      <EditResourceModal
+        resource={editResource}
+        isOpen={isEditOpen}
+        isUpdating={updateResourceMutation.isPending}
+        onClose={() => {
+          setIsEditOpen(false);
+          setEditResource(null);
+        }}
+        onSave={(id, data) => updateResourceMutation.mutate({ id, data })}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, FileText, GraduationCap, Library, ExternalLink, Copy, Trash2 } from "lucide-react";
+import { BookOpen, FileText, GraduationCap, Library, ExternalLink, Copy, Trash2, Pencil } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 type ResourceType = "notes" | "cie1" | "cie2" | "cie3" | "see" | "book";
@@ -12,6 +12,7 @@ interface ResourceCardProps {
   unit: string | null;
   year: number | null;
   file_url: string;
+  onEdit: (resource: { id: number; title: string; type: ResourceType; unit: string | null; year: number | null; file_url: string }) => void;
   onDelete: (id: number, title: string) => void;
 }
 
@@ -48,7 +49,7 @@ const TYPE_CONFIG: Record<ResourceType, { label: string; color: string; icon: Re
   },
 };
 
-export function ResourceCard({ id, title, type, unit, year, file_url, onDelete }: ResourceCardProps) {
+export function ResourceCard({ id, title, type, unit, year, file_url, onEdit, onDelete }: ResourceCardProps) {
   const { toast } = useToast();
   const config = TYPE_CONFIG[type];
 
@@ -111,6 +112,15 @@ export function ResourceCard({ id, title, type, unit, year, file_url, onDelete }
           >
             <Copy className="h-3 w-3" />
             Copy
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 text-xs gap-1 hover:bg-amber-500/10 hover:text-amber-600"
+            onClick={() => onEdit({ id, title, type, unit, year, file_url })}
+          >
+            <Pencil className="h-3 w-3" />
+            Edit
           </Button>
           <Button
             variant="ghost"
