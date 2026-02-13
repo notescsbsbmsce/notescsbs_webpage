@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Balanced Design System - Blue Primary with Pink Accents */
+
+@layer base {
+  :root {
+    /* Light Mode - Clean blue with subtle pink accents */
+    --background: 0 0% 98%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    --primary: 215 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 20% 92%;
+    --secondary-foreground: 220 15% 20%;
+
+    --muted: 215 15% 90%;
+    --muted-foreground: 220 15% 40%;
+
+    --accent: 215 90% 96%;
+    --accent-foreground: 215 85% 55%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 15% 88%;
+    --input: 215 15% 88%;
+    --ring: 215 85% 55%;
+
+    --radius: 0.5rem;
+
+    --success: 145 65% 45%;
+    --warning: 35 90% 55%;
+    --info: 200 90% 55%;
+
+    /* Pink accent colors */
+    --pink-accent: 320 70% 60%;
+    --purple-accent: 280 65% 60%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 15% 15%;
+    --sidebar-primary: 215 85% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 90% 96%;
+    --sidebar-accent-foreground: 215 85% 55%;
+    --sidebar-border: 215 15% 88%;
+    --sidebar-ring: 215 85% 55%;
+
+    --chart-1: 215 85% 55%;
+    --chart-2: 145 65% 45%;
+    --chart-3: 35 90% 55%;
+    --chart-4: 280 70% 60%;
+    --chart-5: 320 70% 60%;
+
+    --sidebar: 0 0% 100%;
+  }
+
+  .dark {
+    /* Enhanced Dark Mode - Deep blue-gray with vibrant accents */
+    --background: 222 47% 8%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 215 90% 65%;
+    --primary-foreground: 222 47% 8%;
+
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 215 20% 25%;
+    --muted-foreground: 215 15% 70%;
+
+    --accent: 217 32% 17%;
+    --accent-foreground: 215 90% 65%;
+
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 32% 20%;
+    --input: 217 32% 20%;
+    --ring: 215 90% 65%;
+
+    --success: 145 60% 50%;
+    --warning: 35 85% 60%;
+    --info: 200 85% 60%;
+
+    /* Pink/purple accents for dark mode */
+    --pink-accent: 320 75% 65%;
+    --purple-accent: 280 70% 65%;
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 215 90% 65%;
+    --sidebar-primary-foreground: 222 47% 8%;
+    --sidebar-accent: 217 32% 17%;
+    --sidebar-accent-foreground: 215 90% 65%;
+    --sidebar-border: 217 32% 20%;
+    --sidebar-ring: 215 90% 65%;
+
+    --chart-1: 215 90% 65%;
+    --chart-2: 145 60% 50%;
+    --chart-3: 35 85% 60%;
+    --chart-4: 280 65% 65%;
+    --chart-5: 320 75% 65%;
+
+    --sidebar: 222 47% 11%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl sm:text-4xl;
+  }
+
+  h2 {
+    @apply text-xl sm:text-2xl;
+  }
+}
+
+/* Utilities */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Shadows */
+  .shadow-soft {
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-soft-lg {
+    box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Tab Contrast */
+  [role="tablist"] [role="tab"] {
+    @apply font-medium;
+  }
+
+  [role="tablist"] [role="tab"]:not([data-state="active"]) {
+    @apply text-foreground/70 hover:text-foreground;
+  }
+
+  [role="tablist"] [role="tab"][data-state="active"] {
+    @apply text-foreground bg-background shadow-sm;
+  }
+
+  /* Select & Input */
+  [role="combobox"],
+  select {
+    @apply text-foreground;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-muted-foreground/60;
+  }
+
+  /* Mobile Performance Optimizations */
+  @media (max-width: 768px) {
+    /* Reduce animations on mobile for better performance */
+    * {
+      animation-duration: 0.2s !important;
+      transition-duration: 0.2s !important;
+    }
+  }
+
+  /* Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Hardware acceleration for smooth animations */
+  .animate-fade-in,
+  .animate-slide-up {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+
+  /* Optimize touch interactions */
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Improve scrolling performance */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
