@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { ChevronRight, FlaskConical } from "lucide-react";
+import { useViewTransition } from "@/hooks/useViewTransition";
 
 interface SubjectCardProps {
   id: number;
@@ -10,10 +10,12 @@ interface SubjectCardProps {
 }
 
 export function SubjectCard({ id, name, code, isLab }: SubjectCardProps) {
+  const navigate = useViewTransition();
+
   return (
-    <Link
-      to={`/subject/${id}`}
-      className="group flex items-center justify-between p-4 rounded-lg border border-border bg-card hover:bg-accent hover:border-primary/40 hover:shadow-soft transition-all duration-200"
+    <button
+      onClick={() => navigate(`/subject/${id}`)}
+      className="group flex items-center justify-between p-4 rounded-lg border border-border bg-card hover:bg-accent hover:border-primary/40 hover:shadow-soft transition-all duration-200 w-full text-left"
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
@@ -33,6 +35,6 @@ export function SubjectCard({ id, name, code, isLab }: SubjectCardProps) {
         </div>
       </div>
       <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
-    </Link>
+    </button>
   );
 }

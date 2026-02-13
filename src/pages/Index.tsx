@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { BookOpen, GraduationCap } from "lucide-react";
 
 const Index = () => {
-  const { data: semesters, isLoading } = useQuery({
+  const { data: semesters, isLoading, error } = useQuery({
     queryKey: ["semesters"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -18,6 +18,11 @@ const Index = () => {
       return data;
     },
   });
+
+  // Show error if query fails
+  if (error) {
+    console.error('Error loading semesters:', error);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-purple-500/5 to-pink-500/10 flex flex-col">

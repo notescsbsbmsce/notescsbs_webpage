@@ -67,10 +67,19 @@ const Semester = () => {
         </div>
 
         {isLoading ? (
-          <div className="space-y-2">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 rounded-lg" />
-            ))}
+          <div className="space-y-8">
+            {/* Show layout-preserving skeleton */}
+            <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 border border-blue-200/20 dark:border-blue-800/20">
+              <div className="flex items-center gap-3 mb-4">
+                <Skeleton className="h-9 w-9 rounded-lg" />
+                <Skeleton className="h-6 w-32" />
+              </div>
+              <div className="space-y-2">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Skeleton key={i} className="h-16 rounded-lg" />
+                ))}
+              </div>
+            </div>
           </div>
         ) : subjects && subjects.length > 0 ? (
           <div className="space-y-8">

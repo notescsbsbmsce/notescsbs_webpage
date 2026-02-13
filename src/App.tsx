@@ -16,10 +16,10 @@ const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// Loading fallback component
+// Loading fallback component - minimal to prevent flickering
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+  <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20">
+    <div className="h-16 bg-card/50 border-b border-border"></div>
   </div>
 );
 

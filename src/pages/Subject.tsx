@@ -105,10 +105,34 @@ export default function Subject() {
   const seePapers = getSEEPapers();
   const books = getBooks();
 
+  const handleCategorySelect = (category: "notes" | "pyq" | "books") => {
+    // Use view transition if supported
+    if (!document.startViewTransition) {
+      setSelectedCategory(category);
+      return;
+    }
+
+    document.startViewTransition(() => {
+      setSelectedCategory(category);
+    });
+  };
+
+  const handleBackToCategories = () => {
+    // Use view transition if supported
+    if (!document.startViewTransition) {
+      setSelectedCategory(null);
+      return;
+    }
+
+    document.startViewTransition(() => {
+      setSelectedCategory(null);
+    });
+  };
+
   const renderCategorySelection = () => (
     <div className="grid gap-6 md:grid-cols-3 mt-8">
       <div 
-        onClick={() => setSelectedCategory("notes")}
+        onClick={() => handleCategorySelect("notes")}
         className="group relative p-8 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200/50 dark:border-blue-800/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -124,7 +148,7 @@ export default function Subject() {
       </div>
 
       <div 
-        onClick={() => setSelectedCategory("pyq")}
+        onClick={() => handleCategorySelect("pyq")}
         className="group relative p-8 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-200/50 dark:border-purple-800/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -140,7 +164,7 @@ export default function Subject() {
       </div>
 
       <div 
-        onClick={() => setSelectedCategory("books")}
+        onClick={() => handleCategorySelect("books")}
         className="group relative p-8 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-200/50 dark:border-amber-800/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -176,7 +200,7 @@ export default function Subject() {
             <Button 
               variant="ghost" 
               className="w-fit -ml-2 gap-2 text-muted-foreground hover:text-foreground"
-              onClick={() => setSelectedCategory(null)}
+              onClick={handleBackToCategories}
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Categories

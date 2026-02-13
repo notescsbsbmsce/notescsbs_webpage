@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { useViewTransition } from "@/hooks/useViewTransition";
 
 interface SemesterCardProps {
   id: number;
@@ -9,10 +9,12 @@ interface SemesterCardProps {
 }
 
 export function SemesterCard({ id, name, order }: SemesterCardProps) {
+  const navigate = useViewTransition();
+
   return (
-    <Link
-      to={`/semester/${id}`}
-      className="group relative flex items-center justify-between p-4 sm:p-6 rounded-xl border border-border bg-card hover:bg-gradient-to-r hover:from-primary/5 hover:to-purple-500/5 hover:border-primary/40 hover:shadow-soft-lg hover:scale-[1.02] transition-all duration-300"
+    <button
+      onClick={() => navigate(`/semester/${id}`)}
+      className="group relative flex items-center justify-between p-4 sm:p-6 rounded-xl border border-border bg-card hover:bg-gradient-to-r hover:from-primary/5 hover:to-purple-500/5 hover:border-primary/40 hover:shadow-soft-lg hover:scale-[1.02] transition-all duration-300 w-full text-left"
     >
       <div className="flex-1">
         <div className="flex items-center gap-3">
@@ -30,6 +32,6 @@ export function SemesterCard({ id, name, order }: SemesterCardProps) {
         </div>
       </div>
       <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-    </Link>
+    </button>
   );
 }

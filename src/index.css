@@ -65,7 +65,7 @@
 
   .dark {
     /* Enhanced Dark Mode - Deep blue-gray with vibrant accents */
-    --background: 222 47% 8%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 96%;
 
     --card: 222 47% 11%;
@@ -212,10 +212,11 @@
 
   /* Mobile Performance Optimizations */
   @media (max-width: 768px) {
-    /* Reduce animations on mobile for better performance */
-    * {
-      animation-duration: 0.2s !important;
-      transition-duration: 0.2s !important;
+    /* Optimize touch interactions */
+    button,
+    a,
+    [role="button"] {
+      touch-action: manipulation;
     }
   }
 
@@ -249,6 +250,23 @@
   /* Improve scrolling performance */
   * {
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* View Transitions for smooth navigation */
+  @supports (view-transition-name: none) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.2s;
+    }
+  }
+
+  /* Prevent flash of white during transitions */
+  html {
+    background-color: hsl(var(--background));
+  }
+
+  html.dark {
+    background-color: hsl(222 47% 11%);
   }
 }
 
