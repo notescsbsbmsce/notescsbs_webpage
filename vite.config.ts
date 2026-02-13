@@ -14,6 +14,9 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
+      devOptions: {
+        enabled: true,
+      },
       workbox: {
         // Cache strategies for better offline performance
         runtimeCaching: [
@@ -57,17 +60,17 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "/src/assets/notes-csbs-logo.png",
+            src: "/notes-csbs-logo.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/src/assets/notes-csbs-logo.png",
+            src: "/notes-csbs-logo.png",
             sizes: "512x512",
             type: "image/png",
           },
           {
-            src: "/src/assets/notes-csbs-logo.png",
+            src: "/notes-csbs-logo.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
@@ -94,37 +97,6 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Optimized chunking strategy for better caching and smaller initial load
-        manualChunks: (id) => {
-          // Core React libraries
-          if (id.includes("node_modules/react") || id.includes("node_modules/react-dom")) {
-            return "vendor-react";
-          }
-          // Router
-          if (id.includes("node_modules/react-router-dom")) {
-            return "vendor-router";
-          }
-          // Supabase
-          if (id.includes("node_modules/@supabase")) {
-            return "vendor-supabase";
-          }
-          // React Query
-          if (id.includes("node_modules/@tanstack/react-query")) {
-            return "vendor-query";
-          }
-          // UI Components (Radix UI)
-          if (id.includes("node_modules/@radix-ui")) {
-            return "vendor-radix";
-          }
-          // Icons
-          if (id.includes("node_modules/lucide-react")) {
-            return "vendor-icons";
-          }
-          // Other node_modules
-          if (id.includes("node_modules")) {
-            return "vendor-misc";
-          }
-        },
         // Better file naming for caching
         chunkFileNames: "assets/js/[name]-[hash].js",
         entryFileNames: "assets/js/[name]-[hash].js",
@@ -139,16 +111,5 @@ export default defineConfig({
     cssCodeSplit: true,
     // Report compressed size
     reportCompressedSize: true,
-  },
-  // Optimize dependencies
-  optimizeDeps: {
-    include: [
-      "react",
-      "react-dom",
-      "react-router-dom",
-      "@tanstack/react-query",
-      "lucide-react",
-    ],
-    exclude: ["@supabase/supabase-js"],
   },
 });

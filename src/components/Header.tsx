@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 import { Users, Mail, Home } from "lucide-react";
-import notesCsbsLogo from "@/assets/notes-csbs-logo.png";
 import { Button } from "./ui/button";
 
 export function Header() {
@@ -9,7 +8,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-          <img src={notesCsbsLogo} alt="Notes CSBS Logo" className="h-10 w-10 object-contain" />
+          <img src="/notes-csbs-logo.png" alt="Notes CSBS Logo" className="h-10 w-10 object-contain" />
           <div className="flex flex-col">
             <span className="font-semibold text-foreground text-lg">Notes CSBS</span>
             <span className="text-xs text-muted-foreground">BMSCE Resources</span>
