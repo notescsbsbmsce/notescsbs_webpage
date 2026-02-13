@@ -23,27 +23,27 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-purple-500/5 to-pink-500/10 flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-6xl pb-24 md:pb-12">
+      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 max-w-6xl pb-24 md:pb-12">
         {/* Hero Section */}
-        <div className="mb-12 text-center p-8 rounded-2xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-3">
+        <div className="mb-8 sm:mb-12 text-center p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20">
+          <h1 className="text-3xl sm:text-5xl font-bold mb-3">
             <span className="text-foreground">Notes </span>
             <span className="text-sky-500">CSBS</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Your one-stop platform for CSBS academic resources at BMSCE
           </p>
         </div>
 
         {/* Info Card */}
-        <div className="mb-10 p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-blue-200/20 dark:border-blue-800/20">
+        <div className="mb-8 sm:mb-10 p-5 sm:p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-blue-200/20 dark:border-blue-800/20">
           <div className="flex items-start gap-4">
             <div className="p-3 rounded-lg bg-primary/10">
               <BookOpen className="h-6 w-6 text-primary" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-foreground mb-2">What You'll Find Here</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base">What You'll Find Here</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Study materials, exam papers (CIE & SEE), lab resources, and reference books – organized semester-wise for easy access.
               </p>
             </div>
@@ -52,11 +52,11 @@ const Index = () => {
 
         {/* Semesters Section */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-4 sm:mb-6">
             <div className="p-2 rounded-lg bg-primary/10">
-              <GraduationCap className="h-6 w-6 text-primary" />
+              <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">Select Your Semester</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">Select Your Semester</h2>
           </div>
           
           {isLoading ? (

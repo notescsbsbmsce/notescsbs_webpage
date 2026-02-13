@@ -12,7 +12,7 @@ export function SemesterCard({ id, name, order }: SemesterCardProps) {
   return (
     <Link
       to={`/semester/${id}`}
-      className="group relative flex items-center justify-between p-6 rounded-xl border border-border bg-card hover:bg-gradient-to-r hover:from-primary/5 hover:to-purple-500/5 hover:border-primary/40 hover:shadow-soft-lg hover:scale-[1.02] transition-all duration-300"
+      className="group relative flex items-center justify-between p-4 sm:p-6 rounded-xl border border-border bg-card hover:bg-gradient-to-r hover:from-primary/5 hover:to-purple-500/5 hover:border-primary/40 hover:shadow-soft-lg hover:scale-[1.02] transition-all duration-300"
     >
       <div className="flex-1">
         <div className="flex items-center gap-3">

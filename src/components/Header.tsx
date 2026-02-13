@@ -10,36 +10,38 @@ export function Header() {
         <Link to="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
           <img src="/notes-csbs-logo.png" alt="Notes CSBS Logo" className="h-10 w-10 object-contain" />
           <div className="flex flex-col">
-            <span className="font-semibold text-foreground text-lg">Notes CSBS</span>
-            <span className="text-xs text-muted-foreground">BMSCE Resources</span>
+            <span className="font-semibold text-foreground text-base sm:text-lg leading-tight">Notes CSBS</span>
+            <span className="text-[10px] sm:text-xs text-muted-foreground leading-tight">BMSCE Resources</span>
           </div>
         </Link>
         <div className="flex items-center gap-2">
-          <Link
-            to="/"
-            className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Home className="h-4 w-4" />
-            <span className="hidden sm:inline">Home</span>
-          </Link>
-          <Link
-            to="/contributors"
-            className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Users className="h-4 w-4" />
-            <span className="hidden sm:inline">Contributors</span>
-          </Link>
-          <Button
-            variant="ghost"
-            size="sm"
-            asChild
-            className="gap-2 text-muted-foreground hover:text-foreground"
-          >
-            <a href="mailto:notescsbsbmsce@gmail.com" target="_blank" rel="noopener noreferrer">
-              <Mail className="h-4 w-4" />
-              <span className="hidden sm:inline">Feedback</span>
-            </a>
-          </Button>
+          <div className="hidden md:flex items-center gap-2">
+            <Link
+              to="/"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Home</span>
+            </Link>
+            <Link
+              to="/contributors"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Users className="h-4 w-4" />
+              <span className="hidden sm:inline">Contributors</span>
+            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="gap-2 text-muted-foreground hover:text-foreground"
+            >
+              <a href="mailto:notescsbsbmsce@gmail.com" target="_blank" rel="noopener noreferrer">
+                <Mail className="h-4 w-4" />
+                <span className="hidden sm:inline">Feedback</span>
+              </a>
+            </Button>
+          </div>
           <ThemeToggle />
         </div>
       </div>
