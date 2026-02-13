@@ -116,8 +116,23 @@ const Admin = () => {
 
   // Auth check
   useEffect(() => {
+    let isMounted = true;
+    let resolved = false;
+
+    // Safety timeout - if auth check takes too long, stop loading
+    const timeout = setTimeout(() => {
+      if (isMounted && !resolved) {
+        console.warn("Admin auth check timed out after 10s");
+        setIsAdmin(false);
+      }
+    }, 10000);
+
+    const markResolved = () => { resolved = true; };
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        if (!isMounted) return;
+        console.log("Auth state changed:", event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -132,6 +147,8 @@ const Admin = () => {
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!isMounted) return;
+      console.log("Got session:", session?.user?.email || "no session");
       setSession(session);
       setUser(session?.user ?? null);
       
@@ -140,18 +157,38 @@ const Admin = () => {
       } else {
         checkAdminRole(session.user.id);
       }
+    }).catch((err) => {
+      console.error("Failed to get session:", err);
+      if (isMounted) navigate("/auth");
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      clearTimeout(timeout);
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   const checkAdminRole = async (userId: string) => {
-    const { data, error } = await supabase.rpc('has_role', {
-      _user_id: userId,
-      _role: 'admin'
-    });
-    
-    setIsAdmin(data === true);
+    try {
+      console.log("Checking admin role for:", userId);
+      const { data, error } = await supabase.rpc('has_role', {
+        _user_id: userId,
+        _role: 'admin'
+      });
+      
+      if (error) {
+        console.error("Admin role check error:", error);
+        setIsAdmin(false);
+        return;
+      }
+
+      console.log("Admin role result:", data);
+      setIsAdmin(data === true);
+    } catch (err) {
+      console.error("Admin role check failed:", err);
+      setIsAdmin(false);
+    }
   };
 
   // Fetch semesters
