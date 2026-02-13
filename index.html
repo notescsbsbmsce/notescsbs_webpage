@@ -8,6 +8,24 @@
     <title>Notes CSBS | BMSCE CSBS</title>
     
     <script>
+      // 1. Force unregister any existing service workers (FIXES CACHE ERRORS)
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister().then(function() {
+              console.log('Old ServiceWorker unregistered');
+              // Clear caches too
+              if ('caches' in window) {
+                caches.keys().then(function(names) {
+                  for (let name of names) caches.delete(name);
+                });
+              }
+            });
+          }
+        });
+      }
+
+      // 2. Set Theme
       (function() {
         try {
           var theme = localStorage.getItem('theme') || 'dark';
@@ -19,7 +37,6 @@
 
   <body>
     <div id="root"></div>
-    <!-- Direct source path relative to root -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

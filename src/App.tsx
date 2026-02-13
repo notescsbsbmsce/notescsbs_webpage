@@ -55,19 +55,17 @@ const App = () => (
           v7_relativeSplatPath: true,
         }}
       >
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
-            
-            {/* Lazy loaded routes wrapped in Suspense */}
-            <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />
-            <Route path="/subject/:id" element={<Suspense fallback={<PageLoader />}><Subject /></Suspense>} />
-            <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
-            <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
+          
+          {/* Lazy loaded routes wrapped in Suspense */}
+          <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />
+          <Route path="/subject/:id" element={<Suspense fallback={<PageLoader />}><Subject /></Suspense>} />
+          <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
+          <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
+        </Routes>
         <MobileNav />
       </BrowserRouter>
     </TooltipProvider>
