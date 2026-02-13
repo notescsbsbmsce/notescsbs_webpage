@@ -2,94 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#3b82f6" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Notes CSBS" />
     <link rel="icon" type="image/png" href="/notes-csbs-logo.png" />
-    <link rel="apple-touch-icon" href="/notes-csbs-logo.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="Notes CSBS" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
-    <!-- Speed: Font Optimization with display=swap for faster rendering -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
-    <!-- Preload critical resources -->
-    <link rel="modulepreload" href="/src/main.tsx" />
-
-    <!-- Safety: Security Headers (Meta) -->
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-
-    <title>Notes CSBS | BMSCE CSBS Academic Resources</title>
-    <meta name="description" content="All CSBS academic resources in one place - Notes, Question Banks, CIE Materials, SEE PYQs, and Lab resources for BMS College of Engineering students." />
-    <meta name="author" content="Notes CSBS" />
-    <meta name="keywords" content="BMSCE, CSBS, notes, question bank, CIE, SEE, BMS College of Engineering, computer science, business systems" />
-
-    <meta property="og:title" content="Notes CSBS | BMSCE CSBS Academic Resources" />
-    <meta property="og:description" content="All CSBS academic resources in one place - Notes, Question Banks, CIE Materials, SEE PYQs, and Lab resources." />
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Notes CSBS | BMSCE CSBS Resources" />
-    <meta name="twitter:description" content="All CSBS academic resources in one place." />
+    <title>Notes CSBS | BMSCE CSBS</title>
     
     <script>
       (function() {
         try {
-          var theme = localStorage.getItem('theme');
-          var supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-          if (!theme && supportDarkMode) theme = 'dark';
-          if (!theme) theme = 'dark'; // Force dark as default
-          if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-          }
+          var theme = localStorage.getItem('theme') || 'dark';
+          if (theme === 'dark') document.documentElement.classList.add('dark');
         } catch (e) {}
       })();
     </script>
-    <style>
-      /* Initial critical CSS for loading state */
-      body { margin: 0; background-color: #0f172a; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-      #root:empty {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100vw;
-        color: #3b82f6;
-        gap: 1rem;
-      }
-      #root:empty::after {
-        content: "";
-        width: 40px;
-        height: 40px;
-        border: 3px solid rgba(59, 130, 246, 0.3);
-        border-top-color: #3b82f6;
-        border-radius: 50%;
-        animation: spin 0.8s ease-in-out infinite;
-      }
-      #root:empty::before {
-        content: "Notes CSBS";
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #e2e8f0;
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
-      @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-    </style>
   </head>
 
   <body>
     <div id="root"></div>
+    <!-- Direct source path relative to root -->
     <script type="module" src="/src/main.tsx"></script>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
   </body>
 </html>
