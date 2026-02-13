@@ -8,12 +8,15 @@ import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { MobileNav } from "@/components/MobileNav";
 
 // Lazy load components for performance
-const Index = lazy(() => import("./pages/Index"));
+// Core pages loaded directly for reliability during debugging
+import Index from "./pages/Index";
+import Admin from "./pages/Admin";
+import Auth from "./pages/Auth";
+
+// Optional pages keep lazy loading
 const Semester = lazy(() => import("./pages/Semester"));
 const Subject = lazy(() => import("./pages/Subject"));
 const Contributors = lazy(() => import("./pages/Contributors"));
-const Auth = lazy(() => import("./pages/Auth"));
-const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Loading fallback component - minimal to prevent flickering
@@ -55,12 +58,14 @@ const App = () => (
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/semester/:id" element={<Semester />} />
-            <Route path="/subject/:id" element={<Subject />} />
-            <Route path="/contributors" element={<Contributors />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
-            <Route path="*" element={<NotFound />} />
+            
+            {/* Lazy loaded routes wrapped in Suspense */}
+            <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />
+            <Route path="/subject/:id" element={<Suspense fallback={<PageLoader />}><Subject /></Suspense>} />
+            <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
+            <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
           </Routes>
         </Suspense>
         <MobileNav />
