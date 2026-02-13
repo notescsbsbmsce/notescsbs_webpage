@@ -12,7 +12,7 @@ const Semester = () => {
   const { id } = useParams<{ id: string }>();
   const semesterId = parseInt(id || "0");
 
-  const { data: semester, isLoading: semesterLoading } = useQuery({
+  const { data: semester, isLoading: semesterLoading, error: semesterError } = useQuery({
     queryKey: ["semester", semesterId],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -23,9 +23,11 @@ const Semester = () => {
       if (error) throw error;
       return data;
     },
+    retry: 1, // Only retry once
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const { data: subjects, isLoading: subjectsLoading } = useQuery({
+  const { data: subjects, isLoading: subjectsLoading, error: subjectsError } = useQuery({
     queryKey: ["subjects", semesterId],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -37,9 +39,12 @@ const Semester = () => {
       if (error) throw error;
       return data;
     },
+    retry: 1, // Only retry once
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const isLoading = semesterLoading || subjectsLoading;
+  const hasError = semesterError || subjectsError;
 
   const theorySubjects = subjects?.filter(s => !s.is_lab) || [];
   const labSubjects = subjects?.filter(s => s.is_lab) || [];
@@ -66,7 +71,21 @@ const Semester = () => {
           </p>
         </div>
 
-        {isLoading ? (
+        {hasError ? (
+          <div className="text-center py-16 border border-dashed border-destructive/50 rounded-xl bg-destructive/5">
+            <p className="text-lg font-semibold text-destructive mb-2">⚠️ Connection Error</p>
+            <p className="text-sm text-muted-foreground mb-4">
+              {semesterError ? 'Failed to load semester data. ' : ''}
+              {subjectsError ? 'Failed to load subjects. ' : ''}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Please check your internet connection and try refreshing the page.
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Error: {(semesterError as Error)?.message || (subjectsError as Error)?.message}
+            </p>
+          </div>
+        ) : isLoading ? (
           <div className="space-y-8">
             {/* Show layout-preserving skeleton */}
             <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 border border-blue-200/20 dark:border-blue-800/20">
