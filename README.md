@@ -61,8 +61,8 @@ Follow these simple steps to run the project locally on your machine.
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/notescsbsbmsce/NOTES_CSBS_BMS.git
-   cd NOTES_CSBS_BMS
+   git clone https://github.com/notescsbsbmsce/notescsbs.git
+   cd notescsbs
    ```
 
 2. **Install dependencies**
