@@ -113,21 +113,63 @@ const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const isAdminRef = useRef<boolean | null>(null);
+
+  // Sync ref with state
+  useEffect(() => {
+    isAdminRef.current = isAdmin;
+  }, [isAdmin]);
+
+  // Auth resolution tracking
+  const [authChecked, setAuthChecked] = useState(false);
+  const [showRetry, setShowRetry] = useState(false);
 
   // Auth check
   useEffect(() => {
     let isMounted = true;
-    let resolved = false;
+
+    // Show retry after 5 seconds
+    const retryTimeout = setTimeout(() => {
+      if (isMounted && isAdminRef.current === null) {
+        setShowRetry(true);
+      }
+    }, 5000);
 
     // Safety timeout - if auth check takes too long, stop loading
     const timeout = setTimeout(() => {
-      if (isMounted && !resolved) {
+      if (isMounted && isAdminRef.current === null) {
         console.warn("Admin auth check timed out after 10s");
         setIsAdmin(false);
+        setAuthChecked(true);
       }
     }, 10000);
 
-    const markResolved = () => { resolved = true; };
+    const checkAdmin = async (userId: string) => {
+      try {
+        console.log("Checking admin role for:", userId);
+        const { data, error } = await supabase.rpc('has_role', {
+          _user_id: userId,
+          _role: 'admin'
+        });
+        
+        if (!isMounted) return;
+
+        if (error) {
+          console.error("Admin role check error:", error);
+          setIsAdmin(false);
+        } else {
+          console.log("Admin role result:", data);
+          setIsAdmin(data === true);
+        }
+        setAuthChecked(true);
+      } catch (err) {
+        console.error("Admin role check failed:", err);
+        if (isMounted) {
+          setIsAdmin(false);
+          setAuthChecked(true);
+        }
+      }
+    };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -137,58 +179,50 @@ const Admin = () => {
         setUser(session?.user ?? null);
         
         if (!session?.user) {
-          navigate("/auth");
+          if (event === 'SIGNED_OUT') {
+            navigate("/auth");
+          }
         } else {
-          setTimeout(() => {
-            checkAdminRole(session.user.id);
-          }, 0);
+          checkAdmin(session.user.id);
         }
       }
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!isMounted) return;
-      console.log("Got session:", session?.user?.email || "no session");
+      console.log("Got initial session:", session?.user?.email || "no session");
       setSession(session);
       setUser(session?.user ?? null);
       
       if (!session?.user) {
         navigate("/auth");
       } else {
-        checkAdminRole(session.user.id);
+        checkAdmin(session.user.id);
       }
     }).catch((err) => {
       console.error("Failed to get session:", err);
-      if (isMounted) navigate("/auth");
+      if (isMounted) {
+        setIsAdmin(false);
+        setAuthChecked(true);
+        navigate("/auth");
+      }
     });
 
     return () => {
       isMounted = false;
       clearTimeout(timeout);
+      clearTimeout(retryTimeout);
       subscription.unsubscribe();
     };
   }, [navigate]);
 
   const checkAdminRole = async (userId: string) => {
-    try {
-      console.log("Checking admin role for:", userId);
-      const { data, error } = await supabase.rpc('has_role', {
-        _user_id: userId,
-        _role: 'admin'
-      });
-      
-      if (error) {
-        console.error("Admin role check error:", error);
-        setIsAdmin(false);
-        return;
-      }
-
-      console.log("Admin role result:", data);
-      setIsAdmin(data === true);
-    } catch (err) {
-      console.error("Admin role check failed:", err);
-      setIsAdmin(false);
-    }
+    // Legacy support if needed, but we use checkAdmin inside useEffect now
+    const { data } = await supabase.rpc('has_role', {
+      _user_id: userId,
+      _role: 'admin'
+    });
+    setIsAdmin(data === true);
   };
 
   // Fetch semesters
@@ -628,6 +662,30 @@ const Admin = () => {
           <p className="text-sm text-muted-foreground mt-1">Checking admin privileges...</p>
         </div>
         <Loader2 className="h-6 w-6 animate-spin text-primary mt-2" />
+        
+        {showRetry && (
+          <div className="mt-8 flex flex-col items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <p className="text-xs text-muted-foreground">Taking longer than usual?</p>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => window.location.reload()}
+                className="text-xs h-8"
+              >
+                Retry
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleSignOut}
+                className="text-xs h-8 text-destructive hover:bg-destructive/10"
+              >
+                Sign Out
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
