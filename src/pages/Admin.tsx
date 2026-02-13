@@ -355,7 +355,45 @@ const Admin = () => {
         });
         return;
       }
-      addResourceMutation.mutate([{ title: title.trim(), fileUrl: fileUrl.trim() }]);
+
+      // Auto-convert Google Drive link to preview format
+      let processedUrl = fileUrl.trim();
+      
+      // Extract file ID from various Google Drive URL formats
+      let fileId = null;
+      
+      // Format 1: https://drive.google.com/file/d/FILE_ID/view
+      const viewMatch = processedUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (viewMatch) {
+        fileId = viewMatch[1];
+      }
+      
+      // Format 2: https://drive.google.com/open?id=FILE_ID
+      const openMatch = processedUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (openMatch) {
+        fileId = openMatch[1];
+      }
+      
+      // Format 3: Already in preview format
+      const previewMatch = processedUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)\/preview/);
+      if (previewMatch) {
+        fileId = previewMatch[1];
+      }
+
+      if (fileId) {
+        // Convert to preview format for better embedding
+        processedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+      } else if (!processedUrl.startsWith('http')) {
+        toast({
+          title: "Invalid URL",
+          description: "Please enter a valid Google Drive link",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Instantly add without delay
+      addResourceMutation.mutate([{ title: title.trim(), fileUrl: processedUrl }]);
       return;
     }
 
@@ -706,13 +744,15 @@ const Admin = () => {
                       <div className="space-y-2">
                         <Label>Google Drive Link *</Label>
                         <Input
-                          placeholder="https://drive.google.com/file/d/..."
+                          placeholder="Paste any Google Drive link here..."
                           value={fileUrl}
                           onChange={(e) => setFileUrl(e.target.value)}
                         />
-                        <p className="text-xs text-muted-foreground">
-                          Make sure the file has "Anyone with the link can view" access
-                        </p>
+                        <div className="text-xs text-muted-foreground space-y-1">
+                          <p>✅ Accepts any Drive format - automatically optimized!</p>
+                          <p>📋 Example: https://drive.google.com/file/d/1ABC.../view</p>
+                          <p>🔓 Make sure file access is set to "Anyone with the link"</p>
+                        </div>
                       </div>
                     )}
 
