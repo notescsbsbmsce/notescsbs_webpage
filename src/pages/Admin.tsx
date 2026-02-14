@@ -361,7 +361,9 @@ const Admin = () => {
 
     const UPLOAD_TIMEOUT = 120000;
 
-    const uploadPromise = supabase.storage
+    const client = getSupabaseClient(semesterNumber);
+
+    const uploadPromise = client.storage
       .from('resources')
       .upload(filePath, file, {
         cacheControl: '3600',
@@ -386,7 +388,6 @@ const Admin = () => {
       throw new Error(`Upload failed: ${error.message}`);
     }
 
-    const client = getSupabaseClient(semesterNumber);
     const { data: urlData } = client.storage
       .from('resources')
       .getPublicUrl(filePath);
