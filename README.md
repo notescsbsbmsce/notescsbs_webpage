@@ -115,8 +115,8 @@ Contributions are what make the open source community such an amazing place to l
 Built with ❤️ by CSBS Students:
 
 - **Tushar Jain**
-- **Ayush Kumar**
 - **Niranjan K**
+- **Ayush Kumar**
 - **Rishabh Gupta**
 
 ---
