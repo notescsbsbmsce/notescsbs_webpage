@@ -385,7 +385,7 @@ const Admin = () => {
     if (openMatch) fileId = openMatch[1];
 
     if (fileId) {
-      return `https://drive.google.com/file/d/${fileId}/preview`;
+      return `https://drive.google.com/file/d/${fileId}/view`;
     }
 
     return processedUrl;
