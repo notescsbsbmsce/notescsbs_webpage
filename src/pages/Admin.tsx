@@ -533,7 +533,25 @@ const Admin = () => {
         return;
       }
 
-      addResourceMutation.mutate([{ title: title.trim(), fileUrl: processedUrl }]);
+      try {
+  console.log("Submitting:", {
+    title: title.trim(),
+    url: processedUrl
+  });
+
+  await addResourceMutation.mutateAsync([
+    { title: title.trim(), fileUrl: processedUrl }
+  ]);
+
+} catch (err) {
+  console.error("ADD RESOURCE ERROR:", err);
+
+  toast({
+    title: "❌ Failed to add resource",
+    description: "Check console (F12)",
+    variant: "destructive",
+  });
+}
       return;
     }
 
