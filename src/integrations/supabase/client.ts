@@ -2,20 +2,47 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+const SUPABASE_URL_OLD = import.meta.env.VITE_SUPABASE_URL_OLD || import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_PUBLISHABLE_KEY_OLD = import.meta.env.VITE_SUPABASE_KEY_OLD || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
 
-if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  console.error('Missing Supabase environment variables');
+const SUPABASE_URL_NEW = import.meta.env.VITE_SUPABASE_URL_NEW || '';
+const SUPABASE_PUBLISHABLE_KEY_NEW = import.meta.env.VITE_SUPABASE_KEY_NEW || '';
+
+if (!SUPABASE_URL_OLD || !SUPABASE_PUBLISHABLE_KEY_OLD) {
+  console.error('Missing Old Supabase environment variables');
 }
 
-// Import the supabase client like this:
-// import { supabase } from "@/integrations/supabase/client";
+if (!SUPABASE_URL_NEW || !SUPABASE_PUBLISHABLE_KEY_NEW) {
+  console.warn('Missing New Supabase environment variables (Semester 4-8)');
+}
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+const clientConfig = {
   auth: {
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
   }
-});
+};
+
+export const supabaseOld = createClient<Database>(SUPABASE_URL_OLD, SUPABASE_PUBLISHABLE_KEY_OLD, clientConfig);
+export const supabaseNew = createClient<Database>(SUPABASE_URL_NEW || SUPABASE_URL_OLD, SUPABASE_PUBLISHABLE_KEY_NEW || SUPABASE_PUBLISHABLE_KEY_OLD, clientConfig);
+
+// For backward compatibility and default usage
+export const supabase = supabaseOld;
+
+/**
+ * Get the appropriate Supabase client based on the semester
+ * Semester 1-3 use the old database
+ * Semester 4-8 use the new database
+ */
+export function getSupabaseClient(semester: number | string) {
+  const semNum = typeof semester === 'string' ? parseInt(semester) : semester;
+
+  // Use new client for semesters 4-8
+  if (semNum >= 4) {
+    return supabaseNew;
+  }
+
+  // Default to old client (Semesters 1-3)
+  return supabaseOld;
+}

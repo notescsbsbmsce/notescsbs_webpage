@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getSupabaseClient } from "@/integrations/supabase/client";
+import { fetchSemesters } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -79,7 +80,7 @@ const Admin = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  
+
   // Form states
   const [selectedSemester, setSelectedSemester] = useState<string>("");
   const [selectedSubject, setSelectedSubject] = useState<string>("");
@@ -109,7 +110,7 @@ const Admin = () => {
 
   // Active admin tab
   const [activeTab, setActiveTab] = useState("add");
-  
+
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -147,11 +148,13 @@ const Admin = () => {
     const checkAdmin = async (userId: string) => {
       try {
         console.log("Checking admin role for:", userId);
-        const { data, error } = await supabase.rpc('has_role', {
+        // Auth usually in the primary database
+        const client = getSupabaseClient(1);
+        const { data, error } = await client.rpc('has_role', {
           _user_id: userId,
           _role: 'admin'
         });
-        
+
         if (!isMounted) return;
 
         if (error) {
@@ -171,13 +174,14 @@ const Admin = () => {
       }
     };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+    const client = getSupabaseClient(1);
+    const { data: { subscription } } = client.auth.onAuthStateChange(
       (event, session) => {
         if (!isMounted) return;
         console.log("Auth state changed:", event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         if (!session?.user) {
           if (event === 'SIGNED_OUT') {
             navigate("/auth");
@@ -188,12 +192,12 @@ const Admin = () => {
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    client.auth.getSession().then(({ data: { session } }) => {
       if (!isMounted) return;
       console.log("Got initial session:", session?.user?.email || "no session");
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (!session?.user) {
         navigate("/auth");
       } else {
@@ -216,39 +220,47 @@ const Admin = () => {
     };
   }, [navigate]);
 
+  // Fetch semesters - use aggregated fetch from utils
+  const { data: semesters } = useQuery({
+    queryKey: ["semesters"],
+    queryFn: async () => {
+      return await fetchSemesters();
+    },
+    staleTime: 10 * 60 * 1000,
+  });
+
+  // Derived semester number
+  const semesterNumber = useMemo(() => {
+    if (!selectedSemester || !semesters) return 1;
+    const sem = semesters.find(s => s.id.toString() === selectedSemester);
+    // Assuming order represents the semester number (1-8)
+    return sem ? sem.order : 1;
+  }, [selectedSemester, semesters]);
+
   const checkAdminRole = async (userId: string) => {
     // Legacy support if needed, but we use checkAdmin inside useEffect now
-    const { data } = await supabase.rpc('has_role', {
+    const client = getSupabaseClient(1);
+    const { data } = await client.rpc('has_role', {
       _user_id: userId,
       _role: 'admin'
     });
     setIsAdmin(data === true);
   };
 
-  // Fetch semesters
-  const { data: semesters } = useQuery({
-    queryKey: ["semesters"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("semesters")
-        .select("*")
-        .order("order");
-      if (error) throw error;
-      return data;
-    },
-    staleTime: 10 * 60 * 1000,
-  });
-
   // Fetch subjects for selected semester
   const { data: subjects, isLoading: isLoadingSubjects } = useQuery({
     queryKey: ["subjects", selectedSemester],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const client = getSupabaseClient(semesterNumber);
+      const { data, error } = await client
         .from("subjects")
         .select("*")
         .eq("semester_id", parseInt(selectedSemester))
         .order("code");
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase Error (fetchSubjects):", error);
+        throw error;
+      }
       return data as Subject[];
     },
     enabled: !!selectedSemester,
@@ -259,12 +271,16 @@ const Admin = () => {
   const { data: units } = useQuery({
     queryKey: ["units", selectedSubject],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const client = getSupabaseClient(semesterNumber);
+      const { data, error } = await client
         .from("units")
         .select("*")
         .eq("subject_id", parseInt(selectedSubject))
         .order("unit_number");
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase Error (fetchUnits):", error);
+        throw error;
+      }
       return data as Unit[];
     },
     enabled: !!selectedSubject,
@@ -275,13 +291,17 @@ const Admin = () => {
   const { data: resources, isLoading: isLoadingResources } = useQuery({
     queryKey: ["resources", selectedSubject],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const client = getSupabaseClient(semesterNumber);
+      const { data, error } = await client
         .from("resources")
         .select("*")
         .eq("subject_id", parseInt(selectedSubject))
         .order("type")
         .order("unit");
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase Error (fetchResources):", error);
+        throw error;
+      }
       return data as Resource[];
     },
     enabled: !!selectedSubject,
@@ -314,17 +334,17 @@ const Admin = () => {
     if (file.size > MAX_FILE_SIZE) {
       return `File "${file.name}" exceeds 50MB limit`;
     }
-    
+
     const fileExt = file.name.split('.').pop()?.toLowerCase();
     if (!fileExt || !ALLOWED_EXTENSIONS.includes(fileExt)) {
       return `File "${file.name}" has invalid extension. Allowed: ${ALLOWED_EXTENSIONS.join(', ')}`;
     }
-    
+
     const isCodeFile = ['c', 'cpp', 'py', 'java', 'js', 'ts', 'h'].includes(fileExt);
     if (!isCodeFile && file.type && !ALLOWED_MIME_TYPES.some(type => file.type.startsWith(type.split('/')[0]))) {
       return `File "${file.name}" has invalid file type`;
     }
-    
+
     return null;
   };
 
@@ -338,24 +358,24 @@ const Admin = () => {
     const fileExt = file.name.split('.').pop()?.toLowerCase();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
     const filePath = `${selectedSubject}/${fileName}`;
-    
+
     const UPLOAD_TIMEOUT = 120000;
-    
+
     const uploadPromise = supabase.storage
       .from('resources')
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
       });
-    
+
     const timeoutPromise = new Promise<never>((_, reject) => {
       setTimeout(() => {
         reject(new Error(`Upload timed out after ${UPLOAD_TIMEOUT / 1000} seconds.`));
       }, UPLOAD_TIMEOUT);
     });
-    
+
     const { data, error } = await Promise.race([uploadPromise, timeoutPromise]);
-    
+
     if (error) {
       if (error.message?.includes('duplicate')) {
         throw new Error('A file with this name already exists.');
@@ -365,11 +385,12 @@ const Admin = () => {
       }
       throw new Error(`Upload failed: ${error.message}`);
     }
-    
-    const { data: urlData } = supabase.storage
+
+    const client = getSupabaseClient(semesterNumber);
+    const { data: urlData } = client.storage
       .from('resources')
       .getPublicUrl(filePath);
-    
+
     return urlData.publicUrl;
   };
 
@@ -394,6 +415,7 @@ const Admin = () => {
   // Add resource mutation
   const addResourceMutation = useMutation({
     mutationFn: async (resources: { title: string; fileUrl: string }[]) => {
+      const client = getSupabaseClient(semesterNumber);
       for (const res of resources) {
         const resourceData = {
           subject_id: parseInt(selectedSubject),
@@ -404,8 +426,11 @@ const Admin = () => {
           year: year ? parseInt(year) : null,
         };
 
-        const { error } = await supabase.from("resources").insert(resourceData);
-        if (error) throw error;
+        const { error } = await client.from("resources").insert(resourceData);
+        if (error) {
+          console.error("Supabase Error (addResource mutation):", error);
+          throw error;
+        }
       }
     },
     onSuccess: () => {
@@ -432,11 +457,15 @@ const Admin = () => {
   // Delete resource mutation
   const deleteResourceMutation = useMutation({
     mutationFn: async (resourceId: number) => {
-      const { error } = await supabase
+      const client = getSupabaseClient(semesterNumber);
+      const { error } = await client
         .from("resources")
         .delete()
         .eq("id", resourceId);
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase Error (deleteResource mutation):", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       toast({
@@ -458,11 +487,15 @@ const Admin = () => {
   // Update resource mutation
   const updateResourceMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: { title: string; file_url: string; type: ResourceType; unit: string | null; year: number | null } }) => {
-      const { error } = await supabase
+      const client = getSupabaseClient(semesterNumber);
+      const { error } = await client
         .from("resources")
         .update(data)
         .eq("id", id);
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase Error (updateResource mutation):", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       toast({
@@ -502,7 +535,7 @@ const Admin = () => {
 
   const handleAddResource = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!selectedSubject) {
       toast({
         title: "⚠️ Missing Subject",
@@ -534,24 +567,24 @@ const Admin = () => {
       }
 
       try {
-  console.log("Submitting:", {
-    title: title.trim(),
-    url: processedUrl
-  });
+        console.log("Submitting:", {
+          title: title.trim(),
+          url: processedUrl
+        });
 
-  await addResourceMutation.mutateAsync([
-    { title: title.trim(), fileUrl: processedUrl }
-  ]);
+        await addResourceMutation.mutateAsync([
+          { title: title.trim(), fileUrl: processedUrl }
+        ]);
 
-} catch (err) {
-  console.error("ADD RESOURCE ERROR:", err);
+      } catch (err) {
+        console.error("ADD RESOURCE ERROR:", err);
 
-  toast({
-    title: "❌ Failed to add resource",
-    description: "Check console (F12)",
-    variant: "destructive",
-  });
-}
+        toast({
+          title: "❌ Failed to add resource",
+          description: "Check console (F12)",
+          variant: "destructive",
+        });
+      }
       return;
     }
 
@@ -568,7 +601,7 @@ const Admin = () => {
       setIsUploading(true);
       const uploadedResources: { title: string; fileUrl: string }[] = [];
       const totalFiles = selectedFiles.length;
-      
+
       const getFileTypeLabel = (fileName: string): string => {
         const ext = fileName.split('.').pop()?.toLowerCase() || '';
         const extLabels: Record<string, string> = {
@@ -580,14 +613,14 @@ const Admin = () => {
         };
         return extLabels[ext] || 'File';
       };
-      
+
       let successCount = 0;
-      
+
       for (let i = 0; i < totalFiles; i++) {
         const file = selectedFiles[i];
         const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
         setUploadProgress(`Uploading ${i + 1}/${totalFiles}: ${file.name} (${fileSizeMB}MB)`);
-        
+
         try {
           const url = await uploadFile(file);
           successCount++;
@@ -603,9 +636,9 @@ const Admin = () => {
           });
         }
       }
-      
+
       setUploadProgress("");
-      
+
       if (uploadedResources.length > 0) {
         addResourceMutation.mutate(uploadedResources);
       } else if (totalFiles > 0) {
@@ -634,7 +667,7 @@ const Admin = () => {
       const fileArray = Array.from(files);
       const invalidFiles: string[] = [];
       const validFiles: File[] = [];
-      
+
       for (const file of fileArray) {
         const error = validateFile(file);
         if (error) {
@@ -643,7 +676,7 @@ const Admin = () => {
           validFiles.push(file);
         }
       }
-      
+
       if (invalidFiles.length > 0) {
         toast({
           title: "Invalid Files",
@@ -651,7 +684,7 @@ const Admin = () => {
           variant: "destructive",
         });
       }
-      
+
       setSelectedFiles(validFiles);
     }
   };
@@ -680,22 +713,22 @@ const Admin = () => {
           <p className="text-sm text-muted-foreground mt-1">Checking admin privileges...</p>
         </div>
         <Loader2 className="h-6 w-6 animate-spin text-primary mt-2" />
-        
+
         {showRetry && (
           <div className="mt-8 flex flex-col items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <p className="text-xs text-muted-foreground">Taking longer than usual?</p>
             <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => window.location.reload()}
                 className="text-xs h-8"
               >
                 Retry
               </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={handleSignOut}
                 className="text-xs h-8 text-destructive hover:bg-destructive/10"
               >
@@ -738,7 +771,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Admin Header */}
         <div className="mb-6 p-5 rounded-2xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border border-indigo-200/20 dark:border-indigo-800/20">
@@ -824,8 +857,8 @@ const Admin = () => {
                   {/* Subject */}
                   <div className="space-y-1.5">
                     <Label className="text-xs font-medium">Subject</Label>
-                    <Select 
-                      value={selectedSubject} 
+                    <Select
+                      value={selectedSubject}
                       onValueChange={(v) => {
                         setSelectedSubject(v);
                         setSelectedUnit("");
@@ -1010,7 +1043,7 @@ const Admin = () => {
                           onChange={handleFileChange}
                           className="hidden"
                         />
-                        
+
                         {selectedFiles.length > 0 && (
                           <div className="space-y-1.5">
                             <p className="text-xs font-medium text-muted-foreground">
@@ -1037,7 +1070,7 @@ const Admin = () => {
                             ))}
                           </div>
                         )}
-                        
+
                         {uploadProgress && (
                           <div className="flex items-center gap-2 text-xs text-primary font-medium bg-primary/10 rounded-lg p-2">
                             <Loader2 className="h-3 w-3 animate-spin" />
@@ -1048,8 +1081,8 @@ const Admin = () => {
                     )}
 
                     {/* Submit Button */}
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="w-full h-10 gap-2 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-lg"
                       disabled={addResourceMutation.isPending || isUploading || !selectedSubject}
                     >
@@ -1061,8 +1094,8 @@ const Admin = () => {
                       ) : (
                         <>
                           <Sparkles className="h-4 w-4" />
-                          {uploadMode === "file" && selectedFiles.length > 1 
-                            ? `Add ${selectedFiles.length} Resources` 
+                          {uploadMode === "file" && selectedFiles.length > 1
+                            ? `Add ${selectedFiles.length} Resources`
                             : "Add Resource"}
                         </>
                       )}
