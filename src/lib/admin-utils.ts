@@ -3,7 +3,7 @@
  * Centralized helpers for the admin panel
  */
 
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getSupabaseClient } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
 // ============================================================
@@ -313,9 +313,13 @@ export function computeResourceStats(resources: Resource[]): ResourceStats {
 /**
  * Add a resource to the database
  */
-export async function addResource(data: ResourceInput) {
-  const { error } = await supabase.from("resources").insert(data);
-  if (error) throw error;
+export async function addResource(data: ResourceInput, semester: number) {
+  const client = getSupabaseClient(semester);
+  const { error } = await client.from("resources").insert(data);
+  if (error) {
+    console.error("Supabase Error (addResource):", error);
+    throw error;
+  }
   return true;
 }
 
@@ -324,64 +328,165 @@ export async function addResource(data: ResourceInput) {
  */
 export async function updateResource(
   id: number,
-  data: Partial<ResourceInput>
+  data: Partial<ResourceInput>,
+  semester: number
 ) {
-  const { error } = await supabase
+  const client = getSupabaseClient(semester);
+  const { error } = await client
     .from("resources")
     .update(data)
     .eq("id", id);
-  if (error) throw error;
+  if (error) {
+    console.error("Supabase Error (updateResource):", error);
+    throw error;
+  }
   return true;
 }
 
 /**
  * Delete a resource from the database
  */
-export async function deleteResource(id: number) {
-  const { error } = await supabase
+export async function deleteResource(id: number, semester: number) {
+  const client = getSupabaseClient(semester);
+  const { error } = await client
     .from("resources")
     .delete()
     .eq("id", id);
-  if (error) throw error;
+  if (error) {
+    console.error("Supabase Error (deleteResource):", error);
+    throw error;
+  }
   return true;
 }
 
 /**
  * Fetch all resources for a subject
  */
-export async function fetchResourcesBySubject(subjectId: number) {
-  const { data, error } = await supabase
+export async function fetchResourcesBySubject(subjectId: number, semester: number) {
+  const client = getSupabaseClient(semester);
+  const { data, error } = await client
     .from("resources")
     .select("*")
     .eq("subject_id", subjectId)
     .order("type")
     .order("unit");
-  if (error) throw error;
+  if (error) {
+    console.error("Supabase Error (fetchResourcesBySubject):", error);
+    throw error;
+  }
   return (data || []) as Resource[];
 }
 
 /**
  * Fetch all semesters
+ * Note: Since semesters might be split or duplicated, we fetch from both and merge/deduplicate
  */
 export async function fetchSemesters() {
-  const { data, error } = await supabase
-    .from("semesters")
-    .select("*")
-    .order("order");
-  if (error) throw error;
-  return (data || []) as Semester[];
+  try {
+    const { data: oldSems, error: oldError } = await getSupabaseClient(1)
+      .from("semesters")
+      .select("*")
+      .order("order");
+
+    if (oldError) throw oldError;
+
+    // Also try to fetch from new DB to see if there are more semesters there
+    // If the new DB is not yet set up, this might fail or return empty
+    try {
+      const { data: newSems, error: newError } = await getSupabaseClient(4)
+        .from("semesters")
+        .select("*")
+        .order("order");
+
+      if (!newError && newSems && newSems.length > 0) {
+        // Merge and deduplicate by ID, prioritizing order
+        const allSems = [...(oldSems || []), ...newSems];
+        const uniqueSems = Array.from(new Map(allSems.map(s => [s.id, s])).values());
+        return uniqueSems.sort((a, b) => a.order - b.order) as Semester[];
+      }
+    } catch (e) {
+      console.warn("Could not fetch semesters from new database:", e);
+    }
+
+    return (oldSems || []) as Semester[];
+  } catch (error) {
+    console.error("Supabase Error (fetchSemesters):", error);
+    throw error;
+  }
+}
+
+/**
+ * Fetch a single semester by ID, checking both databases if necessary
+ */
+export async function fetchSemesterById(id: number) {
+  try {
+    // Try old DB first
+    const { data: oldData, error: oldError } = await getSupabaseClient(1)
+      .from("semesters")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (oldData) return oldData as Semester;
+
+    // Try new DB
+    const { data: newData, error: newError } = await getSupabaseClient(4)
+      .from("semesters")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (newError) throw newError;
+    return newData as Semester;
+  } catch (error) {
+    console.error("Supabase Error (fetchSemesterById):", error);
+    throw error;
+  }
+}
+
+/**
+ * Fetch a single subject by ID, checking both databases if necessary
+ */
+export async function fetchSubjectById(id: number) {
+  try {
+    // Try old DB first
+    const { data: oldData, error: oldError } = await getSupabaseClient(1)
+      .from("subjects")
+      .select("*, semesters(name, order)")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (oldData) return oldData;
+
+    // Try new DB
+    const { data: newData, error: newError } = await getSupabaseClient(4)
+      .from("subjects")
+      .select("*, semesters(name, order)")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (newError) throw newError;
+    return newData;
+  } catch (error) {
+    console.error("Supabase Error (fetchSubjectById):", error);
+    throw error;
+  }
 }
 
 /**
  * Fetch subjects for a semester
  */
-export async function fetchSubjectsBySemester(semesterId: number) {
-  const { data, error } = await supabase
+export async function fetchSubjectsBySemester(semesterId: number, semesterNumber: number) {
+  const client = getSupabaseClient(semesterNumber);
+  const { data, error } = await client
     .from("subjects")
     .select("*")
     .eq("semester_id", semesterId)
     .order("code");
-  if (error) throw error;
+  if (error) {
+    console.error("Supabase Error (fetchSubjectsBySemester):", error);
+    throw error;
+  }
   return (data || []) as Subject[];
 }
 
@@ -389,10 +494,14 @@ export async function fetchSubjectsBySemester(semesterId: number) {
  * Check if user has admin role
  */
 export async function checkIsAdmin(userId: string): Promise<boolean> {
-  const { data, error } = await supabase.rpc("has_role", {
+  // Auth usually resides in the primary (old) database
+  const { data, error } = await getSupabaseClient(1).rpc("has_role", {
     _user_id: userId,
     _role: "admin",
   });
-  if (error) return false;
+  if (error) {
+    console.error("Supabase Error (checkIsAdmin):", error);
+    return false;
+  }
   return data === true;
 }

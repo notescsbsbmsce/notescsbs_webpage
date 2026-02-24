@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getSupabaseClient } from "@/integrations/supabase/client";
+import { fetchSubjectById } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -30,20 +31,17 @@ export default function Subject() {
   const { data: subject, isLoading: subjectLoading, error: subjectError } = useQuery({
     queryKey: ["subject", subjectId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("subjects")
-        .select("*, semesters(name)")
-        .eq("id", subjectId)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
+      return await fetchSubjectById(subjectId);
     },
   });
 
   const { data: units, isLoading: unitsLoading, error: unitsError } = useQuery({
     queryKey: ["units", subjectId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      if (!subject) return [];
+      const semesterNumber = (subject as any).semesters?.order || 1;
+      const client = getSupabaseClient(semesterNumber);
+      const { data, error } = await client
         .from("units")
         .select("*")
         .eq("subject_id", subjectId)
@@ -51,12 +49,16 @@ export default function Subject() {
       if (error) throw error;
       return data;
     },
+    enabled: !!subject,
   });
 
   const { data: resources, isLoading: resourcesLoading, error: resourcesError } = useQuery({
     queryKey: ["resources", subjectId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      if (!subject) return [];
+      const semesterNumber = (subject as any).semesters?.order || 1;
+      const client = getSupabaseClient(semesterNumber);
+      const { data, error } = await client
         .from("resources")
         .select("*")
         .eq("subject_id", subjectId)
@@ -64,6 +66,7 @@ export default function Subject() {
       if (error) throw error;
       return data;
     },
+    enabled: !!subject,
   });
 
   const isLoading = subjectLoading || unitsLoading || resourcesLoading;
@@ -135,6 +138,7 @@ export default function Subject() {
   const renderCategorySelection = () => (
     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mt-10 sm:mt-12 animate-slide-up">
       <div 
+
         onClick={() => handleCategorySelect("notes")}
         className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200/50 dark:border-blue-800/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center"
       >
@@ -152,7 +156,7 @@ export default function Subject() {
         </div>
       </div>
 
-      <div 
+      <div
         onClick={() => handleCategorySelect("pyq")}
         className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-200/50 dark:border-purple-800/50 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center"
       >
@@ -170,7 +174,7 @@ export default function Subject() {
         </div>
       </div>
 
-      <div 
+      <div
         onClick={() => handleCategorySelect("books")}
         className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-200/50 dark:border-amber-800/50 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center sm:col-span-2 md:col-span-1"
       >
@@ -193,16 +197,16 @@ export default function Subject() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20 flex flex-col">
       <Header />
-      
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 max-w-5xl pb-24">
         <div className="flex flex-col gap-6">
           <Breadcrumb 
+
             items={[
               { label: "Home", href: "/" },
               { label: subject?.semesters?.name || "Semester", href: `/semester/${subject?.semester_id}` },
               { label: subject?.name || "Loading...", href: selectedCategory ? undefined : window.location.pathname },
               ...(selectedCategory ? [{ label: selectedCategory === "pyq" ? "PYQ" : selectedCategory === "books" ? "Books & KB" : "Notes" }] : [])
-            ]} 
+            ]}
           />
 
           {hasError ? (
@@ -270,6 +274,7 @@ export default function Subject() {
               </div>
             </>
           )}
+
         </div>
 
         {!selectedCategory ? (
@@ -355,7 +360,7 @@ export default function Subject() {
                   </div>
                   <h2 className="text-xl font-bold text-foreground">Question Papers</h2>
                 </div>
-                
+
                 {(cie1Papers.length > 0 || cie2Papers.length > 0 || cie3Papers.length > 0 || seePapers.length > 0) ? (
                   <div className="space-y-6">
                     {/* CIE-1 Papers */}

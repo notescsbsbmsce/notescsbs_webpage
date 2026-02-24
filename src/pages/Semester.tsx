@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getSupabaseClient } from "@/integrations/supabase/client";
+import { fetchSemesterById, fetchSubjectsBySemester } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { SubjectCard } from "@/components/SubjectCard";
@@ -16,13 +17,7 @@ const Semester = () => {
   const { data: semester, isLoading: semesterLoading, error: semesterError } = useQuery({
     queryKey: ["semester", semesterId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("semesters")
-        .select("*")
-        .eq("id", semesterId)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
+      return await fetchSemesterById(semesterId);
     },
     retry: 1, // Only retry once
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -31,15 +26,10 @@ const Semester = () => {
   const { data: subjects, isLoading: subjectsLoading, error: subjectsError } = useQuery({
     queryKey: ["subjects", semesterId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("subjects")
-        .select("*")
-        .eq("semester_id", semesterId)
-        .order("is_lab")
-        .order("code");
-      if (error) throw error;
-      return data;
+      if (!semester) return [];
+      return await fetchSubjectsBySemester(semesterId, (semester as any).order);
     },
+    enabled: !!semester,
     retry: 1, // Only retry once
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -53,13 +43,13 @@ const Semester = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20 flex flex-col">
       <Header />
-      
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 max-w-5xl pb-24">
         <Breadcrumb 
+
           items={[
             { label: "Home", href: "/" },
             { label: semester?.name || "Loading..." }
-          ]} 
+          ]}
         />
 
         {/* Semester Header with Gradient */}

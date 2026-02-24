@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchSemesters } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
 import { SemesterCard } from "@/components/SemesterCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,12 +10,7 @@ const Index = () => {
   const { data: semesters, isLoading, error } = useQuery({
     queryKey: ["semesters"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("semesters")
-        .select("*")
-        .order("order");
-      if (error) throw error;
-      return data;
+      return await fetchSemesters();
     },
   });
 
@@ -27,8 +22,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-purple-500/5 to-pink-500/10 flex flex-col">
       <Header />
-      
       <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 max-w-7xl pb-24 md:pb-12">
+
         {/* Hero Section */}
         <div className="mb-10 sm:mb-16 text-center p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20 shadow-xl shadow-primary/5 animate-fade-in">
           <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 tracking-tight">
@@ -63,7 +58,7 @@ const Index = () => {
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Select Your Semester</h2>
           </div>
-          
+
           {isLoading ? (
             <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
