@@ -11,7 +11,7 @@ export function MobileNav() {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t border-border flex justify-around items-center h-16 pb-safe px-4">
+    <nav className="md:hidden fixed bottom-4 left-4 right-4 z-50 bg-background/80 backdrop-blur-xl border border-border/50 flex justify-around items-center h-16 rounded-2xl shadow-2xl shadow-primary/10 px-6 safe-area-inset-bottom animate-in slide-in-from-bottom-10 duration-500">
       {navItems.map((item) => {
         const isActive = location.pathname === item.href;
         
@@ -22,10 +22,10 @@ export function MobileNav() {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors px-2"
+              className="flex flex-col items-center gap-1.5 text-muted-foreground hover:text-primary transition-all px-3 py-2 rounded-xl active:scale-90"
             >
               {item.icon}
-              <span className="text-[10px] font-medium">{item.label}</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
             </a>
           );
         }
@@ -34,12 +34,15 @@ export function MobileNav() {
           <Link
             key={item.label}
             to={item.href}
-            className={`flex flex-col items-center gap-1 transition-colors px-2 ${
-              isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
+            className={`flex flex-col items-center gap-1.5 transition-all px-3 py-2 rounded-xl active:scale-90 relative ${
+              isActive ? "text-primary font-bold" : "text-muted-foreground hover:text-primary"
             }`}
           >
+            {isActive && (
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full animate-pulse" />
+            )}
             {item.icon}
-            <span className="text-[10px] font-medium">{item.label}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
           </Link>
         );
       })}

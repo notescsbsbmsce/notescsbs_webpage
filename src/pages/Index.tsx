@@ -28,50 +28,50 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-purple-500/5 to-pink-500/10 flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 max-w-6xl pb-24 md:pb-12">
+      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 max-w-7xl pb-24 md:pb-12">
         {/* Hero Section */}
-        <div className="mb-8 sm:mb-12 text-center p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20">
-          <h1 className="text-3xl sm:text-5xl font-bold mb-3">
+        <div className="mb-10 sm:mb-16 text-center p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20 shadow-xl shadow-primary/5 animate-fade-in">
+          <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 tracking-tight">
             <span className="text-foreground">Notes </span>
-            <span className="text-sky-500">CSBS</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-indigo-600">CSBS</span>
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Your one-stop platform for CSBS academic resources at BMSCE
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Your premium, one-stop platform for CSBS academic resources at BMSCE. Fully organized and easy to access.
           </p>
         </div>
 
         {/* Info Card */}
-        <div className="mb-8 sm:mb-10 p-5 sm:p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-blue-200/20 dark:border-blue-800/20">
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-lg bg-primary/10">
-              <BookOpen className="h-6 w-6 text-primary" />
+        <div className="mb-12 sm:mb-16 p-6 sm:p-10 rounded-2xl bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-blue-200/20 dark:border-blue-800/20 shadow-inner animate-slide-up">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <div className="p-4 rounded-2xl bg-primary/10 shadow-lg shadow-primary/10">
+              <BookOpen className="h-8 w-8 text-primary" />
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base">What You'll Find Here</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Study materials, exam papers (CIE & SEE), lab resources, and reference books – organized semester-wise for easy access.
+            <div className="flex-1 text-center sm:text-left">
+              <h3 className="font-bold text-foreground mb-3 text-lg sm:text-xl">What You'll Find Here</h3>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                Study materials, exam papers (CIE & SEE), lab resources, and reference books – meticulously organized semester-wise to help you excel in your academics.
               </p>
             </div>
           </div>
         </div>
 
         {/* Semesters Section */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4 sm:mb-6">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+        <div className="mb-12 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <div className="flex items-center justify-center sm:justify-start gap-3 mb-8 sm:mb-10">
+            <div className="p-3 rounded-xl bg-primary/10">
+              <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground">Select Your Semester</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Select Your Semester</h2>
           </div>
           
           {isLoading ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
                 <Skeleton key={i} className="h-24 rounded-xl" />
               ))}
             </div>
           ) : semesters && semesters.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {semesters.map((semester, index) => (
                 <SemesterCard
                   key={semester.id}

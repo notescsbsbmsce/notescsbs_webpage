@@ -13,40 +13,65 @@ export const ProtectedAdminRoute = ({ children }: ProtectedAdminRouteProps) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session?.user) {
-        setIsAdmin(false);
-        setIsLoading(false);
-        return;
-      }
+      try {
+        console.log("ProtectedAdminRoute: Checking auth...");
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
+        if (userError || !user) {
+          console.log("ProtectedAdminRoute: No user or error:", userError);
+          setIsAdmin(false);
+          setIsLoading(false);
+          return;
+        }
 
-      const { data } = await supabase.rpc('has_role', {
-        _user_id: session.user.id,
-        _role: 'admin'
-      });
-      
-      setIsAdmin(data === true);
-      setIsLoading(false);
+        console.log("ProtectedAdminRoute: User found, checking role...", user.id);
+        
+        // Try RPC first (primary method)
+        const { data: rpcData, error: rpcError } = await supabase.rpc('has_role', {
+          _user_id: user.id,
+          _role: 'admin'
+        });
+
+        if (!rpcError && rpcData !== null) {
+          console.log("ProtectedAdminRoute: RPC role check result:", rpcData);
+          setIsAdmin(rpcData === true);
+        } else {
+          // Fallback: Check user_roles table directly if RPC fails
+          console.warn("ProtectedAdminRoute: RPC failed or missing, trying direct table check", rpcError);
+          const { data: tableData, error: tableError } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', user.id)
+            .eq('role', 'admin')
+            .maybeSingle();
+          
+          if (tableError) {
+            console.error("ProtectedAdminRoute: Direct table check failed:", tableError);
+            setIsAdmin(false);
+          } else {
+            console.log("ProtectedAdminRoute: Direct table check result:", tableData);
+            setIsAdmin(!!tableData);
+          }
+        }
+      } catch (err) {
+        console.error("ProtectedAdminRoute: Unexpected error:", err);
+        setIsAdmin(false);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (!session?.user) {
+        console.log("ProtectedAdminRoute: Auth state change:", event);
+        if (event === 'SIGNED_OUT' || !session) {
           setIsAdmin(false);
           setIsLoading(false);
-          return;
+        } else if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
+          checkAuth();
         }
-
-        const { data } = await supabase.rpc('has_role', {
-          _user_id: session.user.id,
-          _role: 'admin'
-        });
-        
-        setIsAdmin(data === true);
-        setIsLoading(false);
       }
     );
 

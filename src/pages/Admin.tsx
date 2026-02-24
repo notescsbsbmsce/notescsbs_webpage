@@ -124,94 +124,52 @@ const Admin = () => {
   const [authChecked, setAuthChecked] = useState(false);
   const [showRetry, setShowRetry] = useState(false);
 
-  // Auth check
+  // Enhanced Auth Check
   useEffect(() => {
     let isMounted = true;
 
-    // Show retry after 5 seconds
-    const retryTimeout = setTimeout(() => {
-      if (isMounted && isAdminRef.current === null) {
-        setShowRetry(true);
-      }
-    }, 5000);
-
-    // Safety timeout - if auth check takes too long, stop loading
-    const timeout = setTimeout(() => {
-      if (isMounted && isAdminRef.current === null) {
-        console.warn("Admin auth check timed out after 10s");
-        setIsAdmin(false);
-        setAuthChecked(true);
-      }
-    }, 10000);
-
-    const checkAdmin = async (userId: string) => {
+    const initAuth = async () => {
       try {
-        console.log("Checking admin role for:", userId);
-        const { data, error } = await supabase.rpc('has_role', {
-          _user_id: userId,
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (!isMounted) return;
+
+        if (error || !user) {
+          console.log("Admin: No valid user found, redirecting...");
+          navigate("/auth");
+          return;
+        }
+
+        setUser(user);
+        
+        // Double check admin role for extra security within the component
+        const { data: hasRole } = await supabase.rpc('has_role', {
+          _user_id: user.id,
           _role: 'admin'
         });
         
-        if (!isMounted) return;
-
-        if (error) {
-          console.error("Admin role check error:", error);
-          setIsAdmin(false);
-        } else {
-          console.log("Admin role result:", data);
-          setIsAdmin(data === true);
-        }
-        setAuthChecked(true);
-      } catch (err) {
-        console.error("Admin role check failed:", err);
         if (isMounted) {
-          setIsAdmin(false);
+          setIsAdmin(hasRole === true);
           setAuthChecked(true);
         }
+      } catch (err) {
+        console.error("Admin: Auth initialization failed:", err);
+        if (isMounted) navigate("/auth");
       }
     };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (!isMounted) return;
-        console.log("Auth state changed:", event, session?.user?.email);
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (!session?.user) {
-          if (event === 'SIGNED_OUT') {
-            navigate("/auth");
-          }
-        } else {
-          checkAdmin(session.user.id);
-        }
-      }
-    );
+    initAuth();
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!isMounted) return;
-      console.log("Got initial session:", session?.user?.email || "no session");
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (!session?.user) {
+      if (event === 'SIGNED_OUT') {
         navigate("/auth");
-      } else {
-        checkAdmin(session.user.id);
-      }
-    }).catch((err) => {
-      console.error("Failed to get session:", err);
-      if (isMounted) {
-        setIsAdmin(false);
-        setAuthChecked(true);
-        navigate("/auth");
+      } else if (session?.user) {
+        setUser(session.user);
       }
     });
 
     return () => {
       isMounted = false;
-      clearTimeout(timeout);
-      clearTimeout(retryTimeout);
       subscription.unsubscribe();
     };
   }, [navigate]);

@@ -29,29 +29,29 @@ export function ResourceCard({ title, fileUrl, year, type }: ResourceCardProps) 
   return (
     <>
       <div 
-        className="flex items-center justify-between border border-border bg-card px-4 py-3.5 rounded-lg hover:bg-accent/50 hover:border-primary/40 hover:shadow-soft transition-all duration-200 cursor-pointer group"
+        className="flex items-center justify-between border border-border bg-card/50 backdrop-blur-sm px-4 py-4 rounded-xl hover:bg-gradient-to-r hover:from-primary/5 hover:to-transparent hover:border-primary/40 hover:shadow-lg transition-all duration-300 cursor-pointer group"
         onClick={() => setPreviewOpen(true)}
       >
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-            <FileText className="h-4 w-4" />
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 transition-all duration-300">
+            <FileText className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
+            <p className="text-sm sm:text-base font-semibold text-foreground truncate group-hover:text-primary transition-colors">
               {title}
             </p>
-            <div className="flex items-center gap-2 mt-1 flex-wrap">
-              <span className="text-xs px-1.5 py-0.5 bg-secondary text-secondary-foreground rounded font-mono">
+            <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+              <span className="text-[10px] px-2 py-0.5 bg-secondary text-secondary-foreground rounded-full font-bold uppercase tracking-wider">
                 PDF
               </span>
               {year && (
-                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground bg-muted/30 px-2 py-0.5 rounded-full">
                   <Calendar className="h-3 w-3" />
                   {year}
                 </span>
               )}
               {typeInfo && (
-                <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${typeInfo.color}`}>
+                <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${typeInfo.color}`}>
                   {typeInfo.label}
                 </span>
               )}
@@ -59,25 +59,25 @@ export function ResourceCard({ title, fileUrl, year, type }: ResourceCardProps) 
           </div>
         </div>
 
-        <div className="flex items-center gap-1 shrink-0 ml-2">
+        <div className="flex items-center gap-2 shrink-0 ml-4">
           <button
             onClick={(e) => {
               e.stopPropagation();
               setPreviewOpen(true);
             }}
-            className="p-2 hover:bg-accent rounded-lg transition-colors"
-            title="View"
+            className="p-2.5 hover:bg-primary/10 rounded-xl transition-all group/btn"
+            title="View online"
           >
-            <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            <ExternalLink className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover/btn:scale-110 transition-all" />
           </button>
           <a
             href={fileUrl}
             download
             onClick={(e) => e.stopPropagation()}
-            className="p-2 hover:bg-accent rounded-lg transition-colors"
+            className="p-2.5 hover:bg-success/10 rounded-xl transition-all group/dl"
             title="Download"
           >
-            <Download className="h-4 w-4 text-muted-foreground group-hover:text-success transition-colors" />
+            <Download className="h-5 w-5 text-muted-foreground group-hover:text-success group-hover/dl:scale-110 transition-all" />
           </a>
         </div>
       </div>

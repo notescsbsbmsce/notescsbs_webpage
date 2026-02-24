@@ -12,7 +12,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronRight, BookOpen, FileText, Award, ArrowLeft, GraduationCap, Library } from "lucide-react";
+import { ChevronRight, BookOpen, FileText, Award, ArrowLeft, GraduationCap, Library, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
 export default function Subject() {
@@ -27,7 +27,7 @@ export default function Subject() {
     5: false,
   });
 
-  const { data: subject } = useQuery({
+  const { data: subject, isLoading: subjectLoading, error: subjectError } = useQuery({
     queryKey: ["subject", subjectId],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -40,7 +40,7 @@ export default function Subject() {
     },
   });
 
-  const { data: units } = useQuery({
+  const { data: units, isLoading: unitsLoading, error: unitsError } = useQuery({
     queryKey: ["units", subjectId],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -53,7 +53,7 @@ export default function Subject() {
     },
   });
 
-  const { data: resources } = useQuery({
+  const { data: resources, isLoading: resourcesLoading, error: resourcesError } = useQuery({
     queryKey: ["resources", subjectId],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -65,6 +65,9 @@ export default function Subject() {
       return data;
     },
   });
+
+  const isLoading = subjectLoading || unitsLoading || resourcesLoading;
+  const hasError = subjectError || unitsError || resourcesError;
 
   const getUnitName = (unitNumber: number) => {
     return units?.find(u => u.unit_number === unitNumber)?.unit_name || null;
@@ -91,7 +94,7 @@ export default function Subject() {
   };
 
   const getBooks = () => {
-    return resources?.filter(r => (r.type === "book" || r.type === "question_bank")) || [];
+    return resources?.filter(r => r.type === "book") || [];
   };
 
   const toggleUnit = (unit: number) => {
@@ -130,52 +133,58 @@ export default function Subject() {
   };
 
   const renderCategorySelection = () => (
-    <div className="grid gap-6 md:grid-cols-3 mt-8">
+    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mt-10 sm:mt-12 animate-slide-up">
       <div 
         onClick={() => handleCategorySelect("notes")}
-        className="group relative p-8 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200/50 dark:border-blue-800/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
+        className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200/50 dark:border-blue-800/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="relative z-10 flex flex-col items-center text-center gap-4">
-          <div className="p-4 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300">
-            <BookOpen className="h-8 w-8" />
+        <div className="relative z-10 flex flex-col items-center gap-6">
+          <div className="p-5 rounded-2xl bg-blue-500/20 text-blue-600 dark:text-blue-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-blue-500/10">
+            <BookOpen className="h-10 w-10" />
           </div>
-          <h3 className="text-xl font-bold text-foreground">Notes</h3>
-          <p className="text-sm text-muted-foreground">
-            Comprehensive study notes organized by units
-          </p>
+          <div>
+            <h3 className="text-2xl font-bold text-foreground mb-2">Notes</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Comprehensive study notes organized unit-wise for easy learning.
+            </p>
+          </div>
         </div>
       </div>
 
       <div 
         onClick={() => handleCategorySelect("pyq")}
-        className="group relative p-8 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-200/50 dark:border-purple-800/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
+        className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-200/50 dark:border-purple-800/50 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="relative z-10 flex flex-col items-center text-center gap-4">
-          <div className="p-4 rounded-full bg-purple-500/20 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform duration-300">
-            <GraduationCap className="h-8 w-8" />
+        <div className="relative z-10 flex flex-col items-center gap-6">
+          <div className="p-5 rounded-2xl bg-purple-500/20 text-purple-600 dark:text-purple-400 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-lg shadow-purple-500/10">
+            <GraduationCap className="h-10 w-10" />
           </div>
-          <h3 className="text-xl font-bold text-foreground">Previous Year Questions</h3>
-          <p className="text-sm text-muted-foreground">
-            CIE and SEE question papers for practice
-          </p>
+          <div>
+            <h3 className="text-2xl font-bold text-foreground mb-2">PYQs</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Past CIE and SEE question papers to help you practice and excel.
+            </p>
+          </div>
         </div>
       </div>
 
       <div 
         onClick={() => handleCategorySelect("books")}
-        className="group relative p-8 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-200/50 dark:border-amber-800/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
+        className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-200/50 dark:border-amber-800/50 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center sm:col-span-2 md:col-span-1"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="relative z-10 flex flex-col items-center text-center gap-4">
-          <div className="p-4 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform duration-300">
-            <Library className="h-8 w-8" />
+        <div className="relative z-10 flex flex-col items-center gap-6">
+          <div className="p-5 rounded-2xl bg-amber-500/20 text-amber-600 dark:text-amber-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-amber-500/10">
+            <Library className="h-10 w-10" />
           </div>
-          <h3 className="text-xl font-bold text-foreground">Books & Question Bank</h3>
-          <p className="text-sm text-muted-foreground">
-            Textbooks and question banks
-          </p>
+          <div>
+            <h3 className="text-2xl font-bold text-foreground mb-2">Resources</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Textbooks, reference books, and curated curriculum resources.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -185,8 +194,8 @@ export default function Subject() {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20 flex flex-col">
       <Header />
       
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1 max-w-5xl pb-24">
-        <div className="flex flex-col gap-4">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 max-w-5xl pb-24">
+        <div className="flex flex-col gap-6">
           <Breadcrumb 
             items={[
               { label: "Home", href: "/" },
@@ -196,33 +205,71 @@ export default function Subject() {
             ]} 
           />
 
-          {selectedCategory && (
-            <Button 
-              variant="ghost" 
-              className="w-fit -ml-2 gap-2 text-muted-foreground hover:text-foreground"
-              onClick={handleBackToCategories}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Categories
-            </Button>
-          )}
-
-          {/* Subject Header with Gradient */}
-          <div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              {subject?.name || "Loading..."}
-            </h1>
-            <div className="flex items-center gap-3 text-sm text-muted-foreground mb-2">
-              <span className="font-mono px-2 py-1 bg-primary/20 text-primary rounded">{subject?.code}</span>
-              <span>•</span>
-              <span>{subject?.semesters?.name}</span>
+          {hasError ? (
+            <div className="text-center py-16 px-6 border border-dashed border-destructive/50 rounded-3xl bg-destructive/5 animate-in fade-in duration-500">
+              <div className="p-4 rounded-full bg-destructive/10 w-fit mx-auto mb-6">
+                <FileText className="h-10 w-10 text-destructive" />
+              </div>
+              <h2 className="text-2xl font-bold text-destructive mb-3">Failed to load resource data</h2>
+              <div className="text-sm text-muted-foreground mb-8 max-w-md mx-auto space-y-2">
+                <p className="font-mono text-[11px] bg-destructive/10 p-2 rounded border border-destructive/10 shadow-inner">
+                  {(subjectError as Error)?.message || (unitsError as Error)?.message || (resourcesError as Error)?.message || "Data fetch error"}
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button 
+                  onClick={() => window.location.reload()} 
+                  className="gap-2 rounded-xl h-11 px-8 shadow-lg shadow-primary/20"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Retry
+                </Button>
+                <Button asChild variant="outline" className="rounded-xl h-11 px-8">
+                  <a href={`/semester/${subject?.semester_id}`}>Back to Semester</a>
+                </Button>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">
-              {selectedCategory 
-                ? `Showing ${selectedCategory === "pyq" ? "Question Papers" : selectedCategory === "books" ? "Books & Question Banks" : "Notes"}`
-                : "Select a category to view resources"}
-            </p>
-          </div>
+          ) : isLoading ? (
+            <div className="space-y-10 animate-pulse">
+              <div className="p-8 rounded-3xl bg-muted/30 h-48 border border-border/50" />
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="h-40 bg-muted/30 rounded-3xl" />
+                <div className="h-40 bg-muted/30 rounded-3xl" />
+                <div className="h-40 bg-muted/30 rounded-3xl" />
+              </div>
+            </div>
+          ) : (
+            <>
+              {selectedCategory && (
+                <Button 
+                  variant="outline" 
+                  className="w-fit -ml-2 gap-2 text-muted-foreground hover:text-foreground hover:bg-accent/50 group rounded-xl border-border/50"
+                  onClick={handleBackToCategories}
+                >
+                  <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  Back to Categories
+                </Button>
+              )}
+
+              {/* Subject Header with Badge */}
+              <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20 shadow-xl shadow-primary/5 animate-fade-in text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+                  <span className="w-fit px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20">
+                    {subject?.code}
+                  </span>
+                  <span className="w-fit px-4 py-1.5 rounded-full bg-background/50 backdrop-blur-sm border border-border text-muted-foreground text-xs font-bold uppercase tracking-widest">
+                    {subject?.semesters?.name}
+                  </span>
+                </div>
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-foreground mb-4 tracking-tight leading-tight">
+                  {subject?.name}
+                </h1>
+                <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                  Everything you need to master this course. Access high-quality notes, past question papers, and recommended textbooks.
+                </p>
+              </div>
+            </>
+          )}
         </div>
 
         {!selectedCategory ? (

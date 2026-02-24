@@ -6,7 +6,8 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { SubjectCard } from "@/components/SubjectCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Footer } from "@/components/Footer";
-import { BookMarked, FlaskConical } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BookMarked, FlaskConical, RefreshCw } from "lucide-react";
 
 const Semester = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,7 +54,7 @@ const Semester = () => {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20 flex flex-col">
       <Header />
       
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1 max-w-5xl pb-24">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 max-w-5xl pb-24">
         <Breadcrumb 
           items={[
             { label: "Home", href: "/" },
@@ -62,28 +63,42 @@ const Semester = () => {
         />
 
         {/* Semester Header with Gradient */}
-        <div className="mb-8 mt-6 p-6 rounded-xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border border-indigo-200/20 dark:border-indigo-800/20">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+        <div className="mb-10 mt-8 p-8 rounded-2xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border border-indigo-200/20 dark:border-indigo-800/20 shadow-lg shadow-indigo-500/5 animate-fade-in text-center sm:text-left">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
             {semester?.name || "Loading..."}
           </h1>
-          <p className="text-sm text-muted-foreground">
-            Select a subject to view available resources
+          <p className="text-base text-muted-foreground max-w-xl">
+            High-quality study materials, organized for your success. Select a subject below to explore resources.
           </p>
         </div>
 
         {hasError ? (
-          <div className="text-center py-16 border border-dashed border-destructive/50 rounded-xl bg-destructive/5">
-            <p className="text-lg font-semibold text-destructive mb-2">⚠️ Connection Error</p>
-            <p className="text-sm text-muted-foreground mb-4">
-              {semesterError ? 'Failed to load semester data. ' : ''}
-              {subjectsError ? 'Failed to load subjects. ' : ''}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Please check your internet connection and try refreshing the page.
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Error: {(semesterError as Error)?.message || (subjectsError as Error)?.message}
-            </p>
+          <div className="text-center py-16 px-6 border border-dashed border-destructive/50 rounded-3xl bg-destructive/5 animate-in fade-in duration-500">
+            <div className="p-4 rounded-full bg-destructive/10 w-fit mx-auto mb-6">
+              <BookMarked className="h-10 w-10 text-destructive" />
+            </div>
+            <h2 className="text-2xl font-bold text-destructive mb-3">Failed to load subjects</h2>
+            <div className="text-sm text-muted-foreground mb-8 max-w-md mx-auto space-y-2">
+              <p>
+                {semesterError ? 'We couldn\'t find the semester information. ' : ''}
+                {subjectsError ? 'The list of subjects could not be retrieved. ' : ''}
+              </p>
+              <p className="font-mono text-[11px] bg-destructive/10 p-2 rounded border border-destructive/10">
+                {(semesterError as Error)?.message || (subjectsError as Error)?.message || "Unknown data error"}
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button 
+                onClick={() => window.location.reload()} 
+                className="gap-2 rounded-xl h-11 px-8 shadow-lg shadow-primary/20"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Retry Loading
+              </Button>
+              <Button asChild variant="outline" className="rounded-xl h-11 px-8">
+                <a href="/">Go to Home</a>
+              </Button>
+            </div>
           </div>
         ) : isLoading ? (
           <div className="space-y-8">
@@ -104,14 +119,14 @@ const Semester = () => {
           <div className="space-y-8">
             {/* Theory Subjects */}
             {theorySubjects.length > 0 && (
-              <section className="p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 border border-blue-200/20 dark:border-blue-800/20">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 rounded-lg bg-blue-500/10">
-                    <BookMarked className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <section className="p-8 rounded-2xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 border border-blue-200/20 dark:border-blue-800/20 shadow-inner animate-slide-up" style={{ animationDelay: "0.1s" }}>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="p-3 rounded-xl bg-blue-500/10 shadow-lg shadow-blue-500/10">
+                    <BookMarked className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h2 className="text-lg font-bold text-foreground">Theory Subjects</h2>
+                  <h2 className="text-xl font-extrabold text-foreground">Theory Subjects</h2>
                 </div>
-                <div className="space-y-2">
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                   {theorySubjects.map((subject) => (
                     <SubjectCard
                       key={subject.id}
@@ -127,14 +142,14 @@ const Semester = () => {
 
             {/* Lab Subjects */}
             {labSubjects.length > 0 && (
-              <section className="p-6 rounded-xl bg-gradient-to-br from-purple-500/5 to-pink-500/5 border border-purple-200/20 dark:border-purple-800/20">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 rounded-lg bg-purple-500/10">
-                    <FlaskConical className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              <section className="p-8 rounded-2xl bg-gradient-to-br from-purple-500/5 to-pink-500/5 border border-purple-200/20 dark:border-purple-800/20 shadow-inner animate-slide-up" style={{ animationDelay: "0.2s" }}>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="p-3 rounded-xl bg-purple-500/10 shadow-lg shadow-purple-500/10">
+                    <FlaskConical className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h2 className="text-lg font-bold text-foreground">Lab Subjects</h2>
+                  <h2 className="text-xl font-extrabold text-foreground">Lab Subjects</h2>
                 </div>
-                <div className="space-y-2">
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                   {labSubjects.map((subject) => (
                     <SubjectCard
                       key={subject.id}

@@ -7,8 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { MobileNav } from "@/components/MobileNav";
 
-// Lazy load components for performance
-// Core pages loaded directly for reliability during debugging
+// Core pages loaded directly for maximum reliability
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
@@ -19,10 +18,11 @@ const Subject = lazy(() => import("./pages/Subject"));
 const Contributors = lazy(() => import("./pages/Contributors"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// Loading fallback component - minimal to prevent flickering
+// Loading fallback component - sleek and centered
 const PageLoader = () => (
-  <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20">
-    <div className="h-16 bg-card/50 border-b border-border"></div>
+  <div className="min-h-[60vh] flex flex-col items-center justify-center animate-pulse">
+    <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4 shadow-lg shadow-primary/20"></div>
+    <p className="text-muted-foreground font-medium animate-pulse">Loading amazing notes...</p>
   </div>
 );
 
