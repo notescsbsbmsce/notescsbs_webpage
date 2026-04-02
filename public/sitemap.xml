@@ -11,8 +11,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  
-  <!-- Semesters -->
   <url>
     <loc>https://notescsbs.vercel.app/semester/1</loc>
     <changefreq>weekly</changefreq>

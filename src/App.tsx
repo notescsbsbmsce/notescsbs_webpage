@@ -6,17 +6,26 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { MobileNav } from "@/components/MobileNav";
+import { useAnalytics } from "./hooks/useAnalytics";
 
 // Core pages loaded directly for maximum reliability
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Optional pages keep lazy loading
 const Semester = lazy(() => import("./pages/Semester"));
 const Subject = lazy(() => import("./pages/Subject"));
 const Contributors = lazy(() => import("./pages/Contributors"));
+const Privacy = lazy(() => import("./pages/Privacy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Analytics Wrapper to handle route tracking
+const AnalyticsWrapper = ({ children }: { children: React.ReactNode }) => {
+  useAnalytics();
+  return <>{children}</>;
+};
 
 // Loading fallback component - sleek and centered
 const PageLoader = () => (
@@ -26,19 +35,13 @@ const PageLoader = () => (
   </div>
 );
 
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Cache data for 5 minutes to reduce network requests
       staleTime: 5 * 60 * 1000,
-      // Keep unused data in cache for 10 minutes
       gcTime: 10 * 60 * 1000,
-      // Retry failed requests only once on mobile
       retry: 1,
-      // Refetch on window focus only if data is stale
       refetchOnWindowFocus: false,
-      // Don't refetch on reconnect to save bandwidth
       refetchOnReconnect: false,
     },
   },
@@ -55,18 +58,22 @@ const App = () => (
           v7_relativeSplatPath: true,
         }}
       >
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
-          
-          {/* Lazy loaded routes wrapped in Suspense */}
-          <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />
-          <Route path="/subject/:id" element={<Suspense fallback={<PageLoader />}><Subject /></Suspense>} />
-          <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
-          <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
-        </Routes>
-        <MobileNav />
+        <AnalyticsWrapper>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
+            
+            {/* Lazy loaded routes wrapped in Suspense */}
+            <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />
+            <Route path="/subject/:id" element={<Suspense fallback={<PageLoader />}><Subject /></Suspense>} />
+            <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
+            <Route path="/privacy" element={<Suspense fallback={<PageLoader />}><Privacy /></Suspense>} />
+            <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
+          </Routes>
+          <MobileNav />
+        </AnalyticsWrapper>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

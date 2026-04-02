@@ -450,23 +450,25 @@ export async function fetchSemesterById(id: number) {
 export async function fetchSubjectById(id: number) {
   try {
     // Try old DB first
+    // We explicitly include resources(*) to ensure all metadata (notes, pyqs, books) are loaded
     const { data: oldData, error: oldError } = await getSupabaseClient(1)
       .from("subjects")
-      .select("*, semesters(name, order)")
+      .select("*, semesters(name, order), resources(*)")
       .eq("id", id)
       .maybeSingle();
 
-    if (oldData) return oldData;
+    if (oldData && (oldData as any).resources?.length > 0) return oldData;
 
     // Try new DB
     const { data: newData, error: newError } = await getSupabaseClient(4)
       .from("subjects")
-      .select("*, semesters(name, order)")
+      .select("*, semesters(name, order), resources(*)")
       .eq("id", id)
       .maybeSingle();
 
     if (newError) throw newError;
-    return newData;
+    // Fallback to oldData if newData doesn't exist but oldData did (even if resources were empty)
+    return newData || oldData;
   } catch (error) {
     console.error("Supabase Error (fetchSubjectById):", error);
     throw error;

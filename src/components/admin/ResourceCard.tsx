@@ -61,76 +61,80 @@ export function ResourceCard({ id, title, type, unit, year, file_url, onEdit, on
   };
 
   return (
-    <div className="group relative flex items-start gap-3 p-4 rounded-xl border border-border bg-card/80 hover:bg-accent/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
-      {/* Type Icon */}
-      <div className={`p-2.5 rounded-xl shrink-0 ${config.color}`}>
+    <div className="group relative flex items-center gap-6 p-6 rounded-[32px] border border-border bg-card hover:bg-muted/10 hover:border-primary/20 transition-all duration-500 shadow-sm hover:shadow-lg">
+      {/* High-Fidelity Type Icon */}
+      <div className={`w-14 h-14 rounded-2xl shrink-0 flex items-center justify-center border border-border shadow-sm ${config.color} group-hover:scale-110 transition-transform duration-500`}>
         {config.icon}
       </div>
 
-      {/* Content */}
+      {/* Asset Content */}
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-foreground mb-1.5 leading-tight">
-          {title}
-        </p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <p className="text-lg font-black text-foreground tracking-tight leading-tight font-serif uppercase group-hover:text-primary transition-colors duration-300">
+              {title}
+            </p>
+            
+            {/* Context Metadata */}
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline" className={`text-[9px] px-3 py-0.5 h-6 font-black uppercase tracking-widest border-transparent bg-muted/50 ${config.color.split(' ')[1]}`}>
+                {config.label}
+              </Badge>
+              {unit && (
+                <Badge variant="outline" className="text-[9px] px-3 py-0.5 h-6 font-black uppercase tracking-widest border-border bg-muted/50 text-muted-foreground font-sans">
+                  <span className="text-primary mr-1.5 font-black font-sans">UNIT</span> {unit.replace('Unit ', '')}
+                </Badge>
+              )}
+              {year && (
+                <Badge variant="outline" className="text-[9px] px-3 py-0.5 h-6 font-black uppercase tracking-widest border-border bg-muted/50 text-muted-foreground">
+                  {year} ACADEMIC
+                </Badge>
+              )}
+              <Badge variant="outline" className="text-[9px] px-3 py-0.5 h-6 font-black uppercase tracking-widest border-transparent bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                {isDriveLink ? "CLOUD DEPLOYED" : "LOCAL STORAGE"}
+              </Badge>
+            </div>
+          </div>
 
-        {/* Tags */}
-        <div className="flex flex-wrap items-center gap-1.5 mb-2">
-          <Badge className={`text-[10px] px-1.5 py-0 h-5 border ${config.color}`}>
-            {config.label}
-          </Badge>
-          {unit && (
-            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5">
-              📂 {unit}
-            </Badge>
-          )}
-          {year && (
-            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5">
-              📅 {year}
-            </Badge>
-          )}
-          <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5">
-            {isDriveLink ? "☁️ Drive" : "💾 Storage"}
-          </Badge>
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 text-xs gap-1 hover:bg-primary/10 hover:text-primary"
-            onClick={() => window.open(file_url, "_blank")}
-          >
-            <ExternalLink className="h-3 w-3" />
-            View
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 text-xs gap-1 hover:bg-primary/10 hover:text-primary"
-            onClick={copyLink}
-          >
-            <Copy className="h-3 w-3" />
-            Copy
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 text-xs gap-1 hover:bg-amber-500/10 hover:text-amber-600"
-            onClick={() => onEdit({ id, title, type, unit, year, file_url })}
-          >
-            <Pencil className="h-3 w-3" />
-            Edit
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 text-xs gap-1 hover:bg-destructive/10 hover:text-destructive"
-            onClick={() => onDelete(id, title)}
-          >
-            <Trash2 className="h-3 w-3" />
-            Delete
-          </Button>
+          {/* Institutional Actions */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 rounded-xl bg-muted/30 text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all border border-border"
+              onClick={() => window.open(file_url, "_blank")}
+              title="Open Resource"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 rounded-xl bg-muted/30 text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all border border-border"
+              onClick={copyLink}
+              title="Copy Identifier"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 rounded-xl bg-muted/30 text-muted-foreground hover:text-amber-500 hover:bg-amber-500/10 transition-all border border-border"
+              onClick={() => onEdit({ id, title, type, unit, year, file_url })}
+              title="Modify Asset"
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 rounded-xl bg-muted/30 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all border border-border"
+              onClick={() => onDelete(id, title)}
+              title="Purge Asset"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>

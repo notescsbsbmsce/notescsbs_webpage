@@ -1,498 +1,524 @@
-import { useParams } from "react-router-dom";
+import { useState, lazy, Suspense } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { supabase, getSupabaseClient } from "@/integrations/supabase/client";
-import { fetchSubjectById } from "@/lib/admin-utils";
+import { 
+  Download, 
+  ChevronRight, 
+  ChevronLeft,
+  Users, 
+  X,
+  ExternalLink,
+  FileBox,
+  File as FileIcon,
+  FileText,
+  Code,
+  BookOpen,
+  Layers,
+  Eye,
+  Presentation
+} from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { ResourceCard } from "@/components/ResourceCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { ChevronRight, BookOpen, FileText, Award, ArrowLeft, GraduationCap, Library, RefreshCw } from "lucide-react";
-import { useState } from "react";
+import { optimizeDriveUrl, fetchSubjectById } from "@/lib/admin-utils";
+
+// Types for Supabase response compatibility
+interface Resource {
+  id: string;
+  title: string;
+  file_url: string;
+  type: 'notes' | 'cie1' | 'cie2' | 'cie3' | 'see' | 'book';
+  unit?: string;
+  year: string;
+  description?: string;
+}
+
+interface SubjectData {
+  id: number;
+  name: string;
+  code: string;
+  semester_id: number;
+  resources: Resource[];
+}
+
+const getFileExtension = (url: string) => {
+  if (url.includes('drive.google.com')) return 'DRIVE';
+  const parts = url.split('.');
+  if (parts.length <= 1) return 'FILE';
+  const ext = parts.pop()?.toUpperCase() || 'FILE';
+  return ext.length > 5 ? 'FILE' : ext;
+};
 
 export default function Subject() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const subjectId = parseInt(id || "0");
-  const [selectedCategory, setSelectedCategory] = useState<"notes" | "pyq" | "books" | null>(null);
-  const [openUnits, setOpenUnits] = useState<Record<number, boolean>>({
-    1: true,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-  });
+  const [activeSection, setActiveSection] = useState<"pyq" | "notes" | "books">("notes");
+  const [selectedUnitFilter, setSelectedUnitFilter] = useState<string>("all");
+  const [previewFile, setPreviewFile] = useState<{ url: string; title: string; unit?: string } | null>(null);
 
-  const { data: subject, isLoading: subjectLoading, error: subjectError } = useQuery({
+  const { data: subject, isLoading } = useQuery({
     queryKey: ["subject", subjectId],
     queryFn: async () => {
-      return await fetchSubjectById(subjectId);
-    },
-  });
-
-  const { data: units, isLoading: unitsLoading, error: unitsError } = useQuery({
-    queryKey: ["units", subjectId],
-    queryFn: async () => {
-      if (!subject) return [];
-      const semesterNumber = (subject as any).semesters?.order || 1;
-      const client = getSupabaseClient(semesterNumber);
-      const { data, error } = await client
-        .from("units")
-        .select("*")
-        .eq("subject_id", subjectId)
-        .order("unit_number");
-      if (error) throw error;
+      const data = await fetchSubjectById(subjectId) as unknown as SubjectData;
       return data;
     },
-    enabled: !!subject,
+    enabled: !!subjectId,
   });
 
-  const { data: resources, isLoading: resourcesLoading, error: resourcesError } = useQuery({
-    queryKey: ["resources", subjectId],
-    queryFn: async () => {
-      if (!subject) return [];
-      const semesterNumber = (subject as any).semesters?.order || 1;
-      const client = getSupabaseClient(semesterNumber);
-      const { data, error } = await client
-        .from("resources")
-        .select("*")
-        .eq("subject_id", subjectId)
-        .order("year", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!subject,
-  });
+  const resources: Resource[] = subject?.resources || [];
+  const noteResources = resources.filter(r => r.type === 'notes').sort((a, b) => (a.unit || '').localeCompare(b.unit || ''));
+  const pyqResources = resources.filter(r => ['cie1', 'cie2', 'cie3', 'see'].includes(r.type));
+  const textbookResources = resources.filter(r => r.type === 'book');
 
-  const isLoading = subjectLoading || unitsLoading || resourcesLoading;
-  const hasError = subjectError || unitsError || resourcesError;
-
-  const getUnitName = (unitNumber: number) => {
-    return units?.find(u => u.unit_number === unitNumber)?.unit_name || null;
-  };
-
-  const getNotesByUnit = (unitNumber: number) => {
-    return resources?.filter(r => r.type === "notes" && r.unit === `Unit ${unitNumber}`) || [];
-  };
-
-  const getCIE1Papers = () => {
-    return resources?.filter(r => r.type === "cie1") || [];
-  };
-
-  const getCIE2Papers = () => {
-    return resources?.filter(r => r.type === "cie2") || [];
-  };
-
-  const getCIE3Papers = () => {
-    return resources?.filter(r => r.type === "cie3") || [];
-  };
-
-  const getSEEPapers = () => {
-    return resources?.filter(r => r.type === "see") || [];
-  };
-
-  const getBooks = () => {
-    return resources?.filter(r => r.type === "book") || [];
-  };
-
-  const toggleUnit = (unit: number) => {
-    setOpenUnits(prev => ({ ...prev, [unit]: !prev[unit] }));
-  };
-
-  const hasUnits = units && units.length > 0;
-  const cie1Papers = getCIE1Papers();
-  const cie2Papers = getCIE2Papers();
-  const cie3Papers = getCIE3Papers();
-  const seePapers = getSEEPapers();
-  const books = getBooks();
-
-  const handleCategorySelect = (category: "notes" | "pyq" | "books") => {
-    // Use view transition if supported
-    if (!document.startViewTransition) {
-      setSelectedCategory(category);
-      return;
-    }
-
-    document.startViewTransition(() => {
-      setSelectedCategory(category);
+  // Grouping PYQs by exam cycle (Year + Session)
+  const groupPYQs = () => {
+    const groups: Record<string, Resource[]> = {};
+    pyqResources.forEach(res => {
+      const year = res.year || 'Unknown';
+      const key = `${res.type}_${year}`;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(res);
     });
+    return groups;
   };
 
-  const handleBackToCategories = () => {
-    // Use view transition if supported
-    if (!document.startViewTransition) {
-      setSelectedCategory(null);
-      return;
-    }
-
-    document.startViewTransition(() => {
-      setSelectedCategory(null);
+  // Grouping Books by Title
+  const groupBooks = () => {
+    const groups: Record<string, Resource[]> = {};
+    textbookResources.forEach(res => {
+      const baseTitle = res.title.split(' - ')[0].split(' (Part')[0].trim();
+      if (!groups[baseTitle]) groups[baseTitle] = [];
+      groups[baseTitle].push(res);
     });
+    return Object.entries(groups);
   };
 
-  const renderCategorySelection = () => (
-    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mt-10 sm:mt-12 animate-slide-up">
-      <div 
+  // Grouping Notes by Unit
+  const groupNotes = () => {
+    const groups: Record<string, Resource[]> = {
+      'Unit 1': [],
+      'Unit 2': [],
+      'Unit 3': [],
+      'Unit 4': [],
+      'Unit 5': []
+    };
+    noteResources.forEach(res => {
+      const unit = res.unit || 'General';
+      if (!groups[unit]) groups[unit] = [];
+      groups[unit].push(res);
+    });
+    // Remove empty 'General' if no content, but keep Units 1-5
+    const result = Object.entries(groups);
+    if (groups['General'] && groups['General'].length === 0) {
+      return result.filter(([u]) => u !== 'General').sort((a, b) => a[0].localeCompare(b[0]));
+    }
+    return result.sort((a, b) => a[0].localeCompare(b[0]));
+  };
 
-        onClick={() => handleCategorySelect("notes")}
-        className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200/50 dark:border-blue-800/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="relative z-10 flex flex-col items-center gap-6">
-          <div className="p-5 rounded-2xl bg-blue-500/20 text-blue-600 dark:text-blue-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-blue-500/10">
-            <BookOpen className="h-10 w-10" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-foreground mb-2">Notes</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Comprehensive study notes organized unit-wise for easy learning.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        onClick={() => handleCategorySelect("pyq")}
-        className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-200/50 dark:border-purple-800/50 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="relative z-10 flex flex-col items-center gap-6">
-          <div className="p-5 rounded-2xl bg-purple-500/20 text-purple-600 dark:text-purple-400 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-lg shadow-purple-500/10">
-            <GraduationCap className="h-10 w-10" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-foreground mb-2">PYQs</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Past CIE and SEE question papers to help you practice and excel.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        onClick={() => handleCategorySelect("books")}
-        className="group relative p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-200/50 dark:border-amber-800/50 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden text-center sm:col-span-2 md:col-span-1"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="relative z-10 flex flex-col items-center gap-6">
-          <div className="p-5 rounded-2xl bg-amber-500/20 text-amber-600 dark:text-amber-400 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-amber-500/10">
-            <Library className="h-10 w-10" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-foreground mb-2">Resources</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Textbooks, reference books, and curated curriculum resources.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const formatTitle = (title: string) => {
+    // Only strip the technical subject prefix if it exists, but keep the user's chosen name
+    return title.replace(`Subject_${subjectId}_`, '').replace(/\.pdf$/i, '').replace(/\.pptx?$/i, '');
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20 flex flex-col">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
       <Header />
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 max-w-5xl pb-24">
-        <div className="flex flex-col gap-6">
-          <Breadcrumb 
+      
+      <main className="flex-1 container mx-auto px-6 py-12 max-w-7xl animate-fade-in">
+        {/* Navigation Breadcrumb & Back Button */}
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-xl h-10 px-4 group bg-muted/20 border-border hover:bg-primary/10 transition-all font-bold gap-2"
+            onClick={() => navigate(-1)}
+          >
+            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back
+          </Button>
 
-            items={[
-              { label: "Home", href: "/" },
-              { label: subject?.semesters?.name || "Semester", href: `/semester/${subject?.semester_id}` },
-              { label: subject?.name || "Loading...", href: selectedCategory ? undefined : window.location.pathname },
-              ...(selectedCategory ? [{ label: selectedCategory === "pyq" ? "PYQ" : selectedCategory === "books" ? "Books & KB" : "Notes" }] : [])
-            ]}
-          />
-
-          {hasError ? (
-            <div className="text-center py-16 px-6 border border-dashed border-destructive/50 rounded-3xl bg-destructive/5 animate-in fade-in duration-500">
-              <div className="p-4 rounded-full bg-destructive/10 w-fit mx-auto mb-6">
-                <FileText className="h-10 w-10 text-destructive" />
-              </div>
-              <h2 className="text-2xl font-bold text-destructive mb-3">Failed to load resource data</h2>
-              <div className="text-sm text-muted-foreground mb-8 max-w-md mx-auto space-y-2">
-                <p className="font-mono text-[11px] bg-destructive/10 p-2 rounded border border-destructive/10 shadow-inner">
-                  {(subjectError as Error)?.message || (unitsError as Error)?.message || (resourcesError as Error)?.message || "Data fetch error"}
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button 
-                  onClick={() => window.location.reload()} 
-                  className="gap-2 rounded-xl h-11 px-8 shadow-lg shadow-primary/20"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                  Retry
-                </Button>
-                <Button asChild variant="outline" className="rounded-xl h-11 px-8">
-                  <a href={`/semester/${subject?.semester_id}`}>Back to Semester</a>
-                </Button>
-              </div>
-            </div>
-          ) : isLoading ? (
-            <div className="space-y-10 animate-pulse">
-              <div className="p-8 rounded-3xl bg-muted/30 h-48 border border-border/50" />
-              <div className="grid gap-6 md:grid-cols-3">
-                <div className="h-40 bg-muted/30 rounded-3xl" />
-                <div className="h-40 bg-muted/30 rounded-3xl" />
-                <div className="h-40 bg-muted/30 rounded-3xl" />
-              </div>
-            </div>
-          ) : (
-            <>
-              {selectedCategory && (
-                <Button 
-                  variant="outline" 
-                  className="w-fit -ml-2 gap-2 text-muted-foreground hover:text-foreground hover:bg-accent/50 group rounded-xl border-border/50"
-                  onClick={handleBackToCategories}
-                >
-                  <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                  Back to Categories
-                </Button>
-              )}
-
-              {/* Subject Header with Badge */}
-              <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20 shadow-xl shadow-primary/5 animate-fade-in text-center sm:text-left">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-                  <span className="w-fit px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20">
-                    {subject?.code}
-                  </span>
-                  <span className="w-fit px-4 py-1.5 rounded-full bg-background/50 backdrop-blur-sm border border-border text-muted-foreground text-xs font-bold uppercase tracking-widest">
-                    {subject?.semesters?.name}
-                  </span>
-                </div>
-                <h1 className="text-3xl sm:text-5xl font-extrabold text-foreground mb-4 tracking-tight leading-tight">
-                  {subject?.name}
-                </h1>
-                <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                  Everything you need to master this course. Access high-quality notes, past question papers, and recommended textbooks.
-                </p>
-              </div>
-            </>
-          )}
-
+          <nav className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
+            <span>Curriculum</span>
+            <ChevronRight className="h-3 w-3" />
+            <span>BMSCE</span>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-foreground font-black">Academic Focus</span>
+          </nav>
         </div>
 
-        {!selectedCategory ? (
-          renderCategorySelection()
+        {isLoading ? (
+          <div className="space-y-12">
+            <Skeleton className="h-32 w-full rounded-[40px] bg-white/5" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map(i => <Skeleton key={i} className="h-12 rounded-2xl bg-white/5" />)}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-64 rounded-[40px] bg-white/5" />)}
+            </div>
+          </div>
         ) : (
-          <div className="space-y-8 mt-8">
-            {/* SECTION 1: NOTES BY UNIT */}
-            {selectedCategory === "notes" && (
-              <section className="p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 border border-blue-200/20 dark:border-blue-800/20 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 rounded-lg bg-blue-500/10">
-                    <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h2 className="text-xl font-bold text-foreground">Notes</h2>
-                </div>
-                {hasUnits ? (
-                  <div className="space-y-2">
-                    {[1, 2, 3, 4, 5].map((unitNum) => {
-                      const unitNotes = getNotesByUnit(unitNum);
-                      const unitName = getUnitName(unitNum);
-                      if (!unitName) return null;
+          <div className="space-y-16">
+            {/* Subject Hero */}
+            <header className="relative p-12 rounded-[50px] bg-card border border-border overflow-hidden shadow-2xl">
+              <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-accent/5 rounded-full blur-[80px] pointer-events-none"></div>
+              
+              <div className="relative z-10">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-[11px] font-black uppercase tracking-widest text-primary mb-6 shadow-sm border border-primary/20">
+                  {subject?.code || 'CSBS-CORE'}
+                </span>
+                <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter italic font-serif text-foreground leading-[0.9]">
+                  {subject?.name}
+                </h1>
+                <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed font-medium">
+                  Centralized access to all academic modules, verified question papers, and textbook references for {subject?.name}.
+                </p>
+              </div>
+            </header>
 
-                      return (
-                        <Collapsible
-                          key={unitNum}
-                          open={openUnits[unitNum]}
-                          onOpenChange={() => toggleUnit(unitNum)}
+            {/* Filter Buttons Section (Enhanced & Larger) */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mb-2">
+              <Button 
+                variant={activeSection === "notes" ? "default" : "outline"} 
+                className={`rounded-2xl h-14 px-10 font-black uppercase tracking-widest text-[12px] transition-all duration-300 ${activeSection === "notes" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
+                onClick={() => setActiveSection("notes")}
+              >
+                <FileText className="h-5 w-5 mr-3" />
+                Lecture Notes
+              </Button>
+              <Button 
+                variant={activeSection === "pyq" ? "default" : "outline"} 
+                className={`rounded-2xl h-14 px-10 font-black uppercase tracking-widest text-[12px] transition-all duration-300 ${activeSection === "pyq" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
+                onClick={() => setActiveSection("pyq")}
+              >
+                <Code className="h-5 w-5 mr-3" />
+                PYQs (Papers)
+              </Button>
+              <Button 
+                variant={activeSection === "books" ? "default" : "outline"} 
+                className={`rounded-2xl h-14 px-10 font-black uppercase tracking-widest text-[12px] transition-all duration-300 ${activeSection === "books" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
+                onClick={() => setActiveSection("books")}
+              >
+                <BookOpen className="h-5 w-5 mr-3" />
+                Books & Question Bank
+              </Button>
+            </div>
+
+            {/* Content Area */}
+            <div className="min-h-[400px]">
+              {activeSection === "notes" && (
+                <section className="animate-fade-in space-y-12">
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+                    <div className="space-y-4">
+                      <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase font-sans text-foreground">Curriculum Units</h2>
+                      <p className="text-muted-foreground font-medium opacity-60 max-w-xl">Systematic modular breakdown of the academic syllabus for deep vertical mastery.</p>
+                    </div>
+                    
+                    {/* UNIT QUICK NAV BAR */}
+                    <div className="flex flex-wrap gap-2 p-2 rounded-3xl bg-muted/20 border border-border/50">
+                      <Button 
+                        variant={!selectedUnitFilter || selectedUnitFilter === "all" ? "default" : "ghost"}
+                        className={`h-12 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${(!selectedUnitFilter || selectedUnitFilter === "all") ? 'shadow-xl shadow-primary/20' : 'opacity-50 hover:opacity-100 hover:bg-primary/5'}`}
+                        onClick={() => setSelectedUnitFilter("all")}
+                      >
+                        All Units
+                      </Button>
+                      {[1, 2, 3, 4, 5].map((num) => (
+                        <Button 
+                          key={num}
+                          variant={selectedUnitFilter === num.toString() ? "default" : "ghost"}
+                          className={`h-12 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${selectedUnitFilter === num.toString() ? 'shadow-xl shadow-primary/20 scale-105' : 'opacity-50 hover:opacity-100 hover:bg-primary/5'}`}
+                          onClick={() => setSelectedUnitFilter(num.toString())}
                         >
-                          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border border-border bg-card/50 backdrop-blur-sm px-4 py-3.5 text-left hover:bg-accent/50 hover:border-primary/40 transition-all duration-200 group">
-                            <div className="flex items-center gap-3 flex-1">
-                              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold text-sm">
-                                {unitNum}
-                              </span>
-                              <div className="flex-1 min-w-0">
-                                <div className="font-medium text-foreground group-hover:text-primary transition-colors">
-                                  {unitName}
+                          UNIT {num}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {groupNotes().filter(([unit]) => !selectedUnitFilter || selectedUnitFilter === "all" || unit.replace('Unit ', '').trim() === selectedUnitFilter).length > 0 ? 
+                     groupNotes()
+                      .filter(([unit]) => !selectedUnitFilter || selectedUnitFilter === "all" || unit.replace('Unit ', '').trim() === selectedUnitFilter)
+                      .map(([unit, group]) => (
+                      <div key={unit} className="group p-8 rounded-[40px] bg-card border border-border hover:border-primary/40 hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between animate-in zoom-in-95 duration-500">
+                        <div className="mb-8">
+                          <div className="w-16 h-16 rounded-[24px] bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform shadow-xl shadow-primary/5 border border-primary/20 mb-8">
+                            <Layers className="h-8 w-8" />
+                          </div>
+                          <h3 className="text-3xl font-black text-foreground mb-4 tracking-[-0.04em] uppercase font-sans">UNIT {unit.replace('Unit ', '')}</h3>
+                          <p className="text-[13px] text-muted-foreground/80 leading-relaxed font-medium">Verified syllabus notes curated from top institutional lecture sessions.</p>
+                        </div>
+                        
+                        <div className="space-y-4 shadow-sm p-2 rounded-3xl bg-muted/20">
+                          <div className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] px-4 pt-2">Available Resources ({group.length})</div>
+                          <div className="space-y-1">
+                            {group.length > 0 ? group.map((res) => (
+                              <button 
+                                key={res.id}
+                                className="w-full flex items-center justify-between p-4 rounded-[18px] bg-card hover:bg-primary/5 text-xs font-black text-foreground hover:text-primary transition-all border border-transparent hover:border-primary/10 group/item shadow-sm hover:translate-x-1"
+                                onClick={() => setPreviewFile({ url: res.file_url, title: res.title, unit: res.unit })}
+                              >
+                                <span className="truncate pr-4 tracking-tight opacity-70 group-hover/item:opacity-100">{formatTitle(res.title)}</span>
+                                <div className="flex items-center gap-2 opacity-30 group-hover/item:opacity-100 transition-all font-serif italic text-xs">
+                                  <span>Review Asset</span>
+                                  <Eye className="h-4 w-4" />
                                 </div>
-                                <div className="text-xs text-muted-foreground mt-0.5">
-                                  {unitNotes.length} {unitNotes.length === 1 ? 'file' : 'files'}
-                                </div>
+                              </button>
+                            )) : (
+                              <div className="p-8 rounded-[24px] bg-muted/10 border border-dashed border-border/60 flex flex-col items-center justify-center text-center gap-3 opacity-40">
+                                <FileBox className="h-6 w-6" />
+                                <span className="text-[9px] font-black uppercase tracking-widest">No resources uploaded</span>
                               </div>
-                            </div>
-                            <ChevronRight className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${openUnits[unitNum] ? 'rotate-90' : ''}`} />
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="pt-2 pb-1">
-                            {unitNotes.length > 0 ? (
-                              <div className="space-y-2 pl-6">
-                                {unitNotes.map((resource) => (
-                                  <ResourceCard
-                                    key={resource.id}
-                                    id={resource.id}
-                                    title={resource.title}
-                                    fileUrl={resource.file_url}
-                                    year={resource.year}
-                                    type={resource.type}
-                                  />
-                                ))}
-                              </div>
-                            ) : (
-                              <p className="text-sm text-muted-foreground py-4 px-6">
-                                No files available for this unit
-                              </p>
                             )}
-                          </CollapsibleContent>
-                        </Collapsible>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 border border-dashed border-border rounded-lg">
-                    <p className="text-muted-foreground">No notes available yet.</p>
-                  </div>
-                )}
-              </section>
-            )}
-
-            {/* SECTION 2: EXAM PAPERS */}
-            {selectedCategory === "pyq" && (
-              <section className="p-6 rounded-xl bg-gradient-to-br from-purple-500/5 to-pink-500/5 border border-purple-200/20 dark:border-purple-800/20 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 rounded-lg bg-purple-500/10">
-                    <GraduationCap className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <h2 className="text-xl font-bold text-foreground">Question Papers</h2>
-                </div>
-
-                {(cie1Papers.length > 0 || cie2Papers.length > 0 || cie3Papers.length > 0 || seePapers.length > 0) ? (
-                  <div className="space-y-6">
-                    {/* CIE-1 Papers */}
-                    {cie1Papers.length > 0 && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                          <span className="h-1 w-1 rounded-full bg-blue-500"></span>
-                          CIE-1 Papers
-                        </h3>
-                        <div className="space-y-2">
-                          {cie1Papers.map((resource) => (
-                            <ResourceCard
-                              key={resource.id}
-                              id={resource.id}
-                              title={resource.title}
-                              fileUrl={resource.file_url}
-                              year={resource.year}
-                              type={resource.type}
-                            />
-                          ))}
+                          </div>
                         </div>
                       </div>
-                    )}
-
-                    {/* CIE-2 Papers */}
-                    {cie2Papers.length > 0 && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                          <span className="h-1 w-1 rounded-full bg-purple-500"></span>
-                          CIE-2 Papers
-                        </h3>
-                        <div className="space-y-2">
-                          {cie2Papers.map((resource) => (
-                            <ResourceCard
-                              key={resource.id}
-                              id={resource.id}
-                              title={resource.title}
-                              fileUrl={resource.file_url}
-                              year={resource.year}
-                              type={resource.type}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* CIE-3 Papers */}
-                    {cie3Papers.length > 0 && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                          <span className="h-1 w-1 rounded-full bg-pink-500"></span>
-                          CIE-3 Papers
-                        </h3>
-                        <div className="space-y-2">
-                          {cie3Papers.map((resource) => (
-                            <ResourceCard
-                              key={resource.id}
-                              id={resource.id}
-                              title={resource.title}
-                              fileUrl={resource.file_url}
-                              year={resource.year}
-                              type={resource.type}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* SEE Papers */}
-                    {seePapers.length > 0 && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                          <span className="h-1 w-1 rounded-full bg-green-500"></span>
-                          SEE Papers
-                        </h3>
-                        <div className="space-y-2">
-                          {seePapers.map((resource) => (
-                            <ResourceCard
-                              key={resource.id}
-                              id={resource.id}
-                              title={resource.title}
-                              fileUrl={resource.file_url}
-                              year={resource.year}
-                              type={resource.type}
-                            />
-                          ))}
-                        </div>
+                    )) : (
+                      <div className="col-span-full py-20 text-center border border-dashed border-border rounded-[40px] bg-white/[0.01]">
+                        <p className="text-muted-foreground font-medium">Lecture notes have not been uploaded for this subject yet.</p>
                       </div>
                     )}
                   </div>
-                ) : (
-                  <div className="text-center py-12 border border-dashed border-border rounded-lg">
-                    <p className="text-muted-foreground">No question papers available yet.</p>
-                  </div>
-                )}
-              </section>
-            )}
+                </section>
+              )}
 
-            {/* SECTION 3: REFERENCE BOOKS */}
-            {selectedCategory === "books" && (
-              <section className="p-6 rounded-xl bg-gradient-to-br from-amber-500/5 to-orange-500/5 border border-amber-200/20 dark:border-amber-800/20 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 rounded-lg bg-amber-500/10">
-                    <Library className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              {activeSection === "pyq" && (
+                <section className="animate-fade-in">
+                  <h2 className="text-2xl md:text-3xl font-black mb-10 border-b border-border pb-4 text-foreground">Examination Papers</h2>
+                  <div className="rounded-[40px] bg-card border border-border overflow-hidden shadow-xl">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-muted text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                          <th className="py-6 px-8 border-b border-border/50">Academic Cycle</th>
+                          <th className="py-6 px-8 border-b border-border/50 text-center">Batch Code</th>
+                          <th className="py-6 px-8 border-b border-border/50 text-right">Resource Selection</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pyqResources.length > 0 ? Object.entries(groupPYQs()).map(([cycle, group]) => {
+                          const [type, year] = cycle.split('_');
+                          return (
+                            <tr key={cycle} className="group border-b border-border/40 hover:bg-muted/10 transition-all">
+                              <td className="py-10 px-8">
+                                <div className="flex flex-col gap-2">
+                                  <div className="flex items-center gap-4">
+                                    <div className="w-16 h-16 rounded-[24px] bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-all duration-500 shadow-xl shadow-primary/10 border border-primary/20">
+                                      <FileText className="h-8 w-8" />
+                                    </div>
+                                        <div className="flex flex-col">
+                                          <span className="text-2xl md:text-3xl font-black text-foreground tracking-tighter uppercase italic font-serif leading-none">
+                                            {type.startsWith('cie') ? `CIE ${type.slice(3)}` : type.toUpperCase()} Archive • {year}
+                                          </span>
+                                          <span className="text-[11px] font-bold text-muted-foreground mt-2 uppercase tracking-[0.2em] opacity-60">
+                                            {type === 'see' ? 'Semester End Examination' : `Continuous Internal Evaluation Phase ${type.slice(3)}`} • {year}
+                                          </span>
+                                        </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="py-10 px-8 text-center text-[11px] font-black text-muted-foreground uppercase tracking-widest bg-muted/5">
+                                {subject?.code || 'EXAM'}-{year.slice(-2)}
+                              </td>
+                              <td className="py-10 px-8 text-right">
+                                <div className="flex flex-col items-end gap-3">
+                                  {group.map((res) => (
+                                    <button 
+                                      key={res.id}
+                                      className="flex items-center justify-between gap-6 px-6 py-4 rounded-[20px] bg-muted/40 hover:bg-primary/10 text-sm font-black text-foreground hover:text-primary transition-all border border-transparent hover:border-primary/20 hover:scale-105 shadow-sm hover:shadow-lg min-w-[240px] group/item"
+                                      onClick={() => setPreviewFile({ url: res.file_url, title: res.title, unit: res.unit })}
+                                    >
+                                      <span className="truncate pr-4 tracking-tight">{formatTitle(res.title)}</span>
+                                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest opacity-40 group-hover/item:opacity-100 transition-opacity">
+                                        <span>{res.type.startsWith('cie') ? `CIE ${res.type.slice(3)}` : res.type.toUpperCase()}</span>
+                                        <Eye className="h-4 w-4" />
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        }) : (
+                          <tr><td colSpan={3} className="py-12 text-center text-muted-foreground font-medium">No examination papers available for this subject.</td></tr>
+                        )}
+                      </tbody>
+                    </table>
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-xl font-bold text-foreground">Reference Books & Question Banks</h2>
+                </section>
+              )}
+
+              {activeSection === "books" && (
+                <section className="animate-fade-in">
+                  <h2 className="text-2xl md:text-3xl font-black mb-10 border-b border-border pb-4 text-foreground">Textbooks & Reference</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {groupBooks().length > 0 ? groupBooks().map(([title, group]) => (
+                      <div key={title} className="group relative p-10 rounded-[50px] bg-card border border-border hover:shadow-2xl transition-all overflow-hidden flex flex-col h-full shadow-lg">
+                        <div className="aspect-[4/5] bg-muted/30 rounded-[35px] mb-8 flex items-center justify-center p-8 relative overflow-hidden shrink-0 border border-border/50">
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-purple-accent/10"></div>
+                          <div className="relative z-10 w-full h-full border-4 border-foreground/5 p-6 flex flex-col justify-between items-center text-center">
+                            <BookOpen className="h-12 w-12 text-foreground/5" />
+                            <div className="w-20 h-1.5 bg-foreground/10 rounded-full"></div>
+                            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground opacity-50 italic">Academic Proof</span>
+                          </div>
+                        </div>
+                        <div className="flex-1 flex flex-col text-center md:text-left">
+                          <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-4 block">{group[0].year || 'Latest'} Edition</span>
+                          <h3 className="text-2xl font-black text-foreground mb-8 leading-tight tracking-tight">{title}</h3>
+                          
+                          <div className="mt-auto space-y-3">
+                            <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest border-b border-border/50 pb-3 mb-6">Digital Access ({group.length})</div>
+                            {group.map((res) => (
+                              <button 
+                                key={res.id}
+                                className="w-full flex items-center justify-between px-6 py-4 rounded-[20px] bg-muted/40 hover:bg-primary/10 text-sm font-black text-foreground hover:text-primary transition-all border border-transparent hover:border-primary/20 group/item shadow-sm"
+                                onClick={() => setPreviewFile({ url: res.file_url, title: res.title })}
+                              >
+                                <span className="truncate pr-4 tracking-tight">{formatTitle(res.title)}</span>
+                                <div className="flex items-center gap-2 opacity-40 group-hover/item:opacity-100 transition-all">
+                                  <span className="text-[10px] uppercase font-black">Open</span>
+                                  <ExternalLink className="h-4 w-4" />
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )) : (
+                      <div className="col-span-full py-20 text-center border border-dashed border-border rounded-[40px] bg-white/[0.01]">
+                        <p className="text-muted-foreground font-medium">Reference books are being curated for this subject.</p>
+                      </div>
+                    )}
                   </div>
-                </div>
-                {books.length > 0 ? (
-                  <div className="space-y-2">
-                    {books.map((resource) => (
-                      <ResourceCard
-                        key={resource.id}
-                        id={resource.id}
-                        title={resource.title}
-                        fileUrl={resource.file_url}
-                        year={resource.year}
-                        type={resource.type}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 border border-dashed border-border rounded-lg">
-                    <p className="text-muted-foreground">No reference books available yet.</p>
-                  </div>
-                )}
-              </section>
-            )}
+                </section>
+              )}
+            </div>
           </div>
         )}
       </main>
+      {/* Institutional Asset Preview Portal - 'The Immersive Reader' */}
+      <Dialog open={!!previewFile} onOpenChange={() => setPreviewFile(null)}>
+        <DialogContent className="max-w-[100vw] w-screen h-screen p-0 m-0 bg-background/95 backdrop-blur-2xl border-none rounded-none overflow-hidden flex flex-col gap-0 shadow-none animate-in fade-in zoom-in-100 duration-500 z-[100]">
+          
+          {/* Reader Header - 'Tactile Navigation' */}
+          <header className="px-8 h-24 border-b border-border/40 flex items-center justify-between shrink-0 bg-card/60 relative z-[110]">
+            <div className="flex items-center gap-6">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="w-12 h-12 rounded-2xl bg-muted/40 hover:bg-primary/10 hover:text-primary transition-all border border-transparent hover:border-primary/20 rotate-180 group"
+                onClick={() => setPreviewFile(null)}
+              >
+                <ChevronRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              
+              <div className="flex flex-col">
+                <DialogTitle className="text-2xl md:text-3xl font-black text-foreground font-serif tracking-tight leading-none mb-2 flex items-center gap-3">
+                  {previewFile?.title}
+                  <span className="px-2 py-0.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-black tracking-widest text-primary uppercase">
+                    {previewFile ? getFileExtension(previewFile.url) : ''}
+                  </span>
+                </DialogTitle>
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60 italic font-serif">
+                    {previewFile?.unit ? `Unit ${previewFile.unit.replace('Unit ', '')} Archival Asset` : 'Official Scholarly Asset'}
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-primary/20"></span>
+                  <span className="text-muted-foreground text-[9px] font-bold uppercase tracking-widest opacity-60">Verified Curated Master</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-3 mr-4 p-1.5 rounded-2xl bg-muted/20 border border-border/50">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="rounded-xl h-10 px-5 text-[11px] font-black uppercase tracking-widest text-foreground/70 hover:text-primary hover:bg-primary/5 border border-transparent hover:border-primary/10"
+                  onClick={() => window.open(previewFile?.url, '_blank')}
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Source
+                </Button>
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="rounded-xl h-10 px-6 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95"
+                  onClick={() => window.open(previewFile?.url, '_blank')}
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </Button>
+              </div>
+              
+              <Button 
+                variant="ghost" 
+                className="w-12 h-12 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all border border-transparent hover:border-border/40"
+                onClick={() => setPreviewFile(null)}
+              >
+                <X className="h-6 w-6" />
+              </Button>
+            </div>
+          </header>
+          
+          {/* Immersive Viewport - 'Total Clarity' */}
+          <div className="flex-1 w-full bg-muted/10 relative overflow-hidden flex flex-col items-center">
+            
+            {/* Elegant Background Texture */}
+            <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none overflow-hidden z-0">
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[40rem] font-black font-serif italic text-foreground tracking-tighter leading-none opacity-10">
+                 {previewFile?.title.charAt(0)}
+               </div>
+            </div>
+
+            <div className="relative z-10 w-full h-full max-w-[1400px] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border-x border-border/50 flex flex-col bg-white overflow-hidden">
+               {previewFile && (
+                 <iframe 
+                   key={previewFile.url}
+                   src={
+                     previewFile.url.toLowerCase().includes('drive.google.com') 
+                       ? optimizeDriveUrl(previewFile.url) 
+                       : (previewFile.url.toLowerCase().endsWith('.pdf')
+                           ? `https://docs.google.com/viewer?url=${encodeURIComponent(previewFile.url)}&embedded=true`
+                           : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(previewFile.url)}`)
+                   } 
+                   className="w-full h-full border-none transition-opacity animate-in fade-in duration-1000 delay-300"
+                   title="Institutional Asset Viewer"
+                   loading="lazy"
+                 />
+               )}
+            </div>
+
+            {/* Context Footer (Mobile Only Sync) */}
+            <div className="md:hidden w-full p-6 bg-card border-t border-border/40 flex items-center justify-between gap-4 z-[110]">
+                <Button 
+                  variant="outline" 
+                  className="flex-1 h-12 rounded-2xl bg-muted/20 border-border text-[10px] font-black uppercase tracking-widest"
+                  onClick={() => window.open(previewFile?.url, '_blank')}
+                >
+                  <ExternalLink className="h-4 w-4 mr-2 text-primary" />
+                  View Original
+                </Button>
+                <Button 
+                  className="flex-1 h-12 rounded-2xl shadow-xl shadow-primary/20 text-[10px] font-black uppercase tracking-widest"
+                  onClick={() => window.open(previewFile?.url, '_blank')}
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Save Locally
+                </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
       <Footer />
     </div>
   );

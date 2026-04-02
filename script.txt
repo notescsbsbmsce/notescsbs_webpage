@@ -1,0 +1,164 @@
+/**
+ * NOTESCSBS | Institutional Welcome Broadcast
+ * -------------------------------------------
+ * This script automates the delivery of a high-fidelity Welcome Brief 
+ * when a student enrolls in the Academic Shift Registry.
+ * 
+ * Trigger: On Form Submit
+ * Setup: Deploy as a trigger in Google Apps Script associated with your response sheet.
+ */
+
+function onFormSubmit(e) {
+  // Capture captured email (adjust index if email is not in the first column after timestamp)
+  const email = e.values[1]; 
+  
+  const subject = "Welcome to the Archive Registry | NOTESCSBS";
+  
+  // High-Fidelity Editorial Email Template
+  const htmlBody = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+      <style>
+        body { 
+          margin: 0; 
+          padding: 0; 
+          background-color: #f1f5f9; 
+          font-family: 'Inter', -apple-system, sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+        .wrapper {
+          padding: 60px 20px;
+        }
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          border-radius: 48px;
+          border: 1px solid #e2e8f0;
+          overflow: hidden;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+        }
+        .hero {
+          background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+          padding: 80px 40px;
+          text-align: center;
+          position: relative;
+        }
+        .logo {
+          font-family: 'Playfair Display', serif;
+          color: #ffffff;
+          font-style: italic;
+          font-weight: 900;
+          font-size: 32px;
+          letter-spacing: -1.5px;
+          margin-bottom: 8px;
+        }
+        .tagline {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 10px;
+          text-transform: uppercase;
+          font-weight: 900;
+          letter-spacing: 4px;
+        }
+        .main-content {
+          padding: 60px 50px;
+          color: #1e293b;
+        }
+        h1 {
+          font-family: 'Playfair Display', serif;
+          font-style: italic;
+          font-weight: 900;
+          font-size: 48px;
+          color: #0f172a;
+          line-height: 0.9;
+          margin: 0 0 32px 0;
+          letter-spacing: -2px;
+        }
+        p {
+          font-size: 16px;
+          line-height: 1.7;
+          color: #64748b;
+          margin-bottom: 32px;
+          font-weight: 500;
+        }
+        .cta-container {
+          text-align: left;
+          margin-top: 48px;
+        }
+        .button {
+          display: inline-block;
+          background-color: #1a73e8;
+          color: #ffffff !important;
+          padding: 20px 40px;
+          border-radius: 20px;
+          text-decoration: none;
+          font-weight: 900;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          box-shadow: 0 10px 15px -3px rgba(26, 115, 232, 0.3);
+        }
+        .footer {
+          padding: 40px 50px;
+          background-color: #f8fafc;
+          border-top: 1px solid #f1f5f9;
+          text-align: center;
+        }
+        .footer-text {
+          font-size: 11px;
+          color: #94a3b8;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 0;
+        }
+        .accent-bar {
+          height: 4px;
+          width: 40px;
+          background: #1a73e8;
+          margin-bottom: 24px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="wrapper">
+        <div class="container">
+          <div class="hero">
+            <div class="logo">Notes CSBS</div>
+            <div class="tagline">Scholarly Broadcast</div>
+          </div>
+          
+          <div class="main-content">
+            <div class="accent-bar"></div>
+            <h1>The Shift <br/>Has Begun.</h1>
+            <p>
+              Welcome to the institutional registry. You are now part of a peer-governed collective dedicated to the meticulous preservation of academic intelligence.
+            </p>
+            <p>
+              You will receive real-time notifications for every curriculum update, resource drop, and verified faculty brief. Our curators are already preparing the next batch of scholarly assets.
+            </p>
+            
+            <div class="cta-container">
+              <a href="https://notes-csbs.pages.dev" class="button">Access the Archive</a>
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p class="footer-text">NOTESCSBS • BMSCE • Open Registry Initiative</p>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+  
+  MailApp.sendEmail({
+    to: email,
+    subject: subject,
+    htmlBody: htmlBody
+  });
+}

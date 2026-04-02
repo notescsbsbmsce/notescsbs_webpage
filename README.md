@@ -1,146 +1,96 @@
 <div align="center">
 
-# 📚 Notes CSBS - BMSCE
+# 🏛️ NOTESCSBS
+### *The Curated Archive of BMSCE Academic Intelligence*
 
-### _Empowering CSBS students at BMS College of Engineering with seamless access to academic resources._
+[![Institutional Status](https://img.shields.io/badge/Status-Operational-000?style=for-the-badge&logo=codeforces&logoColor=white)](https://notescsbs-webpage.vercel.app/)
+[![Registry Count](https://img.shields.io/badge/Assets-100%2B-primary?style=for-the-badge&logo=buffer&logoColor=white)](https://notescsbs-webpage.vercel.app/)
+[![Institutional Governance](https://img.shields.io/badge/Governance-Maker_Founded-7B61FF?style=for-the-badge&logo=google-cloud&logoColor=white)](https://notescsbs-webpage.vercel.app/)
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=vercel&logoColor=white)](https://notescsbs-webpage.vercel.app/)
-[![React](https://img.shields.io/badge/Made%20with-React-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-
-[🌐 Visit Website](https://notescsbs-webpage.vercel.app/) • [📖 Documentation](#-getting-started) • [🐛 Report Bug](mailto:notescsbsbmsce@gmail.com) • [✨ Request Feature](mailto:notescsbsbmsce@gmail.com)
-
-</div>
+[🌐 Visit the Registry](https://notescsbs-webpage.vercel.app/) • [📂 Course Catalog](#-curriculum-breakdown) • [🛡️ Institutional Privacy](https://notescsbs-webpage.vercel.app/privacy)
 
 ---
+
+</div>
 
 ## 🚀 Overview
 
-**Notes CSBS** is a dedicated, student-centric academic resource platform built for the **Computer Science & Business Systems (CSBS)** department at BMS College of Engineering. It serves as a centralized hub for notes, question banks, previous year questions (PYQs), and laboratory manuals, optimized for speed, security, and accessibility.
+**NOTESCSBS** is a high-fidelity, institutional-grade academic repository engineered specifically for the **Computer Science & Business Systems (CSBS)** department at BMS College of Engineering. 
 
-### 🌟 Key Features
+This platform serves as a "Scholarly Broadcast" portal, centralizing verified lecture notes, previous year exam papers (PYQs), and laboratory technical briefs into a single, high-performance digital environment.
 
-- **⚡ High Performance**: Built with Vite and React for near-instant load times.
-- **📱 PWA Ready**: Install as a mobile app for quick offline-ready access.
-- **🌙 Elegant UI**: Modern, responsive design with default dark mode support.
-- **🔒 Robust Security**: Secure API integration with Supabase and protected admin routes.
-- **📂 Resource Management**: Easily view and download CIE/SEE PYQs, Lab Manuals, and Subject Notes.
-- **📊 Admin Dashboard**: Real-time analytics and resource management for administrators.
+### ✨ Platform Pillars
 
----
-
-## 📸 Screenshots
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/notescsbsbmsce/notescsbs/main/public/og-image.png" alt="Notes CSBS Hero" width="800">
-  <p><i>Home Page Landing - Sleek and Modern</i></p>
-</div>
+- **🏛️ High-Fidelity Curation**: Every asset is meticulously reviewed and categorized by Units (1-5) for modular curriculum mastery.
+- **⚡ Background Synchronization**: Seamless integration with the official **Institutional Response Registry** via Google Forms.
+- **📬 Automated Broadcasts**: Real-time delivery of "Academic Shift" welcome briefs and scholarly updates.
+- **🛡️ Secure Governance**: Dedicated **Admin Command Center** for real-time archive management and registry extraction.
+- **🎨 Premium Experience**: "Editorial Intelligence" design system featuring high-legibility Inter typography and minimalist dark aesthetics.
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Technical Stack
 
-| Layer            | Technologies                                                    |
-| :--------------- | :-------------------------------------------------------------- |
-| **Frontend**     | React 18, TypeScript, Tailwind CSS, Shadcn/UI, Lucide Icons     |
-| **Backend**      | Supabase (Authentication, PostgreSQL Database, Storage)         |
-| **State/Data**   | TanStack Query (React Query), Zod (Validation), React Hook Form |
-| **Build/Deploy** | Vite, Vercel, PWA Plugin                                        |
+- **Foundational**: React 18, TypeScript, Vite
+- **Styling**: TailwindCSS, Shadcn/UI (Editorial Minimalist System)
+- **Data Architecture**: Supabase (PostgreSQL), Google Forms API (Institutional Registry)
+- **Automation**: Google Apps Script (Scholarly Welcome Broadcasts)
+- **Icons**: Lucide (Curated Intelligence Set)
 
 ---
 
-## 📁 Project Structure
+## 📁 Repository Structure
 
 ```text
 notes-csbs/
 ├── src/
-│   ├── components/      # Reusable UI components (Shadcn + Custom)
-│   ├── pages/           # Page-level components (Home, Subject, Admin, etc.)
-│   ├── hooks/           # Custom React hooks for data fetching and logic
-│   ├── config/          # Application configuration (Subjects, Navigation)
-│   ├── integrations/    # External service configurations (Supabase)
-│   ├── lib/             # Utility functions and library wrappers
-│   └── App.tsx          # Main application routing and providers
-├── public/              # Static assets and PWA icons
-├── supabase/            # Database migrations and configurations
-└── package.json         # Project dependencies and scripts
+│   ├── components/      # UI components (Shadcn + High-Fidelity Custom)
+│   ├── pages/           # Core nodes (Home, Subject, Admin, Contributors)
+│   ├── hooks/           # Data synchronization and logic hooks
+│   ├── lib/             # Utility toolsets and Supabase clients
+│   └── integrations/    # External service configurations
+├── public/              # Global assets and PWA manifest
+├── supabase/            # Database schema and governance rules
+└── vercel.json          # Deployment parameters
 ```
 
 ---
 
-## 📦 Getting Started
+## 📦 Scholarly Deployment
 
 ### Prerequisites
+- Node.js (v18+)
+- Local `.env` configured with institutional API keys
 
-- **Node.js**: v18 or higher ([Download](https://nodejs.org/))
-- **npm** or **bun** (Recommended)
-- **Git**
-
-### 🔧 Installation
-
-1. **Clone the Repo**
-
+### Installation
+1. **Clone the Manifest**
    ```bash
    git clone https://github.com/notescsbsbmsce/notescsbs.git
    cd notescsbs
    ```
-
-2. **Install Dependencies**
-
+2. **Execute Provisioning**
    ```bash
    npm install
-   # or
-   bun install
-   ```
-
-3. **Environment Setup**
-   Create a `.env` file in the root directory:
-
-   ```env
-   VITE_SUPABASE_URL=your_supabase_project_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-4. **Launch Development Server**
-   ```bash
    npm run dev
    ```
 
 ---
 
-## 🤝 Contributing
+## 👤 The Makers of NOTESCSBS
 
-We welcome contributions from the CSBS community and beyond!
+Built for the BMSCE community by the Lead Architects:
 
-1. **Fork** the repository.
-2. Create a **Feature Branch** (`git checkout -b feature/AmazingFeature`).
-3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`).
-4. **Push** to the branch (`git push origin feature/AmazingFeature`).
-5. Open a **Pull Request**.
+- **Tushar Jain** | [LinkedIn](https://www.linkedin.com/in/tushar-jain-781149322/) • [GitHub](https://github.com/Tusharjain-19)
+- **Ayush Kumar** | [LinkedIn](https://www.linkedin.com/in/ayush-kumar-b903b7285/)
 
 ---
 
-## 👤 Team & Support
+## 📄 Institutional Disclaimer
 
-Built with ❤️ by the CSBS Tech Team:
-
-- **Tushar Jain**
-- **Niranjan K**
-- **Ayush Kumar**
-- **Rishabh Gupta**
-
-**Support:** [notescsbsbmsce@gmail.com](mailto:notescsbsbmsce@gmail.com)
-
----
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+NOTESCSBS is an independent digital academic repository developed as a peer-led initiative within the BMS College of Engineering. All materials are curated for educational assistance and collaborative learning under an open registry model.
 
 <div align="center">
 
-**© 2024 Notes CSBS | BMS College of Engineering, Bangalore**
+**© 2024 NOTESCSBS | BMS College of Engineering, Bengaluru**
 
 </div>

@@ -1,166 +1,215 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { supabase, getSupabaseClient } from "@/integrations/supabase/client";
 import { fetchSemesterById, fetchSubjectsBySemester } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { SubjectCard } from "@/components/SubjectCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { BookMarked, FlaskConical, RefreshCw } from "lucide-react";
+import { 
+  BookMarked, 
+  FlaskConical, 
+  ArrowRight, 
+  Download, 
+  Calendar,
+  Layers,
+  Database,
+  Cpu,
+  Globe,
+  Leaf,
+  ShieldCheck,
+  ChevronRight,
+  ChevronLeft
+} from "lucide-react";
+
+// Helper to get icons for subjects based on name/code
+const getSubjectIcon = (name: string, isLab: boolean) => {
+  const n = name.toLowerCase();
+  if (isLab) return <FlaskConical className="h-5 w-5" />;
+  if (n.includes("math")) return <Layers className="h-5 w-5" />;
+  if (n.includes("database") || n.includes("dbms")) return <Database className="h-5 w-5" />;
+  if (n.includes("operating") || n.includes("system")) return <Cpu className="h-5 w-5" />;
+  if (n.includes("network")) return <Globe className="h-5 w-5" />;
+  if (n.includes("environment")) return <Leaf className="h-5 w-5" />;
+  if (n.includes("constitution") || n.includes("india")) return <ShieldCheck className="h-5 w-5" />;
+  return <BookMarked className="h-5 w-5" />;
+};
 
 const Semester = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const semesterId = parseInt(id || "0");
 
-  const { data: semester, isLoading: semesterLoading, error: semesterError } = useQuery({
+  const { data: semester, isLoading: semesterLoading } = useQuery({
     queryKey: ["semester", semesterId],
     queryFn: async () => {
       return await fetchSemesterById(semesterId);
     },
-    retry: 1, // Only retry once
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
-  const { data: subjects, isLoading: subjectsLoading, error: subjectsError } = useQuery({
+  const { data: subjects, isLoading: subjectsLoading } = useQuery({
     queryKey: ["subjects", semesterId],
     queryFn: async () => {
       if (!semester) return [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return await fetchSubjectsBySemester(semesterId, (semester as any).order);
     },
     enabled: !!semester,
-    retry: 1, // Only retry once
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   const isLoading = semesterLoading || subjectsLoading;
-  const hasError = semesterError || subjectsError;
-
   const theorySubjects = subjects?.filter(s => !s.is_lab) || [];
   const labSubjects = subjects?.filter(s => s.is_lab) || [];
 
+  // Extract semester number for display
+  const semNumber = semester?.name.match(/\d+/)?.[0] || "";
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-accent/20 flex flex-col">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary transition-colors duration-300">
       <Header />
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 max-w-5xl pb-24">
-        <Breadcrumb 
+      
+      <main className="flex-1 container mx-auto px-6 py-12 max-w-7xl">
+        {/* Breadcrumb & Back Button */}
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-xl h-10 px-4 group bg-muted/20 border-border hover:bg-primary/10 transition-all font-bold gap-2"
+            onClick={() => navigate(-1)}
+          >
+            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back
+          </Button>
 
-          items={[
-            { label: "Home", href: "/" },
-            { label: semester?.name || "Loading..." }
-          ]}
-        />
-
-        {/* Semester Header with Gradient */}
-        <div className="mb-10 mt-8 p-8 rounded-2xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border border-indigo-200/20 dark:border-indigo-800/20 shadow-lg shadow-indigo-500/5 animate-fade-in text-center sm:text-left">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">
-            {semester?.name || "Loading..."}
-          </h1>
-          <p className="text-base text-muted-foreground max-w-xl">
-            High-quality study materials, organized for your success. Select a subject below to explore resources.
-          </p>
+          <nav className="flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase text-muted-foreground">
+            <RouterLink to="/" className="hover:text-primary transition-colors">Home</RouterLink>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-foreground font-black">{semester?.name || `Semester ${semNumber}`}</span>
+          </nav>
         </div>
 
-        {hasError ? (
-          <div className="text-center py-16 px-6 border border-dashed border-destructive/50 rounded-3xl bg-destructive/5 animate-in fade-in duration-500">
-            <div className="p-4 rounded-full bg-destructive/10 w-fit mx-auto mb-6">
-              <BookMarked className="h-10 w-10 text-destructive" />
-            </div>
-            <h2 className="text-2xl font-bold text-destructive mb-3">Failed to load subjects</h2>
-            <div className="text-sm text-muted-foreground mb-8 max-w-md mx-auto space-y-2">
-              <p>
-                {semesterError ? 'We couldn\'t find the semester information. ' : ''}
-                {subjectsError ? 'The list of subjects could not be retrieved. ' : ''}
-              </p>
-              <p className="font-mono text-[11px] bg-destructive/10 p-2 rounded border border-destructive/10">
-                {(semesterError as Error)?.message || (subjectsError as Error)?.message || "Unknown data error"}
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button 
-                onClick={() => window.location.reload()} 
-                className="gap-2 rounded-xl h-11 px-8 shadow-lg shadow-primary/20"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Retry Loading
-              </Button>
-              <Button asChild variant="outline" className="rounded-xl h-11 px-8">
-                <a href="/">Go to Home</a>
-              </Button>
-            </div>
-          </div>
-        ) : isLoading ? (
-          <div className="space-y-8">
-            {/* Show layout-preserving skeleton */}
-            <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 border border-blue-200/20 dark:border-blue-800/20">
-              <div className="flex items-center gap-3 mb-4">
-                <Skeleton className="h-9 w-9 rounded-lg" />
-                <Skeleton className="h-6 w-32" />
-              </div>
-              <div className="space-y-2">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <Skeleton key={i} className="h-16 rounded-lg" />
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : subjects && subjects.length > 0 ? (
-          <div className="space-y-8">
-            {/* Theory Subjects */}
-            {theorySubjects.length > 0 && (
-              <section className="p-8 rounded-2xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 border border-blue-200/20 dark:border-blue-800/20 shadow-inner animate-slide-up" style={{ animationDelay: "0.1s" }}>
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="p-3 rounded-xl bg-blue-500/10 shadow-lg shadow-blue-500/10">
-                    <BookMarked className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h2 className="text-xl font-extrabold text-foreground">Theory Subjects</h2>
-                </div>
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
-                  {theorySubjects.map((subject) => (
-                    <SubjectCard
-                      key={subject.id}
-                      id={subject.id}
-                      name={subject.name}
-                      code={subject.code}
-                      isLab={subject.is_lab}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
+        {/* Hero Section */}
+        <header className="mb-20">
+          <h1 className="text-7xl md:text-9xl font-black mb-8 tracking-tighter text-foreground leading-[0.85]">
+            Semester <span className="italic font-serif text-primary">{semNumber}</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl font-serif italic opacity-80 leading-relaxed font-medium">
+            Academic Excellence. Curated BMSCE resources, verified by the council.
+          </p>
+        </header>
 
-            {/* Lab Subjects */}
-            {labSubjects.length > 0 && (
-              <section className="p-8 rounded-2xl bg-gradient-to-br from-purple-500/5 to-pink-500/5 border border-purple-200/20 dark:border-purple-800/20 shadow-inner animate-slide-up" style={{ animationDelay: "0.2s" }}>
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="p-3 rounded-xl bg-purple-500/10 shadow-lg shadow-purple-500/10">
-                    <FlaskConical className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <h2 className="text-xl font-extrabold text-foreground">Lab Subjects</h2>
-                </div>
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
-                  {labSubjects.map((subject) => (
-                    <SubjectCard
-                      key={subject.id}
-                      id={subject.id}
-                      name={subject.name}
-                      code={subject.code}
-                      isLab={subject.is_lab}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
+        {isLoading ? (
+          <div className="space-y-12">
+            <Skeleton className="h-8 w-48 bg-white/5" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map(i => <Skeleton key={i} className="h-48 rounded-3xl bg-white/5" />)}
+            </div>
           </div>
         ) : (
-          <div className="text-center py-16 border border-dashed border-border rounded-xl">
-            <p className="text-sm text-muted-foreground">
-              No subjects available for this semester
-            </p>
+          <div className="space-y-24">
+            {/* Theory Subjects */}
+            <section>
+              <div className="flex items-center justify-between mb-10 border-b border-primary/20 pb-4">
+                <h2 className="text-2xl md:text-3xl font-black text-foreground">Theory Subjects</h2>
+                <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">{theorySubjects.length} Resources Available</span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {theorySubjects.map((subject) => (
+                  <RouterLink 
+                    key={subject.id} 
+                    to={`/subject/${subject.id}`}
+                    className="group relative p-8 rounded-3xl bg-card border border-border hover:border-primary/40 hover:shadow-2xl transition-all flex flex-col justify-between overflow-hidden"
+                  >
+                    {/* Hover Glow */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">{subject.code}</span>
+                        <div className="text-muted-foreground group-hover:text-primary transition-colors">
+                          {getSubjectIcon(subject.name, false)}
+                        </div>
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-bold leading-tight mb-8 group-hover:text-primary transition-colors text-foreground">
+                        {subject.name}
+                      </h3>
+                    </div>
+                    
+                    <div className="relative z-10 flex flex-wrap gap-2">
+                      <span className="px-3 py-1 rounded-full bg-muted text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Core Theory</span>
+                      <span className="px-3 py-1 rounded-full bg-muted text-[9px] font-black text-muted-foreground uppercase tracking-widest font-sans">Unit I-V</span>
+                    </div>
+                  </RouterLink>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <div className="flex items-center justify-between mb-10 border-b border-pink-500/20 pb-4">
+                <h2 className="text-2xl md:text-3xl font-black italic font-serif text-pink-accent">Practical Laboratories</h2>
+                <span className="text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase">{labSubjects.length} Practical Units</span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {labSubjects.map((subject) => (
+                  <RouterLink 
+                    key={subject.id} 
+                    to={`/subject/${subject.id}`}
+                    className="group flex items-center gap-6 p-8 rounded-[40px] bg-card border-l-4 border-l-pink-accent border border-border hover:bg-muted/30 hover:shadow-2xl transition-all"
+                  >
+                    <div className="w-16 h-16 rounded-3xl bg-pink-accent/10 flex items-center justify-center text-pink-accent group-hover:scale-110 transition-transform shadow-xl shadow-pink-accent/5">
+                      {getSubjectIcon(subject.name, true)}
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-black text-pink-accent/70 tracking-[0.2em] uppercase">{subject.code}</span>
+                      <h3 className="text-xl md:text-2xl font-black group-hover:text-primary transition-colors text-foreground font-serif leading-tight mt-1">
+                        {subject.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-2 font-medium opacity-60">Verified lab manual & experimental procedures.</p>
+                    </div>
+                  </RouterLink>
+                ))}
+              </div>
+            </section>
+
+            {/* Bottom Promo Grid */}
+            <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
+              <div className="lg:col-span-2 rounded-[40px] p-10 bg-gradient-to-br from-indigo-500/10 via-card to-primary/5 border border-border hover:shadow-2xl transition-all relative overflow-hidden group">
+                <div className="relative z-10">
+                  <h2 className="text-3xl md:text-5xl font-black mb-6 text-foreground">Exam Ready?</h2>
+                  <p className="text-lg text-muted-foreground max-w-lg mb-10">
+                    Access our curated collection of previous year question papers and model answer sheets for all Semester {semNumber} subjects.
+                  </p>
+                  <Button size="lg" className="h-14 px-8 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-black gap-3 group shadow-lg shadow-primary/20">
+                    Download Question Bank
+                    <Download className="h-5 w-5" />
+                  </Button>
+                </div>
+                <div className="absolute bottom-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <BookMarked className="w-48 h-48" />
+                </div>
+              </div>
+              
+              <div className="rounded-[40px] p-10 bg-card border border-border flex flex-col items-center justify-center text-center group hover:shadow-2xl transition-all">
+                <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:scale-110 transition-transform">
+                  <Calendar className="h-8 w-8" />
+                </div>
+                <h3 className="text-3xl font-black mb-4 text-foreground">Schedule</h3>
+                <p className="text-muted-foreground mb-10">
+                  Internal assessments and laboratory exams start in 14 days.
+                </p>
+                <Button variant="link" className="text-primary font-black uppercase tracking-widest gap-2 hover:no-underline hover:text-primary/80 transition-all">
+                  View Calendar
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </section>
           </div>
         )}
       </main>
+      
       <Footer />
     </div>
   );
