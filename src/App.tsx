@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { MobileNav } from "@/components/MobileNav";
 import { useAnalytics } from "./hooks/useAnalytics";
+import { Analytics } from "@vercel/analytics/react"
 
 // Core pages loaded directly for maximum reliability
 import Index from "./pages/Index";
@@ -73,6 +74,7 @@ const App = () => (
             <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
           </Routes>
           <MobileNav />
+          <Analytics />
         </AnalyticsWrapper>
       </BrowserRouter>
     </TooltipProvider>
