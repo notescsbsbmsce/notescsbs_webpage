@@ -311,15 +311,15 @@ const Admin = () => {
       <Header />
 
       <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
-        {/* Minimalist Sidebar */}
-        <aside className="w-full lg:w-72 bg-card border-r border-border p-8 flex flex-col justify-between shadow-sm lg:sticky lg:top-20 h-fit lg:h-[calc(100vh-80px)]">
+        {/* Minimalist Sidebar - horizontal scrollable nav on mobile, vertical sidebar on desktop */}
+        <aside className="w-full lg:w-72 bg-card border-b lg:border-b-0 lg:border-r border-border p-4 sm:p-6 lg:p-8 flex flex-col lg:justify-between shadow-sm lg:sticky lg:top-20 h-fit lg:h-[calc(100vh-80px)]">
           <div className="space-y-8">
             <div className="space-y-1">
               <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary opacity-80">Command Center</h2>
               <p className="text-xl font-bold tracking-tight">Archive Portal</p>
             </div>
 
-            <nav className="flex flex-col gap-1">
+            <nav className="flex lg:flex-col gap-1 overflow-x-auto pb-2 lg:pb-0 -mx-2 px-2 lg:mx-0 lg:px-0">
               <SidebarItem active={activeView === "upload"} icon={FilePlus} label="Deploy Asset" onClick={() => setActiveView("upload")} />
               <SidebarItem active={activeView === "library"} icon={Library} label="Archive Manager" onClick={() => setActiveView("library")} />
               <SidebarItem active={activeView === "dashboard"} icon={BarChart3} label="Terminal Stats" onClick={() => setActiveView("dashboard")} />
@@ -327,7 +327,7 @@ const Admin = () => {
             </nav>
           </div>
 
-          <div className="space-y-4 pt-10">
+          <div className="hidden lg:block space-y-4 pt-10">
             <Separator className="bg-border" />
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/30 border border-border">
                <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center border border-border text-primary font-bold text-xs uppercase shadow-sm">
@@ -345,7 +345,7 @@ const Admin = () => {
         </aside>
 
         {/* Main Workspace */}
-        <main className="flex-1 p-8 lg:p-12 animate-in fade-in slide-in-from-right-2 duration-700">
+        <main className="flex-1 p-4 sm:p-6 lg:p-12 animate-in fade-in slide-in-from-right-2 duration-700">
           {activeView === "upload" && (
             <div className="max-w-4xl mx-auto space-y-12">
               <div className="space-y-3">
@@ -353,12 +353,12 @@ const Admin = () => {
                   <Sparkles className="h-3.5 w-3.5" />
                   <span>Curatorial Workflow</span>
                 </div>
-                <h1 className="text-5xl font-black tracking-tighter italic font-serif">Deploy Resource</h1>
+                <h1 className="text-3xl sm:text-5xl font-black tracking-tighter italic font-serif">Deploy Resource</h1>
                 <p className="text-muted-foreground font-medium max-w-xl">Synchronize new scholarly materials into the institutional digital library.</p>
               </div>
 
-              <div className="grid gap-12 pt-4">
-                <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid gap-8 sm:gap-12 pt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                   <div className="space-y-3">
                     <Label className="text-[10px] font-black uppercase tracking-widest text-primary ml-1">Academic Semester</Label>
                     <Select value={selectedSemester} onValueChange={(v) => { setSelectedSemester(v); setSelectedSubject(""); setSelectedUnit(""); }}>
@@ -401,12 +401,12 @@ const Admin = () => {
                       <Label className="text-[10px] font-black uppercase tracking-widest text-primary ml-1 font-sans">Academic UNIT Selection</Label>
                       <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Required Target</span>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                      <Button variant={selectedUnit === "none" || !selectedUnit ? "default" : "outline"} className={`h-16 rounded-2xl text-[10px] font-black uppercase transition-all font-sans ${selectedUnit === "none" || !selectedUnit ? 'bg-primary text-primary-foreground shadow-lg' : 'bg-card border-border text-muted-foreground'}`} onClick={() => setSelectedUnit("none")}>
+                    <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+                      <Button variant={selectedUnit === "none" || !selectedUnit ? "default" : "outline"} className={`h-12 sm:h-16 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-black uppercase transition-all font-sans ${selectedUnit === "none" || !selectedUnit ? 'bg-primary text-primary-foreground shadow-lg' : 'bg-card border-border text-muted-foreground'}`} onClick={() => setSelectedUnit("none")}>
                         General
                       </Button>
                       {[1, 2, 3, 4, 5].map((num) => (
-                        <Button key={num} variant={selectedUnit === num.toString() ? "default" : "outline"} className={`h-16 rounded-2xl text-[10px] font-black uppercase transition-all font-sans ${selectedUnit === num.toString() ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-card border-border text-muted-foreground'}`} onClick={() => setSelectedUnit(num.toString())}>
+                        <Button key={num} variant={selectedUnit === num.toString() ? "default" : "outline"} className={`h-12 sm:h-16 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-black uppercase transition-all font-sans ${selectedUnit === num.toString() ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-card border-border text-muted-foreground'}`} onClick={() => setSelectedUnit(num.toString())}>
                           UNIT {num}
                         </Button>
                       ))}
@@ -417,7 +417,7 @@ const Admin = () => {
                 <Separator className="bg-border" />
 
                 <div className="space-y-8">
-                  <div className="flex gap-4 p-1.5 bg-muted rounded-3xl w-fit border border-border/50">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-1.5 bg-muted rounded-2xl sm:rounded-3xl w-full sm:w-fit border border-border/50">
                     <Button type="button" variant="ghost" className={`h-12 px-8 rounded-2xl text-[10px] font-black uppercase tracking-widest gap-2 transition-all ${uploadMode === "link" ? 'bg-background shadow-sm text-primary' : 'text-muted-foreground hover:bg-background/50'}`} onClick={() => setUploadMode("link")}>
                       <Link className="h-4 w-4" /> Link Path
                     </Button>
@@ -462,12 +462,12 @@ const Admin = () => {
                       </div>
                     )}
 
-                    <div className="flex flex-col md:flex-row gap-6 pt-4">
-                      <div className="w-full md:w-40 space-y-3">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-4">
+                      <div className="w-full sm:w-40 space-y-3">
                         <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Publication Year</Label>
                         <Input type="number" placeholder="2024" className="h-14 rounded-2xl bg-card border-border px-6 font-bold shadow-sm" value={year} onChange={(e) => setYear(e.target.value)} />
                       </div>
-                      <Button type="submit" className="flex-1 h-20 rounded-[28px] bg-primary text-primary-foreground text-[12px] font-black uppercase tracking-[0.3em] shadow-xl shadow-primary/30 hover:scale-[1.01] transition-all gap-4 active:scale-95" disabled={addResourceMutation.isPending || isUploading || !selectedSubject}>
+                      <Button type="submit" className="flex-1 h-16 sm:h-20 rounded-2xl sm:rounded-[28px] bg-primary text-primary-foreground text-[11px] sm:text-[12px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] shadow-xl shadow-primary/30 hover:scale-[1.01] transition-all gap-3 sm:gap-4 active:scale-95" disabled={addResourceMutation.isPending || isUploading || !selectedSubject}>
                         {isUploading || addResourceMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : <><FileCheck className="h-5 w-5" /> Execute Deployment</>}
                       </Button>
                     </div>
@@ -484,11 +484,11 @@ const Admin = () => {
                   <Database className="h-3.5 w-3.5" />
                   <span>Metadata Repository</span>
                 </div>
-                <h1 className="text-5xl font-black tracking-tighter italic font-serif">Archive Manager</h1>
+                <h1 className="text-3xl sm:text-5xl font-black tracking-tighter italic font-serif">Archive Manager</h1>
                 <p className="text-muted-foreground font-medium max-w-xl">Verify, modify, and curate the historical academic record.</p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 p-1.5 bg-card border border-border rounded-[32px] shadow-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 p-1.5 bg-card border border-border rounded-2xl sm:rounded-[32px] shadow-sm">
                 <Select value={selectedSemester} onValueChange={(v) => { setSelectedSemester(v); setSelectedSubject(""); }}>
                   <SelectTrigger className="h-14 rounded-[26px] border-none bg-transparent font-bold">
                     <SelectValue placeholder="Semester Node" />
@@ -509,7 +509,7 @@ const Admin = () => {
 
               {selectedSubject && resources && (
                 <div className="space-y-8 animate-in fade-in duration-500">
-                  <div className="flex flex-col md:flex-row items-center gap-6 pb-6 pt-2">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 pb-6 pt-2">
                     <div className="relative flex-1 w-full">
                       <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input placeholder="Search catalog..." className="pl-14 h-16 rounded-[28px] bg-card border-border font-medium shadow-sm focus:border-primary/30" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
@@ -573,13 +573,13 @@ const Admin = () => {
                      <Users className="h-3.5 w-3.5" />
                      <span>Constituent Outreach</span>
                    </div>
-                   <h1 className="text-5xl font-black tracking-tighter italic font-serif leading-none">Community Hub</h1>
+                   <h1 className="text-3xl sm:text-5xl font-black tracking-tighter italic font-serif leading-none">Community Hub</h1>
                    <p className="text-muted-foreground font-medium max-w-xl">Verify institutional broadcasts and manage student mailing registries.</p>
                  </div>
                  
                  <Button 
                    onClick={handleExportRegistry}
-                   className="h-16 rounded-[24px] px-10 bg-foreground text-background text-[10px] font-black uppercase tracking-widest shadow-2xl hover:scale-[1.05] active:scale-95 transition-all gap-4 ring-offset-background focus-visible:ring-2 focus-visible:ring-primary"
+                   className="h-14 sm:h-16 rounded-xl sm:rounded-[24px] px-6 sm:px-10 bg-foreground text-background text-[10px] font-black uppercase tracking-widest shadow-2xl hover:scale-[1.05] active:scale-95 transition-all gap-3 sm:gap-4 ring-offset-background focus-visible:ring-2 focus-visible:ring-primary w-full sm:w-auto"
                  >
                    <Copy className="h-4 w-4" />
                    One-Click Registry Export
@@ -638,7 +638,7 @@ const Admin = () => {
                   </Button>
                 </div>
                 
-                <div className="rounded-[48px] border-2 border-border bg-card overflow-hidden shadow-2xl h-[950px] relative group transition-all duration-700 hover:border-green-500/20">
+                <div className="rounded-2xl sm:rounded-[48px] border-2 border-border bg-card overflow-hidden shadow-2xl h-[500px] sm:h-[950px] relative group transition-all duration-700 hover:border-green-500/20">
                   <iframe 
                     src="https://docs.google.com/spreadsheets/d/17A-ddjDs1u_gtD4UKsCNfcM_0GGnNcKqTopySuJfC2Y/edit?resourcekey=&gid=1810515499#gid=1810515499" 
                     className="w-full h-full border-none grayscale-[0.3] hover:grayscale-0 transition-all duration-700 scale-[1.01]"
@@ -668,7 +668,7 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({ active, icon: Icon, label, onClick }: SidebarItemProps) => (
-  <button onClick={onClick} className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all group ${active ? 'bg-muted/40 border-border text-primary font-black shadow-sm' : 'hover:bg-muted/20 text-muted-foreground font-bold hover:text-foreground'}`}>
+  <button onClick={onClick} className={`w-full lg:w-full flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all group shrink-0 ${active ? 'bg-muted/40 border-border text-primary font-black shadow-sm' : 'hover:bg-muted/20 text-muted-foreground font-bold hover:text-foreground'}`}>
     <div className="flex items-center gap-4">
       <Icon className={`h-4 w-4 ${active ? 'text-primary' : 'opacity-40 group-hover:opacity-100'}`} />
       <span className="text-[11px] uppercase tracking-widest">{label}</span>

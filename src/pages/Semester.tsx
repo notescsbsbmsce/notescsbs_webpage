@@ -69,9 +69,9 @@ const Semester = () => {
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary transition-colors duration-300">
       <Header />
       
-      <main className="flex-1 container mx-auto px-6 py-12 max-w-7xl">
+      <main className="flex-1 container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-7xl">
         {/* Breadcrumb & Back Button */}
-        <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
           <Button 
             variant="outline" 
             size="sm" 
@@ -90,11 +90,11 @@ const Semester = () => {
         </div>
 
         {/* Hero Section */}
-        <header className="mb-20">
-          <h1 className="text-7xl md:text-9xl font-black mb-8 tracking-tighter text-foreground leading-[0.85]">
+        <header className="mb-12 sm:mb-20">
+          <h1 className="text-4xl sm:text-5xl md:text-9xl font-black mb-6 sm:mb-8 tracking-tighter text-foreground leading-[0.85]">
             Semester <span className="italic font-serif text-primary">{semNumber}</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl font-serif italic opacity-80 leading-relaxed font-medium">
+          <p className="text-base sm:text-xl md:text-2xl text-muted-foreground max-w-2xl font-serif italic opacity-80 leading-relaxed font-medium">
             Academic Excellence. Curated BMSCE resources, verified by the council.
           </p>
         </header>
@@ -115,12 +115,12 @@ const Semester = () => {
                 <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">{theorySubjects.length} Resources Available</span>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {theorySubjects.map((subject) => (
                   <RouterLink 
                     key={subject.id} 
                     to={`/subject/${subject.id}`}
-                    className="group relative p-8 rounded-3xl bg-card border border-border hover:border-primary/40 hover:shadow-2xl transition-all flex flex-col justify-between overflow-hidden"
+                    className="group relative p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-card border border-border hover:border-primary/40 hover:shadow-2xl transition-all flex flex-col justify-between overflow-hidden"
                   >
                     {/* Hover Glow */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -152,14 +152,14 @@ const Semester = () => {
                 <span className="text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase">{labSubjects.length} Practical Units</span>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 {labSubjects.map((subject) => (
                   <RouterLink 
                     key={subject.id} 
                     to={`/subject/${subject.id}`}
-                    className="group flex items-center gap-6 p-8 rounded-[40px] bg-card border-l-4 border-l-pink-accent border border-border hover:bg-muted/30 hover:shadow-2xl transition-all"
+                    className="group flex items-center gap-4 sm:gap-6 p-5 sm:p-8 rounded-2xl sm:rounded-[40px] bg-card border-l-4 border-l-pink-accent border border-border hover:bg-muted/30 hover:shadow-2xl transition-all"
                   >
-                    <div className="w-16 h-16 rounded-3xl bg-pink-accent/10 flex items-center justify-center text-pink-accent group-hover:scale-110 transition-transform shadow-xl shadow-pink-accent/5">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-pink-accent/10 flex items-center justify-center text-pink-accent group-hover:scale-110 transition-transform shadow-xl shadow-pink-accent/5 shrink-0">
                       {getSubjectIcon(subject.name, true)}
                     </div>
                     <div>
@@ -175,14 +175,14 @@ const Semester = () => {
             </section>
 
             {/* Bottom Promo Grid */}
-            <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
-              <div className="lg:col-span-2 rounded-[40px] p-10 bg-gradient-to-br from-indigo-500/10 via-card to-primary/5 border border-border hover:shadow-2xl transition-all relative overflow-hidden group">
+            <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8 pb-12">
+              <div className="lg:col-span-2 rounded-2xl sm:rounded-[40px] p-6 sm:p-10 bg-gradient-to-br from-indigo-500/10 via-card to-primary/5 border border-border hover:shadow-2xl transition-all relative overflow-hidden group">
                 <div className="relative z-10">
-                  <h2 className="text-3xl md:text-5xl font-black mb-6 text-foreground">Exam Ready?</h2>
-                  <p className="text-lg text-muted-foreground max-w-lg mb-10">
+                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-4 sm:mb-6 text-foreground">Exam Ready?</h2>
+                  <p className="text-sm sm:text-lg text-muted-foreground max-w-lg mb-6 sm:mb-10">
                     Access our curated collection of previous year question papers and model answer sheets for all Semester {semNumber} subjects.
                   </p>
-                  <Button size="lg" className="h-14 px-8 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-black gap-3 group shadow-lg shadow-primary/20">
+                  <Button size="lg" className="h-12 sm:h-14 px-6 sm:px-8 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 font-black gap-2 sm:gap-3 group shadow-lg shadow-primary/20 text-sm sm:text-base">
                     Download Question Bank
                     <Download className="h-5 w-5" />
                   </Button>
@@ -192,7 +192,7 @@ const Semester = () => {
                 </div>
               </div>
               
-              <div className="rounded-[40px] p-10 bg-card border border-border flex flex-col items-center justify-center text-center group hover:shadow-2xl transition-all">
+              <div className="rounded-2xl sm:rounded-[40px] p-6 sm:p-10 bg-card border border-border flex flex-col items-center justify-center text-center group hover:shadow-2xl transition-all">
                 <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:scale-110 transition-transform">
                   <Calendar className="h-8 w-8" />
                 </div>

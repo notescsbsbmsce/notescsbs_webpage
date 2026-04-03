@@ -132,9 +132,9 @@ export default function Subject() {
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
       <Header />
       
-      <main className="flex-1 container mx-auto px-6 py-12 max-w-7xl animate-fade-in">
+      <main className="flex-1 container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-7xl animate-fade-in">
         {/* Navigation Breadcrumb & Back Button */}
-        <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
           <Button 
             variant="outline" 
             size="sm" 
@@ -167,7 +167,7 @@ export default function Subject() {
         ) : (
           <div className="space-y-16">
             {/* Subject Hero */}
-            <header className="relative p-12 rounded-[50px] bg-card border border-border overflow-hidden shadow-2xl">
+            <header className="relative p-6 sm:p-12 rounded-2xl sm:rounded-[50px] bg-card border border-border overflow-hidden shadow-2xl">
               <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
               <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-accent/5 rounded-full blur-[80px] pointer-events-none"></div>
               
@@ -175,7 +175,7 @@ export default function Subject() {
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-[11px] font-black uppercase tracking-widest text-primary mb-6 shadow-sm border border-primary/20">
                   {subject?.code || 'CSBS-CORE'}
                 </span>
-                <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter italic font-serif text-foreground leading-[0.9]">
+                <h1 className="text-3xl sm:text-5xl md:text-8xl font-black mb-6 sm:mb-8 tracking-tighter italic font-serif text-foreground leading-[0.9]">
                   {subject?.name}
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed font-medium">
@@ -185,29 +185,29 @@ export default function Subject() {
             </header>
 
             {/* Filter Buttons Section (Enhanced & Larger) */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mb-2">
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center sm:justify-start gap-2 sm:gap-4 mb-2">
               <Button 
                 variant={activeSection === "notes" ? "default" : "outline"} 
-                className={`rounded-2xl h-14 px-10 font-black uppercase tracking-widest text-[12px] transition-all duration-300 ${activeSection === "notes" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
+                className={`rounded-xl sm:rounded-2xl h-12 sm:h-14 px-4 sm:px-10 font-black uppercase tracking-widest text-[10px] sm:text-[12px] transition-all duration-300 ${activeSection === "notes" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
                 onClick={() => setActiveSection("notes")}
               >
-                <FileText className="h-5 w-5 mr-3" />
+                <FileText className="h-4 sm:h-5 w-4 sm:w-5 mr-2 sm:mr-3" />
                 Lecture Notes
               </Button>
               <Button 
                 variant={activeSection === "pyq" ? "default" : "outline"} 
-                className={`rounded-2xl h-14 px-10 font-black uppercase tracking-widest text-[12px] transition-all duration-300 ${activeSection === "pyq" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
+                className={`rounded-xl sm:rounded-2xl h-12 sm:h-14 px-4 sm:px-10 font-black uppercase tracking-widest text-[10px] sm:text-[12px] transition-all duration-300 ${activeSection === "pyq" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
                 onClick={() => setActiveSection("pyq")}
               >
-                <Code className="h-5 w-5 mr-3" />
+                <Code className="h-4 sm:h-5 w-4 sm:w-5 mr-2 sm:mr-3" />
                 PYQs (Papers)
               </Button>
               <Button 
                 variant={activeSection === "books" ? "default" : "outline"} 
-                className={`rounded-2xl h-14 px-10 font-black uppercase tracking-widest text-[12px] transition-all duration-300 ${activeSection === "books" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
+                className={`rounded-xl sm:rounded-2xl h-12 sm:h-14 px-4 sm:px-10 font-black uppercase tracking-widest text-[10px] sm:text-[12px] transition-all duration-300 ${activeSection === "books" ? 'shadow-xl shadow-primary/30 scale-105' : 'hover:bg-muted font-bold'}`}
                 onClick={() => setActiveSection("books")}
               >
-                <BookOpen className="h-5 w-5 mr-3" />
+                <BookOpen className="h-4 sm:h-5 w-4 sm:w-5 mr-2 sm:mr-3" />
                 Books & Question Bank
               </Button>
             </div>
@@ -216,17 +216,17 @@ export default function Subject() {
             <div className="min-h-[400px]">
               {activeSection === "notes" && (
                 <section className="animate-fade-in space-y-12">
-                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-                    <div className="space-y-4">
-                      <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase font-sans text-foreground">Curriculum Units</h2>
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8 mb-8 sm:mb-12">
+                    <div className="space-y-3 sm:space-y-4">
+                      <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase font-sans text-foreground">Curriculum Units</h2>
                       <p className="text-muted-foreground font-medium opacity-60 max-w-xl">Systematic modular breakdown of the academic syllabus for deep vertical mastery.</p>
                     </div>
                     
                     {/* UNIT QUICK NAV BAR */}
-                    <div className="flex flex-wrap gap-2 p-2 rounded-3xl bg-muted/20 border border-border/50">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-2xl sm:rounded-3xl bg-muted/20 border border-border/50">
                       <Button 
                         variant={!selectedUnitFilter || selectedUnitFilter === "all" ? "default" : "ghost"}
-                        className={`h-12 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${(!selectedUnitFilter || selectedUnitFilter === "all") ? 'shadow-xl shadow-primary/20' : 'opacity-50 hover:opacity-100 hover:bg-primary/5'}`}
+                        className={`h-10 sm:h-12 px-3 sm:px-6 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${(!selectedUnitFilter || selectedUnitFilter === "all") ? 'shadow-xl shadow-primary/20' : 'opacity-50 hover:opacity-100 hover:bg-primary/5'}`}
                         onClick={() => setSelectedUnitFilter("all")}
                       >
                         All Units
@@ -235,7 +235,7 @@ export default function Subject() {
                         <Button 
                           key={num}
                           variant={selectedUnitFilter === num.toString() ? "default" : "ghost"}
-                          className={`h-12 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${selectedUnitFilter === num.toString() ? 'shadow-xl shadow-primary/20 scale-105' : 'opacity-50 hover:opacity-100 hover:bg-primary/5'}`}
+                          className={`h-10 sm:h-12 px-3 sm:px-6 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${selectedUnitFilter === num.toString() ? 'shadow-xl shadow-primary/20 scale-105' : 'opacity-50 hover:opacity-100 hover:bg-primary/5'}`}
                           onClick={() => setSelectedUnitFilter(num.toString())}
                         >
                           UNIT {num}
@@ -244,12 +244,12 @@ export default function Subject() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
                     {groupNotes().filter(([unit]) => !selectedUnitFilter || selectedUnitFilter === "all" || unit.replace('Unit ', '').trim() === selectedUnitFilter).length > 0 ? 
                      groupNotes()
                       .filter(([unit]) => !selectedUnitFilter || selectedUnitFilter === "all" || unit.replace('Unit ', '').trim() === selectedUnitFilter)
                       .map(([unit, group]) => (
-                      <div key={unit} className="group p-8 rounded-[40px] bg-card border border-border hover:border-primary/40 hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between animate-in zoom-in-95 duration-500">
+                      <div key={unit} className="group p-6 sm:p-8 rounded-2xl sm:rounded-[40px] bg-card border border-border hover:border-primary/40 hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between animate-in zoom-in-95 duration-500">
                         <div className="mb-8">
                           <div className="w-16 h-16 rounded-[24px] bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform shadow-xl shadow-primary/5 border border-primary/20 mb-8">
                             <Layers className="h-8 w-8" />
@@ -293,8 +293,9 @@ export default function Subject() {
 
               {activeSection === "pyq" && (
                 <section className="animate-fade-in">
-                  <h2 className="text-2xl md:text-3xl font-black mb-10 border-b border-border pb-4 text-foreground">Examination Papers</h2>
-                  <div className="rounded-[40px] bg-card border border-border overflow-hidden shadow-xl">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 sm:mb-10 border-b border-border pb-4 text-foreground">Examination Papers</h2>
+                  {/* Mobile: Card layout, Desktop: Table layout */}
+                  <div className="hidden md:block rounded-[40px] bg-card border border-border overflow-hidden shadow-xl">
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className="bg-muted text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
@@ -353,16 +354,56 @@ export default function Subject() {
                       </tbody>
                     </table>
                   </div>
+
+                  {/* Mobile PYQ Cards */}
+                  <div className="md:hidden space-y-4">
+                    {pyqResources.length > 0 ? Object.entries(groupPYQs()).map(([cycle, group]) => {
+                      const [type, year] = cycle.split('_');
+                      return (
+                        <div key={cycle} className="p-5 rounded-2xl border border-border bg-card space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                              <FileText className="h-6 w-6" />
+                            </div>
+                            <div className="min-w-0">
+                              <h3 className="text-base font-black text-foreground tracking-tight uppercase italic font-serif leading-tight">
+                                {type.startsWith('cie') ? `CIE ${type.slice(3)}` : type.toUpperCase()} • {year}
+                              </h3>
+                              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
+                                {type === 'see' ? 'Semester End Exam' : `CIE Phase ${type.slice(3)}`}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            {group.map((res) => (
+                              <button 
+                                key={res.id}
+                                className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-muted/40 hover:bg-primary/10 text-sm font-black text-foreground hover:text-primary transition-all border border-transparent hover:border-primary/20"
+                                onClick={() => setPreviewFile({ url: res.file_url, title: res.title, unit: res.unit })}
+                              >
+                                <span className="truncate text-xs">{formatTitle(res.title)}</span>
+                                <Eye className="h-4 w-4 shrink-0 opacity-50" />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    }) : (
+                      <div className="py-12 text-center text-muted-foreground font-medium rounded-2xl border border-dashed border-border">
+                        No examination papers available.
+                      </div>
+                    )}
+                  </div>
                 </section>
               )}
 
               {activeSection === "books" && (
                 <section className="animate-fade-in">
-                  <h2 className="text-2xl md:text-3xl font-black mb-10 border-b border-border pb-4 text-foreground">Textbooks & Reference</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 sm:mb-10 border-b border-border pb-4 text-foreground">Textbooks & Reference</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10">
                     {groupBooks().length > 0 ? groupBooks().map(([title, group]) => (
-                      <div key={title} className="group relative p-10 rounded-[50px] bg-card border border-border hover:shadow-2xl transition-all overflow-hidden flex flex-col h-full shadow-lg">
-                        <div className="aspect-[4/5] bg-muted/30 rounded-[35px] mb-8 flex items-center justify-center p-8 relative overflow-hidden shrink-0 border border-border/50">
+                      <div key={title} className="group relative p-6 sm:p-10 rounded-2xl sm:rounded-[50px] bg-card border border-border hover:shadow-2xl transition-all overflow-hidden flex flex-col h-full shadow-lg">
+                        <div className="aspect-[4/5] bg-muted/30 rounded-2xl sm:rounded-[35px] mb-6 sm:mb-8 flex items-center justify-center p-6 sm:p-8 relative overflow-hidden shrink-0 border border-border/50">
                           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-purple-accent/10"></div>
                           <div className="relative z-10 w-full h-full border-4 border-foreground/5 p-6 flex flex-col justify-between items-center text-center">
                             <BookOpen className="h-12 w-12 text-foreground/5" />
@@ -409,8 +450,8 @@ export default function Subject() {
         <DialogContent className="max-w-[100vw] w-screen h-screen p-0 m-0 bg-background/95 backdrop-blur-2xl border-none rounded-none overflow-hidden flex flex-col gap-0 shadow-none animate-in fade-in zoom-in-100 duration-500 z-[100]">
           
           {/* Reader Header - 'Tactile Navigation' */}
-          <header className="px-8 h-24 border-b border-border/40 flex items-center justify-between shrink-0 bg-card/60 relative z-[110]">
-            <div className="flex items-center gap-6">
+          <header className="px-4 sm:px-8 h-16 sm:h-24 border-b border-border/40 flex items-center justify-between shrink-0 bg-card/60 relative z-[110]">
+            <div className="flex items-center gap-3 sm:gap-6 min-w-0 flex-1">
               <Button 
                 variant="ghost" 
                 size="icon" 
@@ -420,14 +461,14 @@ export default function Subject() {
                 <ChevronRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
               </Button>
               
-              <div className="flex flex-col">
-                <DialogTitle className="text-2xl md:text-3xl font-black text-foreground font-serif tracking-tight leading-none mb-2 flex items-center gap-3">
-                  {previewFile?.title}
+              <div className="flex flex-col min-w-0">
+                <DialogTitle className="text-base sm:text-2xl md:text-3xl font-black text-foreground font-serif tracking-tight leading-none mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3 truncate">
+                  <span className="truncate">{previewFile?.title}</span>
                   <span className="px-2 py-0.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-black tracking-widest text-primary uppercase">
                     {previewFile ? getFileExtension(previewFile.url) : ''}
                   </span>
                 </DialogTitle>
-                <div className="flex items-center gap-3">
+                <div className="hidden sm:flex items-center gap-3">
                   <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60 italic font-serif">
                     {previewFile?.unit ? `Unit ${previewFile.unit.replace('Unit ', '')} Archival Asset` : 'Official Scholarly Asset'}
                   </span>

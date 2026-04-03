@@ -10,9 +10,9 @@ export default function Privacy() {
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
       <Header />
       
-      <main className="flex-1 container mx-auto px-6 py-12 md:py-20 max-w-4xl animate-fade-in">
+      <main className="flex-1 container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-20 max-w-4xl animate-fade-in">
         {/* Navigation & Header */}
-        <div className="flex flex-col md:flex-row items-center gap-6 mb-16">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-8 sm:mb-16">
           <Button 
             variant="outline" 
             size="sm" 
@@ -28,8 +28,8 @@ export default function Privacy() {
           </div>
         </div>
 
-        <header className="mb-16 text-center md:text-left">
-          <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-none italic font-serif text-foreground">
+        <header className="mb-12 sm:mb-16 text-center sm:text-left">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6 tracking-tighter leading-none italic font-serif text-foreground">
             Privacy <span className="text-primary not-italic font-sans">Policy</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
@@ -37,10 +37,10 @@ export default function Privacy() {
           </p>
         </header>
 
-        <div className="space-y-16">
+        <div className="space-y-8 sm:space-y-16">
           {/* Section 1: Data Collection */}
-          <section className="relative p-10 rounded-[40px] bg-card border border-border overflow-hidden">
-            <div className="flex flex-col md:flex-row gap-8 items-start relative z-10">
+          <section className="relative p-6 sm:p-10 rounded-3xl md:rounded-[40px] bg-card border border-border overflow-hidden">
+            <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start relative z-10">
               <div className="p-4 rounded-3xl bg-primary/10 text-primary shrink-0">
                 <ShieldCheck className="h-8 w-8" />
               </div>
@@ -67,7 +67,7 @@ export default function Privacy() {
           </section>
 
           {/* Section 2: Institutional Disclaimer */}
-          <section className="p-10 rounded-[40px] border border-dashed border-border/50 bg-muted/20">
+          <section className="p-6 sm:p-10 rounded-3xl md:rounded-[40px] border border-dashed border-border/50 bg-muted/20">
             <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
               <Info className="h-6 w-6 text-primary" />
               Institutional Disclaimer
@@ -78,8 +78,8 @@ export default function Privacy() {
           </section>
 
           {/* Section 3: Legal Recourse */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-10 rounded-[40px] bg-card border border-border">
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+            <div className="p-6 sm:p-10 rounded-3xl md:rounded-[40px] bg-card border border-border">
               <h3 className="text-xl font-black mb-4 flex items-center gap-2">
                 <Scale className="h-5 w-5 text-primary" />
                 Legal Recourse
@@ -88,7 +88,7 @@ export default function Privacy() {
                 Any discrepancies or grievances regarding the content or data management can be addressed under the jurisdiction of Bengaluru, Karnataka. We strictly adhere to the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011.
               </p>
             </div>
-            <div className="p-10 rounded-[40px] bg-primary text-primary-foreground shadow-2xl shadow-primary/20">
+            <div className="p-6 sm:p-10 rounded-3xl md:rounded-[40px] bg-primary text-primary-foreground shadow-2xl shadow-primary/20">
               <h3 className="text-xl font-black mb-4 flex items-center gap-2">
                 <Mail className="h-5 w-5" />
                 Contact Counsel

@@ -51,7 +51,7 @@ export function Header() {
             </Button>
           </nav>
           
-          <div className="flex items-center gap-3 ml-4 pl-4 border-l border-border">
+          <div className="flex items-center gap-2 sm:gap-3 lg:ml-4 lg:pl-4 lg:border-l lg:border-border">
             <ThemeToggle />
           </div>
         </div>

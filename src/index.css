@@ -164,3 +164,28 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+
+/* Mobile Bottom Nav Spacing - prevents content being hidden behind fixed mobile nav */
+@media (max-width: 767px) {
+  main {
+    padding-bottom: 5rem !important;
+  }
+}
+
+/* Safe Area Insets for notched devices */
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Mobile table container - horizontal scroll on small screens */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch-friendly tap targets */
+@media (max-width: 767px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+  }
+}
