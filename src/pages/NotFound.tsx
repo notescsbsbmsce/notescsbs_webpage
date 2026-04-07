@@ -2,11 +2,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { Home, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
+import { SEOHead } from "@/components/SEOHead";
 
 const NotFound = () => {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEOHead
+        title="404 — Page Not Found | NOTESCSBS"
+        description="The page you're looking for doesn't exist or has been relocated."
+        canonicalPath="/404"
+        noindex={true}
+      />
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="text-center animate-fade-in">
           <h1 className="text-6xl font-bold text-primary mb-4 tracking-tighter">404</h1>

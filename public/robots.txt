@@ -1,6 +1,26 @@
+# NOTESCSBS — Crawler Directives
+# https://notescsbs.vercel.app
+
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /auth
+Disallow: /api/
 
+# Crawl-delay (optional courtesy for well-behaved bots)
+Crawl-delay: 1
+
+# Sitemap declaration
 Sitemap: https://notescsbs.vercel.app/sitemap.xml
+
+# Google-specific
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /auth

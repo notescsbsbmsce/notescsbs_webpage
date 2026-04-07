@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
 
 const Index = () => {
   const { toast } = useToast();
@@ -66,6 +67,49 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary">
+      <SEOHead
+        title="Notes CSBS | BMSCE CSBS Academic Repository — Lecture Notes, PYQs & Study Materials"
+        description="NOTESCSBS is the definitive, meticulously organized repository for CSBS academic assets at BMS College of Engineering. Access lecture notes, previous year question papers (PYQs), and premium study materials for all 8 semesters."
+        canonicalPath="/"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Notes CSBS",
+            url: "https://notescsbs.vercel.app",
+            logo: "https://notescsbs.vercel.app/notes-csbs-logo.png",
+            description: "Student-built academic repository for CSBS department at BMSCE, Bengaluru.",
+            sameAs: [
+              "https://github.com/Tusharjain-19"
+            ]
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Notes CSBS",
+            url: "https://notescsbs.vercel.app",
+            description: "Access lecture notes, PYQs, and study materials for CSBS at BMSCE.",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: "https://notescsbs.vercel.app/semester/{search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          buildBreadcrumbJsonLd([
+            { name: "Home", path: "/" }
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "EducationalOrganization",
+            name: "BMS College of Engineering",
+            department: {
+              "@type": "Organization",
+              name: "Department of Computer Science and Business Systems (CSBS)"
+            },
+            url: "https://www.bmsce.ac.in/"
+          }
+        ]}
+      />
       <Header />
       
       <main className="flex-1">

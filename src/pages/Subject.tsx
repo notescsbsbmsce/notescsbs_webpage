@@ -1,5 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { SEOHead, buildBreadcrumbJsonLd, buildCourseJsonLd } from "@/components/SEOHead";
 import { useQuery } from "@tanstack/react-query";
 import { 
   Download, 
@@ -130,6 +131,25 @@ export default function Subject() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
+      <SEOHead
+        title={subject ? `${subject.name} (${subject.code}) — Notes, PYQs & Books | BMSCE CSBS` : "Subject — NOTESCSBS"}
+        description={subject ? `Download ${subject.name} lecture notes, previous year CIE/SEE question papers, and textbooks for Semester ${subject.semester_id} CSBS at BMSCE.` : "CSBS subject resources at BMSCE."}
+        canonicalPath={`/subject/${id}`}
+        jsonLd={subject ? [
+          buildBreadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: `Semester`, path: `/semester/${subject.semester_id}` },
+            { name: subject.name, path: `/subject/${id}` }
+          ]),
+          buildCourseJsonLd({
+            name: subject.name,
+            code: subject.code,
+            description: `Centralized lecture notes, CIE & SEE question papers, and textbook references for ${subject.name} in the CSBS programme at BMSCE.`,
+            semester: subject.semester_id,
+            url: `https://notescsbs.vercel.app/subject/${id}`,
+          })
+        ] : undefined}
+      />
       <Header />
       
       <main className="flex-1 container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-7xl animate-fade-in">

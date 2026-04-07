@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Linkedin, Users, ChevronLeft, Github, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
 
 interface Contributor {
   name: string;
@@ -85,6 +86,15 @@ export default function Contributors() {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
+      <SEOHead
+        title="Contributors — Meet the Makers of NOTESCSBS | BMSCE CSBS"
+        description="Meet the student developers behind NOTESCSBS — the definitive CSBS academic repository at BMS College of Engineering, Bengaluru. Built by Tushar Jain and Ayush Kumar."
+        canonicalPath="/contributors"
+        jsonLd={buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Contributors", path: "/contributors" }
+        ])}
+      />
       <Header />
       
       <main className="flex-1 container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-6xl animate-fade-in">

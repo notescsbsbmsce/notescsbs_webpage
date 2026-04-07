@@ -3,11 +3,21 @@ import { Footer } from "@/components/Footer";
 import { ShieldCheck, Scale, Mail, Info, Section, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
 
 export default function Privacy() {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
+      <SEOHead
+        title="Privacy Policy — NOTESCSBS | BMSCE CSBS Academic Repository"
+        description="Read the NOTESCSBS privacy policy. Learn how we handle data, protect student privacy, and comply with Indian IT regulations at BMS College of Engineering."
+        canonicalPath="/privacy"
+        jsonLd={buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Privacy Policy", path: "/privacy" }
+        ])}
+      />
       <Header />
       
       <main className="flex-1 container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-20 max-w-4xl animate-fade-in">

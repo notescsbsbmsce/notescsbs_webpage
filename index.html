@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#3b82f6" />
     <link rel="icon" type="image/png" href="/notes-csbs-logo.png" />
+    <link rel="apple-touch-icon" href="/notes-csbs-logo.png" />
     <meta name="google-site-verification" content="XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo" />
-    <meta name="description" content="NOTESCSBS is the definitive, meticulously organized repository for CSBS academic assets at BMS College of Engineering. Access lecture notes, previous year question papers (PYQs), and premium study materials." />
-    <meta name="keywords" content="BMSCE, CSBS, Computer Science and Business Systems, Lecture Notes, PYQ, Question Papers, VTU, BMSCE Notes, Study Material, Engineering Notes" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>Notes CSBS | BMSCE CSBS Academic Repository — Lecture Notes, PYQs & Study Materials</title>
+    <meta name="description" content="NOTESCSBS is the definitive, meticulously organized repository for CSBS academic assets at BMS College of Engineering. Access lecture notes, previous year question papers (PYQs), and premium study materials for all 8 semesters." />
+    <meta name="keywords" content="BMSCE, CSBS, Computer Science and Business Systems, Lecture Notes, PYQ, Question Papers, VTU, BMSCE Notes, Study Material, Engineering Notes, BMS College of Engineering, Bengaluru, CIE, SEE, Semester Notes, DSA Notes, DBMS Notes, Machine Learning Notes, BMSCE CSBS Notes" />
     <meta name="author" content="Tushar Jain, Ayush Kumar" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="canonical" href="https://notescsbs.vercel.app/" />
@@ -15,19 +19,64 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://notescsbs.vercel.app/" />
-    <meta property="og:title" content="Notes CSBS | BMSCE Curriculum Repository" />
-    <meta property="og:description" content="The definitive repository for CSBS academic assets at BMSCE. Access structured lecture notes, PYQs, and verified resources." />
-    <!-- Ensure you add an og-image.png in your public folder for best rendering -->
+    <meta property="og:title" content="Notes CSBS | BMSCE CSBS Academic Repository — Lecture Notes, PYQs & Study Materials" />
+    <meta property="og:description" content="The definitive repository for CSBS academic assets at BMSCE. Access structured lecture notes, PYQs, and verified resources for all 8 semesters." />
     <meta property="og:image" content="https://notescsbs.vercel.app/notes-csbs-logo.png" />
+    <meta property="og:site_name" content="Notes CSBS | BMSCE" />
+    <meta property="og:locale" content="en_IN" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://notescsbs.vercel.app/" />
-    <meta property="twitter:title" content="Notes CSBS | BMSCE Curriculum Repository" />
-    <meta property="twitter:description" content="The definitive repository for CSBS academic assets at BMSCE. Access structured lecture notes, PYQs, and verified resources." />
-    <meta property="twitter:image" content="https://notescsbs.vercel.app/notes-csbs-logo.png" />
-    
-    <title>Notes CSBS | BMSCE CSBS Academic Repository</title>
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://notescsbs.vercel.app/" />
+    <meta name="twitter:title" content="Notes CSBS | BMSCE CSBS Academic Repository" />
+    <meta name="twitter:description" content="The definitive repository for CSBS academic assets at BMSCE. Access structured lecture notes, PYQs, and verified resources." />
+    <meta name="twitter:image" content="https://notescsbs.vercel.app/notes-csbs-logo.png" />
+
+    <!-- Global JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Notes CSBS",
+      "alternateName": "NOTESCSBS BMSCE",
+      "url": "https://notescsbs.vercel.app",
+      "description": "The definitive repository for CSBS academic assets at BMS College of Engineering, Bengaluru.",
+      "inLanguage": "en",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Notes CSBS",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://notescsbs.vercel.app/notes-csbs-logo.png"
+        }
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://notescsbs.vercel.app/semester/{search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "BMS College of Engineering",
+      "alternateName": "BMSCE",
+      "url": "https://www.bmsce.ac.in/",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      },
+      "department": {
+        "@type": "Organization",
+        "name": "Department of Computer Science and Business Systems (CSBS)"
+      }
+    }
+    </script>
+
     <script>
       // 1. Force unregister any existing service workers (FIXES CACHE ERRORS)
       if ('serviceWorker' in navigator) {
@@ -58,6 +107,34 @@
 
   <body>
     <div id="root"></div>
+
+    <!-- Noscript fallback for crawlers that don't execute JS -->
+    <noscript>
+      <div style="padding: 2rem; font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto;">
+        <h1>Notes CSBS — BMSCE CSBS Academic Repository</h1>
+        <p>NOTESCSBS is the definitive, meticulously organized repository for CSBS academic assets at BMS College of Engineering, Bengaluru. Access lecture notes, previous year question papers (PYQs), and premium study materials.</p>
+        <h2>Semesters</h2>
+        <nav>
+          <ul>
+            <li><a href="/semester/1">Semester 1 — Mathematics I, Engineering Physics, Civil Engineering, Mechanical Engineering, Electrical Engineering</a></li>
+            <li><a href="/semester/2">Semester 2 — Mathematics II, Engineering Chemistry, C Programming, Basic Electronics, Constitution of India</a></li>
+            <li><a href="/semester/3">Semester 3 — Mathematics III, Data Structures & Algorithms, OOP with C++, Digital Electronics, Unix Programming</a></li>
+            <li><a href="/semester/4">Semester 4 — Mathematics IV, DBMS, Computer Organization, Operating Systems, Financial Accounting</a></li>
+            <li><a href="/semester/5">Semester 5 — Computer Networks, Software Engineering, Artificial Intelligence, Web Technologies, Business Analytics</a></li>
+            <li><a href="/semester/6">Semester 6 — Machine Learning, Cloud Computing, Information Security, Organizational Behavior</a></li>
+            <li><a href="/semester/7">Semester 7 — Big Data Analytics, Internet of Things, Professional Elective, Project Phase 1</a></li>
+            <li><a href="/semester/8">Semester 8 — Professional Electives, Project Phase 2, Internship, Seminar</a></li>
+          </ul>
+        </nav>
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="/contributors">Contributors</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+        </ul>
+        <p>Contact: <a href="mailto:notescsbsbmsce@gmail.com">notescsbsbmsce@gmail.com</a></p>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

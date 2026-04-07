@@ -1,4 +1,5 @@
 import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";
+import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSemesterById, fetchSubjectsBySemester } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
@@ -67,6 +68,15 @@ const Semester = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary transition-colors duration-300">
+      <SEOHead
+        title={`Semester ${semNumber} — CSBS Notes, PYQs & Study Material | BMSCE NOTESCSBS`}
+        description={`Access all Semester ${semNumber} CSBS subjects at BMSCE — lecture notes, CIE question papers, SEE papers, and textbooks. ${theorySubjects.map(s => s.name).join(', ')}.`}
+        canonicalPath={`/semester/${id}`}
+        jsonLd={buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: `Semester ${semNumber}`, path: `/semester/${id}` }
+        ])}
+      />
       <Header />
       
       <main className="flex-1 container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-7xl">
