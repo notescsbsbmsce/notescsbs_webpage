@@ -171,7 +171,7 @@ const Admin = () => {
   const { data: subscribers } = useQuery({
     queryKey: ["subscribers"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("subscribers" as any).select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("subscribers").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data as unknown as Subscriber[];
     },
@@ -182,7 +182,7 @@ const Admin = () => {
 
   const addSubscriberMutation = useMutation({
     mutationFn: async (email: string) => {
-      const { error } = await supabase.from("subscribers" as any).insert([{ email }]);
+      const { error } = await supabase.from("subscribers").insert([{ email }]);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -190,14 +190,14 @@ const Admin = () => {
       setNewSubscriberEmail("");
       queryClient.invalidateQueries({ queryKey: ["subscribers"] });
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
        toast({ title: "Enrollment Failed", description: err.message || "Could not synchronize member.", variant: "destructive" });
     }
   });
 
   const deleteSubscriberMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("subscribers" as any).delete().eq("id", id);
+      const { error } = await supabase.from("subscribers").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -262,6 +262,40 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ["resources", selectedSubject] });
     },
   });
+
+  const updateResourceMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: any }) => {
+      const client = getSupabaseClient(semesterNumber);
+      const { error } = await client.from("resources").update(data).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({ title: "Asset Updated", description: "The resource metadata has been modified." });
+      setIsEditOpen(false);
+      setEditResource(null);
+      queryClient.invalidateQueries({ queryKey: ["resources", selectedSubject] });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Update Failed", description: error.message, variant: "destructive" });
+    }
+  });
+
+  const deleteResourceMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const client = getSupabaseClient(semesterNumber);
+      const { error } = await client.from("resources").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({ title: "Asset Purged", description: "The resource has been removed from the registry." });
+      setDeleteDialog({ open: false, id: 0, title: "" });
+      queryClient.invalidateQueries({ queryKey: ["resources", selectedSubject] });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Purge Failed", description: error.message, variant: "destructive" });
+    }
+  });
+
 
   const handleAddResource = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -654,15 +688,27 @@ const Admin = () => {
         </main>
       </div>
 
-      <DeleteConfirmDialog resourceTitle={deleteDialog.title} isOpen={deleteDialog.open} isDeleting={false} onClose={() => setDeleteDialog({ open: false, id: 0, title: "" })} onConfirm={() => {}} />
-      <EditResourceModal resource={editResource} isOpen={isEditOpen} isUpdating={false} onClose={() => { setIsEditOpen(false); setEditResource(null); }} onSave={() => {}} />
+      <DeleteConfirmDialog 
+        resourceTitle={deleteDialog.title} 
+        isOpen={deleteDialog.open} 
+        isDeleting={deleteResourceMutation.isPending} 
+        onClose={() => setDeleteDialog({ open: false, id: 0, title: "" })} 
+        onConfirm={() => deleteResourceMutation.mutate(deleteDialog.id)} 
+      />
+      <EditResourceModal 
+        resource={editResource} 
+        isOpen={isEditOpen} 
+        isUpdating={updateResourceMutation.isPending} 
+        onClose={() => { setIsEditOpen(false); setEditResource(null); }} 
+        onSave={(id, data) => updateResourceMutation.mutate({ id, data })} 
+      />
     </div>
   );
 };
 
 interface SidebarItemProps {
   active: boolean;
-  icon: any;
+  icon: React.ElementType;
   label: string;
   onClick: () => void;
 }
