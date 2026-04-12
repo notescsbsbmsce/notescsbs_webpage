@@ -8,13 +8,13 @@ import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { MobileNav } from "@/components/MobileNav";
 import { useAnalytics } from "./hooks/useAnalytics";
 
-// Core pages loaded directly for maximum reliability
+// Core index page direct for maximum landing performance
 import Index from "./pages/Index";
-import Admin from "./pages/Admin";
-import Auth from "./pages/Auth";
 import ScrollToTop from "./components/ScrollToTop";
 
-// Optional pages keep lazy loading
+// Remaining pages lazy loaded
+const Admin = lazy(() => import("./pages/Admin"));
+const Auth = lazy(() => import("./pages/Auth"));
 const Semester = lazy(() => import("./pages/Semester"));
 const Subject = lazy(() => import("./pages/Subject"));
 const Contributors = lazy(() => import("./pages/Contributors"));
@@ -62,8 +62,8 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
+            <Route path="/auth" element={<Suspense fallback={<PageLoader />}><Auth /></Suspense>} />
+            <Route path="/admin" element={<ProtectedAdminRoute><Suspense fallback={<PageLoader />}><Admin /></Suspense></ProtectedAdminRoute>} />
             
             {/* Lazy loaded routes wrapped in Suspense */}
             <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />

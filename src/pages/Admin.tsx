@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase, getSupabaseClient } from "@/integrations/supabase/client";
@@ -20,7 +20,10 @@ import {
   LayoutDashboard, FilePlus, Database, Settings, Terminal,
   PlusCircle, FileCheck, Layers, ChevronRight
 } from "lucide-react";
-import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
+
+// Lazy load heavy analytics dashboard
+const AnalyticsDashboard = lazy(() => import("@/components/admin/AnalyticsDashboard").then(m => ({ default: m.AnalyticsDashboard })));
+
 import { DeleteConfirmDialog } from "@/components/admin/DeleteConfirmDialog";
 import { ResourceCard } from "@/components/admin/ResourceCard";
 import { EditResourceModal } from "@/components/admin/EditResourceModal";
@@ -597,7 +600,11 @@ const Admin = () => {
             </div>
           )}
 
-          {activeView === "dashboard" && <AnalyticsDashboard />}
+          {activeView === "dashboard" && (
+            <Suspense fallback={<div className="h-96 flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+              <AnalyticsDashboard />
+            </Suspense>
+          )}
           
           {activeView === "community" && (
             <div className="max-w-4xl mx-auto space-y-12">

@@ -25,8 +25,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'ui': ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-          'query': ['@tanstack/react-query'],
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
+          'vendor-utils': ['@tanstack/react-query', 'clsx', 'tailwind-merge'],
+          'vendor-supabase': ['@supabase/supabase-js'],
         },
       },
     },
