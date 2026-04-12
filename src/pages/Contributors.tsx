@@ -32,6 +32,23 @@ const contributors: Contributor[] = [
   }
 ];
 
+const notesContributors: Contributor[] = [
+  {
+    name: "Niranjan K",
+    role: "Notes Contributor",
+    linkedIn: "https://www.linkedin.com/in/niranjan-k-140ba9322/",
+    batch: "2028",
+    bio: "Special thanks for providing comprehensive lecture notes and academic resources."
+  },
+  {
+    name: "Adithya D",
+    role: "Notes Contributor",
+    linkedIn: "https://www.linkedin.com/in/adithya-d-123230360/",
+    batch: "2028",
+    bio: "Special thanks for providing comprehensive lecture notes and academic resources."
+  }
+];
+
 const ContributorCard = ({ contributor, index }: { contributor: Contributor; index: number }) => (
   <div 
     className={`group relative p-6 sm:p-12 md:p-16 rounded-[32px] md:rounded-[60px] bg-card border border-border hover:border-primary/30 transition-all duration-700 hover:shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-10 delay-${index * 200}`}
@@ -142,14 +159,54 @@ export default function Contributors() {
           </div>
         </header>
 
-        {/* Contributors List */}
-        <div className="space-y-10 mb-24">
+        <div className="space-y-10 mb-20">
           <div className="grid grid-cols-1 gap-10">
             {contributors.map((contributor, index) => (
               <ContributorCard key={contributor.name} contributor={contributor} index={index} />
             ))}
           </div>
         </div>
+
+        {/* Notes Contributors Section */}
+        <section className="mb-24">
+          <div className="flex items-center gap-4 mb-10">
+            <div className="h-px flex-1 bg-border/50"></div>
+            <div className="px-6 py-2 rounded-full border border-primary/20 bg-primary/5 text-[10px] font-black uppercase tracking-[0.3em] text-primary italic font-serif">
+              Special Recognition: Notes Contributors
+            </div>
+            <div className="h-px flex-1 bg-border/50"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {notesContributors.map((contributor, index) => (
+              <div 
+                key={contributor.name}
+                className="group relative p-8 rounded-[40px] bg-card border border-border hover:border-primary/20 transition-all duration-500 hover:shadow-xl overflow-hidden animate-in fade-in zoom-in-95"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-[60px] -mr-24 -mt-24 group-hover:bg-primary/10 transition-colors"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-black text-foreground uppercase font-serif italic tracking-tight">{contributor.name}</h3>
+                    <span className="text-[9px] font-black px-2.5 py-1 rounded-lg bg-muted text-muted-foreground uppercase tracking-widest border border-border">2028 BATCH</span>
+                  </div>
+                  <p className="text-[13px] text-muted-foreground font-medium leading-relaxed mb-6 opacity-70">
+                    {contributor.bio}
+                  </p>
+                  <a
+                    href={contributor.linkedIn}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:gap-3 transition-all underline underline-offset-4 decoration-primary/20"
+                  >
+                    LinkedIn Profile <ChevronLeft className="h-3 w-3 rotate-180" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Closing Statment */}
         <div className="relative p-8 sm:p-12 rounded-[32px] md:rounded-[50px] border border-dashed border-border flex flex-col items-center justify-center text-center space-y-6 bg-muted/10 overflow-hidden">
