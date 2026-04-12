@@ -21,9 +21,7 @@ import {
   PlusCircle, FileCheck, Layers, ChevronRight
 } from "lucide-react";
 
-// Lazy load heavy analytics dashboard
-const AnalyticsDashboard = lazy(() => import("@/components/admin/AnalyticsDashboard").then(m => ({ default: m.AnalyticsDashboard })));
-
+// Resource management components
 import { DeleteConfirmDialog } from "@/components/admin/DeleteConfirmDialog";
 import { ResourceCard } from "@/components/admin/ResourceCard";
 import { EditResourceModal } from "@/components/admin/EditResourceModal";
@@ -91,7 +89,7 @@ const Admin = () => {
   const [editResource, setEditResource] = useState<Resource | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const [activeView, setActiveView] = useState<"upload" | "library" | "dashboard" | "community">("upload");
+  const [activeView, setActiveView] = useState<"upload" | "library" | "community">("upload");
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -359,7 +357,6 @@ const Admin = () => {
             <nav className="flex lg:flex-col gap-1 overflow-x-auto pb-2 lg:pb-0 -mx-2 px-2 lg:mx-0 lg:px-0">
               <SidebarItem active={activeView === "upload"} icon={FilePlus} label="Deploy Asset" onClick={() => setActiveView("upload")} />
               <SidebarItem active={activeView === "library"} icon={Library} label="Archive Manager" onClick={() => setActiveView("library")} />
-              <SidebarItem active={activeView === "dashboard"} icon={BarChart3} label="Terminal Stats" onClick={() => setActiveView("dashboard")} />
               <SidebarItem active={activeView === "community"} icon={Users} label="Community Hub" onClick={() => setActiveView("community")} />
             </nav>
           </div>
@@ -600,11 +597,6 @@ const Admin = () => {
             </div>
           )}
 
-          {activeView === "dashboard" && (
-            <Suspense fallback={<div className="h-96 flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
-              <AnalyticsDashboard />
-            </Suspense>
-          )}
           
           {activeView === "community" && (
             <div className="max-w-4xl mx-auto space-y-12">
