@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
+import { AEOContent } from "@/components/AEOContent";
 
 const Index = () => {
   const { toast } = useToast();
@@ -65,12 +66,15 @@ const Index = () => {
     }
   };
 
+  const aeoKeywords = "notes csbs, notes, note bms, note csbs vtu, bms vtu, bmsce csbs notes, csbs notes, note csbs, pyq csbs bmsce, bmsce pyq, bms pyq, csbs bmsce pyq, bsmce pyq csbs, csbs, csbs bms, csbs bmsce, BMSCE, CSBS, Computer Science and Business Systems, Lecture Notes, PYQ, Question Papers, VTU, BMSCE Notes, Study Material, Engineering Notes, BMS College of Engineering, Bengaluru, CIE, SEE, Semester Notes, DSA Notes, DBMS Notes, Machine Learning Notes, BMSCE CSBS Notes, VTU Notes 2024, VTU Notes 2025, Engineering Study Materials, BMSCE Academics, CSBS VTU Syllabus, Previous Year Papers VTU, Tushar Jain, Ayush Kumar, FABS, FLAT, Statistics, Stats for CSBS, Financial Accounting, Business Statistics, Formal Languages, Automata Theory, Discrete Mathematics, DE, Digital Electronics, UNIX, COA, DBMS, OS, Operating Systems, Computer Networks, CN, SE, Software Engineering, AI, Artificial Intelligence, ML, Machine Learning, BA, Business Analytics, WEB, Web Tech, CC, Cloud Computing, IS, Information Security, OB, Org Behavior, BD, Big Data, IOT, Internet of Things, Cyber Security, Cryptography, CSBS BMSCE, BMSCE CSBS Branch, BMSCE Placements, BMSCE Subjects, VTU Syllabus 2022 Scheme, VTU Syllabus 2021 Scheme, how to make csbs notes, csbs notes pdf, csbs pyq download, bmsce question bank, csbs book bank, csbs library, academic repository bmsce";
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary">
       <SEOHead
         title="Notes CSBS | BMSCE CSBS Academic Repository — Lecture Notes, PYQs & Study Materials"
         description="NOTESCSBS is the definitive, meticulously organized repository for CSBS academic assets at BMS College of Engineering. Access lecture notes, previous year question papers (PYQs), and premium study materials for all 8 semesters."
         canonicalPath="/"
+        keywords={aeoKeywords}
         jsonLd={[
           {
             "@context": "https://schema.org",
@@ -265,6 +269,7 @@ const Index = () => {
         </section>
       </main>
       
+      <AEOContent />
       <Footer />
     </div>
   );

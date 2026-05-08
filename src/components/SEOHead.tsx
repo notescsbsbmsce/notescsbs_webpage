@@ -4,6 +4,7 @@ interface SEOHeadProps {
   title: string;
   description: string;
   canonicalPath: string;
+  keywords?: string;
   ogType?: string;
   ogImage?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
@@ -22,6 +23,7 @@ export function SEOHead({
   title,
   description,
   canonicalPath,
+  keywords,
   ogType = "website",
   ogImage = DEFAULT_IMAGE,
   jsonLd,
@@ -44,6 +46,9 @@ export function SEOHead({
 
     // === Standard Meta ===
     setMeta("name", "description", description);
+    if (keywords) {
+      setMeta("name", "keywords", keywords);
+    }
     setMeta("name", "robots", noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
 
     // === Canonical URL ===

@@ -72,6 +72,7 @@ const Semester = () => {
         title={`Semester ${semNumber} — CSBS Notes, PYQs & Study Material | BMSCE NOTESCSBS`}
         description={`Access all Semester ${semNumber} CSBS subjects at BMSCE — lecture notes, CIE question papers, SEE papers, and textbooks. ${theorySubjects.map(s => s.name).join(', ')}.`}
         canonicalPath={`/semester/${id}`}
+        keywords={`semester ${semNumber} notes, bmsce csbs semester ${semNumber}, vtu csbs sem ${semNumber}, ${theorySubjects.map(s => s.name.toLowerCase()).join(', ')} notes`}
         jsonLd={buildBreadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: `Semester ${semNumber}`, path: `/semester/${id}` }

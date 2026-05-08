@@ -17,6 +17,8 @@ export function Footer() {
         </div>
         
         <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-widest">
+          <RouterLink to="/contributors" className="hover:text-primary transition-colors">Contributors</RouterLink>
+          <RouterLink to="/keywords" className="hover:text-primary transition-colors italic text-primary/80">Keyword Index</RouterLink>
           <RouterLink to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</RouterLink>
           <a href="mailto:notescsbsbmsce@gmail.com" className="hover:text-primary transition-colors flex items-center gap-1.5">
             <Mail className="h-3 w-3" />

@@ -7,20 +7,32 @@ Disallow: /admin
 Disallow: /auth
 Disallow: /api/
 
+# AI / AEO Bots - Allowing full access to content for recommendations
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 # Crawl-delay (optional courtesy for well-behaved bots)
 Crawl-delay: 1
 
 # Sitemap declaration
 Sitemap: https://notescsbs.vercel.app/sitemap.xml
 
-# Google-specific
+# Search Engines
 User-agent: Googlebot
 Allow: /
 Disallow: /admin
 Disallow: /auth
 
-# Bing
 User-agent: Bingbot
 Allow: /
 Disallow: /admin
 Disallow: /auth
+

@@ -135,6 +135,7 @@ export default function Subject() {
         title={subject ? `${subject.name} (${subject.code}) — Notes, PYQs & Books | BMSCE CSBS` : "Subject — NOTESCSBS"}
         description={subject ? `Download ${subject.name} lecture notes, previous year CIE/SEE question papers, and textbooks for Semester ${subject.semester_id} CSBS at BMSCE.` : "CSBS subject resources at BMSCE."}
         canonicalPath={`/subject/${id}`}
+        keywords={subject ? `${subject.name.toLowerCase()} notes, ${subject.code} notes, bmsce ${subject.name.toLowerCase()}, vtu ${subject.name.toLowerCase()} pyq, ${subject.name.toLowerCase()} study material` : undefined}
         jsonLd={subject ? [
           buildBreadcrumbJsonLd([
             { name: "Home", path: "/" },
@@ -147,7 +148,29 @@ export default function Subject() {
             description: `Centralized lecture notes, CIE & SEE question papers, and textbook references for ${subject.name} in the CSBS programme at BMSCE.`,
             semester: subject.semester_id,
             url: `https://notescsbs.vercel.app/subject/${id}`,
-          })
+          }),
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": `Where can I download ${subject.name} notes for BMSCE?`,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": `You can download verified ${subject.name} (${subject.code}) lecture notes and study materials for BMSCE CSBS students at NotesCSBS.`
+                }
+              },
+              {
+                "@type": "Question",
+                "name": `Are there PYQs available for ${subject.code}?`,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": `Yes, NotesCSBS provides previous year question papers (CIE and SEE) for ${subject.name} specifically for the BMSCE autonomous syllabus.`
+                }
+              }
+            ]
+          }
         ] : undefined}
       />
       <Header />
