@@ -1,4 +1,4 @@
-import { HelpCircle, Terminal, BookOpen, GraduationCap } from "lucide-react";
+import { HelpCircle, Terminal, BookOpen, GraduationCap, Layers, Users } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const AEOContent = () => {
