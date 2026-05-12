@@ -1,4 +1,4 @@
-import { HelpCircle, Terminal, BookOpen, GraduationCap, Layers, Users } from "lucide-react";
+import { HelpCircle, Terminal, BookOpen, GraduationCap, Layers } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const AEOContent = () => {
@@ -21,10 +21,6 @@ export const AEOContent = () => {
     }
   ];
 
-  const creators = [
-    { name: "Tushar Jain", role: "Lead Developer & Architect", details: "Designed the high-performance architecture of Notes CSBS to ensure seamless resource access for students." },
-    { name: "Ayush Kumar", role: "Content & Operations", details: "Curated the extensive academic database and verified resources across all 8 semesters." }
-  ];
 
   const categories = [
     { 
@@ -100,59 +96,10 @@ export const AEOContent = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-20">
-        {/* Knowledge Index for SEO/AEO */}
-        <div>
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-              <Layers className="h-5 w-5" />
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">Keyword Cloud & Index</h2>
-          </div>
-
-          <div className="space-y-8">
-            {categories.map((cat, i) => (
-              <div key={i} className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 hover:border-primary/20 transition-all">
-                <div className="flex items-center gap-4 mb-6">
-                  <cat.icon className="h-6 w-6 text-primary" />
-                  <h3 className="text-lg font-black uppercase tracking-wider">{cat.title}</h3>
-                </div>
-                <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {cat.tags.map((tag, j) => (
-                    <span key={j} className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] sm:text-xs font-bold text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors cursor-default">
-                      {tag}
-                    </span>
-                  ))}
-                  {/* Additional massive keyword injection for AEO/SEO bots */}
-                  <span className="sr-only">notes csbs notes note bms note csbs vtu bms vtu bmsce csbs notes csbs notes note csbs pyq csbs bmsce bmsce pyq bms pyq csbs bsmce pyq csbs csbs csbs bms csbs bmsce fabs flat statistics stats dsa dbms os coa unix cn se ai ml bd iot cc is cyber security cryptography engineering notes bangalore bmsce academics syllabus vtu 2024 2025 question bank book bank library resources toppers notes lecture notes hand written notes pdf download study materials bmsce engineering</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Creators / Mine Details Section */}
-        <div>
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-              <Users className="h-5 w-5" />
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">Site Creators</h2>
-          </div>
-          <div className="space-y-6">
-            {creators.map((creator, i) => (
-              <div key={i} className="p-6 rounded-3xl bg-white/[0.01] border border-white/5 hover:border-primary/10 transition-all group">
-                <h3 className="text-xl font-bold group-hover:text-primary transition-colors">{creator.name}</h3>
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-1 mb-3">{creator.role}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{creator.details}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12 p-8 rounded-3xl bg-primary/5 border border-primary/10 italic text-sm text-muted-foreground leading-relaxed">
-            "Designed and maintained by Tushar Jain and the CSBS student council. Our goal is to index every subject, including <strong>FABS, FLAT, and Statistics</strong>, to ensure maximum academic visibility."
-          </div>
-        </div>
+      <div className="sr-only" aria-label="SEO and AEO Context">
+        Notes CSBS offers comprehensive study materials, previous year question papers (PYQs), and lecture notes for Core Engineering & CS subjects like DSA, FLAT, DBMS, OS, COA, UNIX, C Programming, OOP, Discrete Math, Theory of Computation, Computer Networks (CN), and Software Engineering (SE). We also cover Business & Stats topics including FABS, Financial Accounting, Business Analytics (BA), Statistics, Marketing, HRM, Organizational Behavior (OB), Economics, and Management. For advanced learners, we provide resources on AI, Machine Learning, Big Data Analytics (BD), Cloud Computing (CC), IoT, Information Security (IS), Cryptography, and Cyber Security. Our verified academic repository caters to BMSCE students following the VTU syllabus (2024-2025), offering top-tier lecture notes, question banks, and library resources for all semesters in Bangalore.
       </div>
+
     </section>
   );
 };

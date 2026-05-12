@@ -12,7 +12,27 @@ function onFormSubmit(e) {
   // Capture captured email (adjust index if email is not in the first column after timestamp)
   const email = e.values[1]; 
   
-  const subject = "Welcome to the Archive Registry | NOTESCSBS";
+  // Check for duplicates in the spreadsheet
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  
+  let count = 0;
+  // Assuming email is in the second column (index 1)
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][1] === email) {
+      count++;
+    }
+  }
+  
+  // If count is > 1, it's a duplicate submission (the current one makes it at least 1)
+  if (count > 1) {
+    // Delete the duplicate row to keep the spreadsheet clean
+    sheet.deleteRow(e.range.getRow());
+    // Stop execution so we don't send the email again
+    return;
+  }
+  
+  const subject = "✈️ Welcome Aboard Air CSBS! Your Flight Begins 🚀";
   
   // High-Fidelity Editorial Email Template
   const htmlBody = `
@@ -21,106 +41,104 @@ function onFormSubmit(e) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
       <style>
         body { 
           margin: 0; 
           padding: 0; 
           background-color: #f1f5f9; 
-          font-family: 'Inter', -apple-system, sans-serif;
+          font-family: 'Outfit', -apple-system, sans-serif;
           -webkit-font-smoothing: antialiased;
         }
         .wrapper {
-          padding: 60px 20px;
+          padding: 40px 20px;
         }
         .container {
           max-width: 600px;
           margin: 0 auto;
           background-color: #ffffff;
-          border-radius: 48px;
+          border-radius: 32px;
           border: 1px solid #e2e8f0;
           overflow: hidden;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
         }
         .hero {
-          background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-          padding: 80px 40px;
+          background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+          padding: 60px 40px;
           text-align: center;
           position: relative;
         }
         .logo {
-          font-family: 'Playfair Display', serif;
           color: #ffffff;
-          font-style: italic;
           font-weight: 900;
-          font-size: 32px;
-          letter-spacing: -1.5px;
+          font-size: 36px;
+          letter-spacing: -1px;
           margin-bottom: 8px;
         }
         .tagline {
-          color: rgba(255, 255, 255, 0.6);
-          font-size: 10px;
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 12px;
           text-transform: uppercase;
           font-weight: 900;
-          letter-spacing: 4px;
+          letter-spacing: 3px;
         }
         .main-content {
-          padding: 60px 50px;
+          padding: 50px 40px;
           color: #1e293b;
         }
         h1 {
-          font-family: 'Playfair Display', serif;
-          font-style: italic;
           font-weight: 900;
-          font-size: 48px;
+          font-size: 40px;
           color: #0f172a;
-          line-height: 0.9;
-          margin: 0 0 32px 0;
-          letter-spacing: -2px;
+          line-height: 1;
+          margin: 0 0 24px 0;
+          letter-spacing: -1.5px;
         }
         p {
           font-size: 16px;
-          line-height: 1.7;
-          color: #64748b;
-          margin-bottom: 32px;
+          line-height: 1.6;
+          color: #475569;
+          margin-bottom: 24px;
           font-weight: 500;
         }
+        .highlight {
+          color: #8b5cf6;
+          font-weight: 700;
+        }
         .cta-container {
-          text-align: left;
-          margin-top: 48px;
+          text-align: center;
+          margin-top: 40px;
         }
         .button {
           display: inline-block;
-          background-color: #1a73e8;
+          background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
           color: #ffffff !important;
-          padding: 20px 40px;
-          border-radius: 20px;
+          padding: 16px 32px;
+          border-radius: 100px;
           text-decoration: none;
           font-weight: 900;
-          font-size: 12px;
+          font-size: 14px;
           text-transform: uppercase;
-          letter-spacing: 2px;
-          box-shadow: 0 10px 15px -3px rgba(26, 115, 232, 0.3);
+          letter-spacing: 1.5px;
+          box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.4);
+          transition: transform 0.2s;
         }
         .footer {
-          padding: 40px 50px;
+          padding: 30px 40px;
           background-color: #f8fafc;
           border-top: 1px solid #f1f5f9;
           text-align: center;
         }
         .footer-text {
-          font-size: 11px;
+          font-size: 12px;
           color: #94a3b8;
           font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: 0.5px;
           margin: 0;
         }
-        .accent-bar {
-          height: 4px;
-          width: 40px;
-          background: #1a73e8;
-          margin-bottom: 24px;
+        .accent-emoji {
+          font-size: 48px;
+          margin-bottom: 16px;
         }
       </style>
     </head>
@@ -128,27 +146,30 @@ function onFormSubmit(e) {
       <div class="wrapper">
         <div class="container">
           <div class="hero">
-            <div class="logo">Notes CSBS</div>
-            <div class="tagline">Scholarly Broadcast</div>
+            <div class="accent-emoji">✈️</div>
+            <div class="logo">Air CSBS</div>
+            <div class="tagline">Flight #BMSCE is ready for takeoff</div>
           </div>
           
           <div class="main-content">
-            <div class="accent-bar"></div>
-            <h1>The Shift <br/>Has Begun.</h1>
+            <h1>Welcome Aboard! 👋</h1>
             <p>
-              Welcome to the institutional registry. You are now part of a peer-governed collective dedicated to the meticulous preservation of academic intelligence.
+              Sup bestie! You've officially secured your boarding pass for the ultimate academic flight. Fasten your seatbelts because we're taking your grades to the <span class="highlight">stratosphere!</span> 🚀
             </p>
             <p>
-              You will receive real-time notifications for every curriculum update, resource drop, and verified faculty brief. Our curators are already preparing the next batch of scholarly assets.
+              No more stressing over lost notes or gatekeeping. We're dropping verified resources, PYQs, and curriculum updates straight to your inbox. You just sit back, relax, and vibe while we do the heavy lifting.
+            </p>
+            <p>
+              Ready to hit cruising altitude? Enter the VIP lounge below to access the full archive.
             </p>
             
             <div class="cta-container">
-              <a href="https://notes-csbs.pages.dev" class="button">Access the Archive</a>
+              <a href="https://notescsbs.vercel.app/" class="button">TAKE OFF NOW 🛫</a>
             </div>
           </div>
           
           <div class="footer">
-            <p class="footer-text">NOTESCSBS • BMSCE • Open Registry Initiative</p>
+            <p class="footer-text">Made with 💖 by NOTESCSBS • BMSCE</p>
           </div>
         </div>
       </div>

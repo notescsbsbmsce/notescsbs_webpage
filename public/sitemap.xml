@@ -9,19 +9,19 @@
   <!-- ==================== -->
   <url>
     <loc>https://notescsbs.vercel.app/</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-05-08T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://notescsbs.vercel.app/contributors</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-05-08T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://notescsbs.vercel.app/privacy</loc>
-    <lastmod>2026-04-02T00:00:00+00:00</lastmod>
+    <lastmod>2026-05-08T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -35,298 +35,96 @@
   <!-- ==================== -->
   <!-- SEMESTER INDEXES     -->
   <!-- ==================== -->
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/1</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/2</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/3</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/4</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/5</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/6</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/7</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://notescsbs.vercel.app/semester/8</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/semester/1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://notescsbs.vercel.app/semester/2</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://notescsbs.vercel.app/semester/3</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://notescsbs.vercel.app/semester/4</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://notescsbs.vercel.app/semester/5</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://notescsbs.vercel.app/semester/6</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://notescsbs.vercel.app/semester/7</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://notescsbs.vercel.app/semester/8</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
 
   <!-- ======================================== -->
-  <!-- SUBJECT DEEP LINKS (Semester 1)          -->
+  <!-- SEMESTER 1 SUBJECTS                      -->
   <!-- ======================================== -->
-  <!-- Semester 1: Mathematics I -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/MA1</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 1: Engineering Physics -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/PHY1</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 1: Elements of Civil Engineering -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/CIV1</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 1: Elements of Mechanical Engineering -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/ME1</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 1: Basic Electrical Engineering -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/EE1</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/subject/MA1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PHY1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/CIV1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/ME1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/EE1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PHY1L</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/CIV1L</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
   <!-- ======================================== -->
-  <!-- SUBJECT DEEP LINKS (Semester 2)          -->
+  <!-- SEMESTER 2 SUBJECTS                      -->
   <!-- ======================================== -->
-  <!-- Semester 2: Mathematics II -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/MA2</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 2: Engineering Chemistry -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/CHE2</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 2: Problem Solving with C -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/PSP</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 2: Basic Electronics -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/EE2</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 2: Constitution of India & Professional Ethics -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/CCP</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/subject/MA2</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/CHE2</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PSP</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/EE2</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/CCP</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PSPL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/CHE2L</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
   <!-- ======================================== -->
-  <!-- SUBJECT DEEP LINKS (Semester 3)          -->
+  <!-- SEMESTER 3 SUBJECTS                      -->
   <!-- ======================================== -->
-  <!-- Semester 3: Mathematics III -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/MA3</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 3: Data Structures and Algorithms -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/DSA</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 3: Object Oriented Programming with C++ -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/OOP</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 3: Digital Electronics -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/DE</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 3: Unix Programming -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/UNIX</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/subject/MA3</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/DSA</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/OOP</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/DE</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/UNIX</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/DSAL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/OOPL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
   <!-- ======================================== -->
-  <!-- SUBJECT DEEP LINKS (Semester 4)          -->
+  <!-- SEMESTER 4 SUBJECTS                      -->
   <!-- ======================================== -->
-  <!-- Semester 4: Mathematics IV -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/MA4</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 4: Database Management Systems -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/DBMS</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 4: Computer Organization and Architecture -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/COA</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 4: Operating Systems -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/OS</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 4: Financial Accounting & Business Statistics -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/FABS</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/subject/MA4</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/DBMS</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/COA</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/OS</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/FABS</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/DBMSL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/OSL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
   <!-- ======================================== -->
-  <!-- SUBJECT DEEP LINKS (Semester 5)          -->
+  <!-- SEMESTER 5 SUBJECTS                      -->
   <!-- ======================================== -->
-  <!-- Semester 5: Computer Networks -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/CN</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 5: Software Engineering -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/SE</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 5: Artificial Intelligence -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/AI</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 5: Web Technologies -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/WEB</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 5: Business Analytics -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/BA</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/subject/CN</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/SE</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/AI</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/WEB</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/BA</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/CNL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/WEBL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
   <!-- ======================================== -->
-  <!-- SUBJECT DEEP LINKS (Semester 6)          -->
+  <!-- SEMESTER 6 SUBJECTS                      -->
   <!-- ======================================== -->
-  <!-- Semester 6: Machine Learning -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/ML</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 6: Cloud Computing -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/CC</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 6: Information Security -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/IS</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 6: Organizational Behavior -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/OB</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/subject/ML</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/CC</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/IS</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/MP</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/OB</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/MLL</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 
   <!-- ======================================== -->
-  <!-- SUBJECT DEEP LINKS (Semester 7)          -->
+  <!-- SEMESTER 7 SUBJECTS                      -->
   <!-- ======================================== -->
-  <!-- Semester 7: Big Data Analytics -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/BD</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Semester 7: Internet of Things -->
-  <url>
-    <loc>https://notescsbs.vercel.app/subject/IOT</loc>
-    <lastmod>2026-04-07T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://notescsbs.vercel.app/subject/BD</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/IOT</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PE1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/OE1</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PRJ</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- ======================================== -->
+  <!-- SEMESTER 8 SUBJECTS                      -->
+  <!-- ======================================== -->
+  <url><loc>https://notescsbs.vercel.app/subject/PE2</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PE3</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/PRJF</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/INT</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://notescsbs.vercel.app/subject/SEM</loc><lastmod>2026-05-08T00:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
 </urlset>

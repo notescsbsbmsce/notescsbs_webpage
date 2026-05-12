@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
 import { AEOContent } from "@/components/AEOContent";
+import { SubscriptionNotification } from "@/components/SubscriptionNotification";
 
 const Index = () => {
   const { toast } = useToast();
@@ -31,13 +32,31 @@ const Index = () => {
 
     setIsSubmitting(true);
     
-    // Construct the direct form submission parameters
-    const formResponseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSc-uW3LdcGfrmXbL7EC-7SUwNcFSJoIj0gV6XJCA6UVePqshA/formResponse";
-    const params = new URLSearchParams();
-    params.append("entry.2024456662", email);
-    params.append("submit", "Submit");
-
     try {
+      // Check if email already exists in our registry
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: existingUser } = await (supabase.from("subscribers" as any) as any)
+        .select("email")
+        .eq("email", email)
+        .maybeSingle();
+
+      if (existingUser) {
+        toast({
+          title: "Already Registered",
+          description: "This email is already in the institutional registry.",
+        });
+        setEmail("");
+        localStorage.setItem("hasSeenSubscription", "true");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Construct the direct form submission parameters
+      const formResponseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSc-uW3LdcGfrmXbL7EC-7SUwNcFSJoIj0gV6XJCA6UVePqshA/formResponse";
+      const params = new URLSearchParams();
+      params.append("entry.2024456662", email);
+      params.append("submit", "Submit");
+
       // Execute a silent, background submission to the institutional registry
       // 'no-cors' ensures the data is transmitted even if the response is opaque
       fetch(`${formResponseUrl}?${params.toString()}`, {
@@ -54,6 +73,7 @@ const Index = () => {
         description: "Your identity has been securely added to the academic board.",
       });
       setEmail("");
+      localStorage.setItem("hasSeenSubscription", "true");
     } catch (err) {
       // If local sync fails, we still consider it a success as long as the form is captured
       toast({
@@ -61,6 +81,7 @@ const Index = () => {
         description: "Institutional registry updated successfully.",
       });
       setEmail("");
+      localStorage.setItem("hasSeenSubscription", "true");
     } finally {
       setIsSubmitting(false);
     }
@@ -271,6 +292,7 @@ const Index = () => {
       
       <AEOContent />
       <Footer />
+      <SubscriptionNotification />
     </div>
   );
 };
