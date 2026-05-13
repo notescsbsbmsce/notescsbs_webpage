@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Mail } from "lucide-react";
+import { X, Mail, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export function SubscriptionNotification() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -66,17 +67,18 @@ export function SubscriptionNotification() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await (supabase.from("subscribers" as any) as any).insert([{ email }]);
       
-      toast({
-        title: "Registry Enrollment Complete",
-        description: "Your identity has been securely added to the academic board.",
-      });
-      handleDismiss();
+      setIsSuccess(true);
+      localStorage.setItem("hasSeenSubscription", "true");
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 5000);
+
     } catch (err) {
-      toast({
-        title: "Enrollment Confirmed",
-        description: "Institutional registry updated successfully.",
-      });
-      handleDismiss();
+      setIsSuccess(true);
+      localStorage.setItem("hasSeenSubscription", "true");
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -85,51 +87,67 @@ export function SubscriptionNotification() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 animate-in slide-in-from-bottom-5 fade-in duration-500">
-      <div className="bg-background/90 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-[380px] relative overflow-hidden">
+    <div className="fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-[100] animate-in slide-in-from-bottom-5 fade-in duration-500">
+      <div className="bg-background/95 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-[380px] relative overflow-hidden">
         {/* Subtle gradient background */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[50px] pointer-events-none"></div>
         
         <button 
           onClick={handleDismiss}
-          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-full hover:bg-white/5"
+          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-full hover:bg-white/5 z-10"
           aria-label="Close notification"
         >
           <X className="h-4 w-4" />
         </button>
 
-        <div className="flex items-start gap-3 mb-4 pr-6">
-          <div className="mt-1 bg-primary/20 p-2 rounded-xl text-primary">
-            <Mail className="h-4 w-4" />
-          </div>
-          <div>
-            <h3 className="font-bold text-sm sm:text-base leading-tight mb-1">
-              Stay updated with latest academic shifts.
+        {isSuccess ? (
+          <div className="flex flex-col items-center justify-center py-2 text-center animate-in zoom-in-95 duration-300 relative z-10">
+            <div className="bg-green-500/20 p-3 rounded-full text-green-500 mb-3">
+              <CheckCircle2 className="h-6 w-6" />
+            </div>
+            <h3 className="font-bold text-sm sm:text-base leading-tight mb-1 text-foreground">
+              Registration done!
             </h3>
-            <p className="text-xs text-muted-foreground">
-              Join the institutional registry for real-time notifications.
+            <p className="text-xs text-muted-foreground px-2">
+              We will update you with new things there.
             </p>
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="flex items-start gap-3 mb-4 pr-6 relative z-10">
+              <div className="mt-1 bg-primary/20 p-2 rounded-xl text-primary shrink-0">
+                <Mail className="h-4 w-4" />
+              </div>
+              <div>
+                <h3 className="font-bold text-sm sm:text-base leading-tight mb-1">
+                  Stay updated with latest academic shifts.
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Join the institutional registry for real-time notifications.
+                </p>
+              </div>
+            </div>
 
-        <form onSubmit={handleSubscribe} className="flex gap-2">
-          <Input 
-            type="email" 
-            placeholder="Email address" 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="h-9 bg-white/5 border-white/10 text-sm focus-visible:ring-primary/50"
-          />
-          <Button 
-            type="submit" 
-            size="sm" 
-            className="h-9 px-4 font-bold shrink-0 shadow-lg shadow-primary/20"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "..." : "Done"}
-          </Button>
-        </form>
+            <form onSubmit={handleSubscribe} className="flex gap-2 relative z-10">
+              <Input 
+                type="email" 
+                placeholder="Email address" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-9 bg-white/5 border-white/10 text-sm focus-visible:ring-primary/50"
+              />
+              <Button 
+                type="submit" 
+                size="sm" 
+                className="h-9 px-4 font-bold shrink-0 shadow-lg shadow-primary/20"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "..." : "Done"}
+              </Button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
