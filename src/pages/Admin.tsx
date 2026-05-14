@@ -18,7 +18,7 @@ import {
   Search, ChevronDown, Shield, CheckCircle2,
   ExternalLink, Copy, FolderOpen, Sparkles, Users, Mail,
   LayoutDashboard, FilePlus, Database, Settings, Terminal,
-  PlusCircle, FileCheck, Layers, ChevronRight
+  PlusCircle, FileCheck, Layers, ChevronRight, Bell, Calendar, Trash
 } from "lucide-react";
 
 // Resource management components
@@ -60,6 +60,15 @@ interface Resource {
   subject_id: number;
 }
 
+interface Notice {
+  id: number;
+  title: string;
+  description: string | null;
+  file_url: string | null;
+  type: string;
+  created_at: string;
+}
+
 const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'txt', 'jpg', 'jpeg', 'png', 'mp4', 'c', 'cpp', 'py', 'java', 'js', 'ts', 'h'];
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
@@ -89,7 +98,13 @@ const Admin = () => {
   const [editResource, setEditResource] = useState<Resource | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const [activeView, setActiveView] = useState<"upload" | "library" | "community">("upload");
+  const [activeView, setActiveView] = useState<"upload" | "library" | "community" | "notices">("upload");
+
+  // Notice state
+  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeDescription, setNoticeDescription] = useState("");
+  const [noticeFileUrl, setNoticeFileUrl] = useState("");
+  const [noticeType, setNoticeType] = useState("Notice");
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -179,6 +194,16 @@ const Admin = () => {
     enabled: activeView === "community",
   });
 
+  const { data: notices } = useQuery({
+    queryKey: ["notices"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("notices").select("*").order("created_at", { ascending: false });
+      if (error && error.code !== '42P01') throw error;
+      return (data || []) as Notice[];
+    },
+    enabled: activeView === "notices",
+  });
+
   const [newSubscriberEmail, setNewSubscriberEmail] = useState("");
 
   const addSubscriberMutation = useMutation({
@@ -207,6 +232,32 @@ const Admin = () => {
     },
   });
 
+  const addNoticeMutation = useMutation({
+    mutationFn: async (payload: Omit<Notice, "id" | "created_at">) => {
+      const { error } = await supabase.from("notices").insert(payload);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({ title: "Notice Published", description: "The announcement is now live." });
+      setNoticeTitle(""); setNoticeDescription(""); setNoticeFileUrl(""); setNoticeType("Notice");
+      queryClient.invalidateQueries({ queryKey: ["notices"] });
+    },
+    onError: (err: Error) => {
+      toast({ title: "Publish Failed", description: err.message, variant: "destructive" });
+    }
+  });
+
+  const deleteNoticeMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const { error } = await supabase.from("notices").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({ title: "Notice Removed", description: "The announcement has been deleted." });
+      queryClient.invalidateQueries({ queryKey: ["notices"] });
+    },
+  });
+
   const handleExportRegistry = () => {
     if (!subscribers || subscribers.length === 0) {
       toast({ title: "Export Unavailable", description: "The registry manifest is currently empty.", variant: "destructive" });
@@ -227,6 +278,17 @@ const Admin = () => {
     e.preventDefault();
     if (!newSubscriberEmail.trim()) return;
     addSubscriberMutation.mutate(newSubscriberEmail.trim());
+  };
+
+  const handleAddNotice = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!noticeTitle.trim()) return;
+    addNoticeMutation.mutate({
+      title: noticeTitle.trim(),
+      description: noticeDescription.trim() || null,
+      file_url: noticeFileUrl.trim() || null,
+      type: noticeType,
+    });
   };
 
   const uploadFile = async (file: File): Promise<string> => {
@@ -357,6 +419,7 @@ const Admin = () => {
             <nav className="flex lg:flex-col gap-1 overflow-x-auto pb-2 lg:pb-0 -mx-2 px-2 lg:mx-0 lg:px-0">
               <SidebarItem active={activeView === "upload"} icon={FilePlus} label="Deploy Asset" onClick={() => setActiveView("upload")} />
               <SidebarItem active={activeView === "library"} icon={Library} label="Archive Manager" onClick={() => setActiveView("library")} />
+              <SidebarItem active={activeView === "notices"} icon={Bell} label="Notice Board" onClick={() => setActiveView("notices")} />
               <SidebarItem active={activeView === "community"} icon={Users} label="Community Hub" onClick={() => setActiveView("community")} />
             </nav>
           </div>
@@ -680,6 +743,104 @@ const Admin = () => {
                   <div className="absolute inset-0 pointer-events-none border-[32px] border-card rounded-[48px] opacity-100 transition-opacity"></div>
                   {/* Subtle glass overlay for a premium look when not focused */}
                   <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-card to-transparent pointer-events-none opacity-80"></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeView === "notices" && (
+            <div className="max-w-4xl mx-auto space-y-12">
+               <div className="space-y-3">
+                 <div className="flex items-center gap-2 text-primary font-black uppercase tracking-[0.2em] text-[10px]">
+                   <Bell className="h-3.5 w-3.5" />
+                   <span>Broadcast Management</span>
+                 </div>
+                 <h1 className="text-3xl sm:text-5xl font-black tracking-tighter italic font-serif leading-none">Notice Board</h1>
+                 <p className="text-muted-foreground font-medium max-w-xl">Publish circulars, syllabi, and timetables to the entire student body.</p>
+               </div>
+
+              <Card className="rounded-[32px] border border-border bg-card shadow-sm overflow-hidden p-8">
+                 <form onSubmit={handleAddNotice} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                         <Label className="text-[10px] font-black uppercase tracking-widest text-primary ml-1">Title</Label>
+                         <Input 
+                           placeholder="Exam Timetable 2024..." 
+                           className="h-14 rounded-2xl bg-muted/20 border-border text-sm font-bold focus:border-primary/40 focus:bg-card transition-all"
+                           value={noticeTitle}
+                           onChange={(e) => setNoticeTitle(e.target.value)}
+                           required
+                         />
+                      </div>
+                      <div className="space-y-3">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-primary ml-1">Category</Label>
+                        <Select value={noticeType} onValueChange={setNoticeType}>
+                          <SelectTrigger className="h-14 rounded-2xl bg-muted/20 border-border font-bold">
+                            <SelectValue placeholder="Category" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-card border-border rounded-2xl">
+                            <SelectItem value="Notice">Notice / Circular</SelectItem>
+                            <SelectItem value="Syllabus">Syllabus</SelectItem>
+                            <SelectItem value="Time Table">Time Table</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3">
+                       <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Description (Optional)</Label>
+                       <Input 
+                         placeholder="Additional details..." 
+                         className="h-14 rounded-2xl bg-muted/20 border-border text-sm font-bold focus:border-primary/40 focus:bg-card transition-all"
+                         value={noticeDescription}
+                         onChange={(e) => setNoticeDescription(e.target.value)}
+                       />
+                    </div>
+
+                    <div className="space-y-3">
+                       <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Attachment URL (Optional)</Label>
+                       <Input 
+                         placeholder="https://drive.google.com/..." 
+                         className="h-14 rounded-2xl bg-muted/20 border-border text-sm font-bold focus:border-primary/40 focus:bg-card transition-all"
+                         value={noticeFileUrl}
+                         onChange={(e) => setNoticeFileUrl(e.target.value)}
+                       />
+                    </div>
+                    
+                    <div className="pt-2">
+                      <Button 
+                        type="submit" 
+                        className="h-14 rounded-2xl px-10 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/10 hover:scale-[1.02] active:scale-95 transition-all w-full sm:w-auto"
+                        disabled={addNoticeMutation.isPending}
+                      >
+                        {addNoticeMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Publish Announcement"}
+                      </Button>
+                    </div>
+                 </form>
+              </Card>
+
+              <div className="space-y-6">
+                <h3 className="text-xl font-bold">Active Announcements</h3>
+                <div className="grid gap-4">
+                  {notices && notices.map(notice => (
+                    <div key={notice.id} className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-border bg-card/50">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <Badge variant="outline" className="text-[9px] uppercase tracking-widest bg-primary/10 text-primary border-primary/20">{notice.type}</Badge>
+                          <span className="text-[10px] text-muted-foreground">{new Date(notice.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <h4 className="font-bold">{notice.title}</h4>
+                      </div>
+                      <Button variant="ghost" size="icon" onClick={() => deleteNoticeMutation.mutate(notice.id)} className="text-destructive hover:bg-destructive/10 shrink-0" disabled={deleteNoticeMutation.isPending}>
+                        <Trash className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  {(!notices || notices.length === 0) && (
+                    <div className="text-center py-12 border border-dashed border-border rounded-3xl text-muted-foreground text-sm">
+                      No notices published yet.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

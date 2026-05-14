@@ -20,6 +20,7 @@ const Subject = lazy(() => import("./pages/Subject"));
 const Contributors = lazy(() => import("./pages/Contributors"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Keywords = lazy(() => import("./pages/Keywords"));
+const NoticeBoard = lazy(() => import("./pages/NoticeBoard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Analytics Wrapper to handle route tracking
@@ -72,6 +73,7 @@ const App = () => (
             <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
             <Route path="/privacy" element={<Suspense fallback={<PageLoader />}><Privacy /></Suspense>} />
             <Route path="/keywords" element={<Suspense fallback={<PageLoader />}><Keywords /></Suspense>} />
+            <Route path="/notices" element={<Suspense fallback={<PageLoader />}><NoticeBoard /></Suspense>} />
             <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
           </Routes>
           <MobileNav />

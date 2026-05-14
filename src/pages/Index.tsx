@@ -178,8 +178,8 @@ const Index = () => {
                 Explore Repository
                 <ArrowRight className="ml-2 sm:ml-3 h-4 sm:h-5 w-4 sm:w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl border-white/10 hover:bg-white/5 font-black transition-all shadow-xl w-full sm:w-auto text-sm sm:text-base">
-                Past Question Papers
+              <Button size="lg" variant="outline" className="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl border-white/10 hover:bg-white/5 font-black transition-all shadow-xl w-full sm:w-auto text-sm sm:text-base" onClick={() => window.location.href = '/notices'}>
+                Notice Board
               </Button>
             </div>
           </div>

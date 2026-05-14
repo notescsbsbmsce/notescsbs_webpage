@@ -55,6 +55,33 @@ export type Database = {
           },
         ]
       }
+      notices: {
+        Row: {
+          id: number
+          title: string
+          description: string | null
+          file_url: string | null
+          type: string
+          created_at: string
+        }
+        Insert: {
+          id?: number
+          title: string
+          description?: string | null
+          file_url?: string | null
+          type: string
+          created_at?: string
+        }
+        Update: {
+          id?: number
+          title?: string
+          description?: string | null
+          file_url?: string | null
+          type?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       semesters: {
         Row: {
           created_at: string
