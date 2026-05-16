@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { MobileNav } from "@/components/MobileNav";
 import { useAnalytics } from "./hooks/useAnalytics";
+import { Analytics } from "@vercel/analytics/react";
 
 // Core index page direct for maximum landing performance
 import Index from "./pages/Index";
@@ -79,6 +80,7 @@ const App = () => (
           <MobileNav />
         </AnalyticsWrapper>
       </BrowserRouter>
+      <Analytics />
     </TooltipProvider>
   </QueryClientProvider>
 );
