@@ -104,8 +104,8 @@ export default function Contributors() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
       <SEOHead
-        title="Contributors — Meet the Makers of NOTESCSBS | BMSCE CSBS"
-        description="Meet the student developers behind NOTESCSBS — the definitive CSBS academic repository at BMS College of Engineering, Bengaluru. Built by Tushar Jain and Ayush Kumar."
+        title="Contributors - Meet the Makers of NOTESCSBS | BMSCE CSBS"
+        description="Meet the student developers behind NOTESCSBS - the definitive CSBS academic repository at BMS College of Engineering, Bengaluru. Built by Tushar Jain and Ayush Kumar."
         canonicalPath="/contributors"
         jsonLd={buildBreadcrumbJsonLd([
           { name: "Home", path: "/" },

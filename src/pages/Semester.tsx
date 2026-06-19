@@ -1,5 +1,8 @@
 import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";
 import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
+import { HiddenSemesterSEO } from "@/components/seo/HiddenSemesterSEO";
+import { buildCollectionPageSchema, buildFAQSchema } from "@/config/seo-schemas";
+import { SEMESTER_SEO, getSubjectsBySemester } from "@/config/seo-data";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSemesterById, fetchSubjectsBySemester } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
@@ -69,14 +72,28 @@ const Semester = () => {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary transition-colors duration-300">
       <SEOHead
-        title={`Semester ${semNumber} — CSBS Notes, PYQs & Study Material | BMSCE NOTESCSBS`}
-        description={`Access all Semester ${semNumber} CSBS subjects at BMSCE — lecture notes, CIE question papers, SEE papers, and textbooks. ${theorySubjects.map(s => s.name).join(', ')}.`}
+        title={`Semester ${semNumber} - CSBS Notes, PYQs & Study Material | BMSCE NOTESCSBS`}
+        description={`Access all Semester ${semNumber} CSBS subjects at BMSCE - lecture notes, CIE question papers, SEE papers, and textbooks. ${theorySubjects.map(s => s.name).join(', ')}.`}
         canonicalPath={`/semester/${id}`}
         keywords={`semester ${semNumber} notes, bmsce csbs semester ${semNumber}, vtu csbs sem ${semNumber}, ${theorySubjects.map(s => s.name.toLowerCase()).join(', ')} notes`}
-        jsonLd={buildBreadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: `Semester ${semNumber}`, path: `/semester/${id}` }
-        ])}
+        jsonLd={[
+          buildBreadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: `Semester ${semNumber}`, path: `/semester/${id}` }
+          ]),
+          ...(SEMESTER_SEO[semesterId] ? [
+            buildCollectionPageSchema({
+              name: `Semester ${semNumber} - CSBS Notes BMSCE`,
+              description: SEMESTER_SEO[semesterId]?.description || '',
+              path: `/semester/${id}`,
+              items: theorySubjects.map(s => ({
+                name: `${s.name} (${s.code})`,
+                url: `https://notescsbs.vercel.app/subject/${s.id}`
+              }))
+            }),
+            buildFAQSchema(SEMESTER_SEO[semesterId]?.faqs || [])
+          ] : [])
+        ]}
       />
       <Header />
       
@@ -221,6 +238,7 @@ const Semester = () => {
         )}
       </main>
       
+      <HiddenSemesterSEO semester={semesterId} />
       <Footer />
     </div>
   );

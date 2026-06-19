@@ -6,6 +6,7 @@ export function MobileNav() {
 
   const navItems = [
     { label: "Home", href: "/", icon: <Home className="h-5 w-5" /> },
+    { label: "Notices", href: "/notices", icon: <img src="/notes-csbs-logo.png" alt="Notices" className="h-5 w-5 object-contain" /> },
     { label: "Contributors", href: "/contributors", icon: <Users className="h-5 w-5" /> },
     { label: "Feedback", href: "mailto:notescsbsbmsce@gmail.com", icon: <Mail className="h-5 w-5" />, isExternal: true },
   ];

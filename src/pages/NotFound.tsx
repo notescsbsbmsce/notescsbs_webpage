@@ -9,7 +9,7 @@ const NotFound = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
-        title="404 — Page Not Found | NOTESCSBS"
+        title="404 - Page Not Found | NOTESCSBS"
         description="The page you're looking for doesn't exist or has been relocated."
         canonicalPath="/404"
         noindex={true}

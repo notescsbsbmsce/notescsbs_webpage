@@ -10,7 +10,7 @@ export default function Privacy() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
       <SEOHead
-        title="Privacy Policy — NOTESCSBS | BMSCE CSBS Academic Repository"
+        title="Privacy Policy - NOTESCSBS | BMSCE CSBS Academic Repository"
         description="Read the NOTESCSBS privacy policy. Learn how we handle data, protect student privacy, and comply with Indian IT regulations at BMS College of Engineering."
         canonicalPath="/privacy"
         jsonLd={buildBreadcrumbJsonLd([

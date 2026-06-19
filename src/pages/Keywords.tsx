@@ -31,21 +31,25 @@ const Keywords = () => {
       title: "Subject-Wise Specializations",
       icon: Book,
       keywords: [
-        "Mathematics I CSBS notes", "Engineering Physics CSBS", "Basic Electrical Engineering CSBS", 
-        "Elements of Mechanical Engineering CSBS", "Engineering Graphics CSBS", "Computer Programming with C CSBS", 
-        "Mathematics II CSBS notes", "Engineering Chemistry CSBS", "Basic Electronics CSBS", 
-        "Elements of Civil Engineering CSBS", "Environmental Studies CSBS", "Constitution of India CSBS", 
-        "C Programming lab codes BMSCE", "Physics lab manual BMSCE", "Chemistry lab manual BMSCE",
-        "Data Structures and Algorithms CSBS notes", "Discrete Mathematics CSBS", 
-        "Computer Organization and Architecture CSBS", "Object Oriented Programming with C++ CSBS", 
-        "Unix Shell Programming CSBS", "Database Management Systems CSBS notes", 
-        "Operating Systems CSBS notes", "Software Engineering CSBS", "Theory of Computation CSBS", 
-        "Design and Analysis of Algorithms CSBS", "Computer Networks CSBS notes", 
-        "Artificial Intelligence CSBS notes", "Machine Learning CSBS notes", 
-        "Big Data Analytics CSBS", "Cloud Computing CSBS", "Information Security CSBS", 
-        "Internet of Things CSBS", "Business Analytics CSBS", "Financial Accounting CSBS", 
-        "Marketing Management CSBS", "Organizational Behavior CSBS", "Economics for Engineers CSBS", 
-        "HR Management CSBS", "Supply Chain Management CSBS", "FABS", "FLAT", "Statistics"
+        "Mathematics I CSBS notes", "Engineering Physics CSBS", "Elements of Civil Engineering CSBS", 
+        "Elements of Mechanical Engineering CSBS", "Basic Electrical Engineering CSBS",
+        "Mathematics II CSBS notes", "Engineering Chemistry CSBS", "Problem Solving with C CSBS", 
+        "Basic Electronics CSBS", "Constitution of India CSBS",
+        "Mathematics III CSBS notes", "Data Structures and Algorithms CSBS notes", 
+        "Object Oriented Programming with C++ CSBS", "Digital Electronics CSBS", "Unix Programming CSBS",
+        "Mathematics IV CSBS notes", "Database Management Systems CSBS notes", 
+        "Computer Organization and Architecture CSBS", "Operating Systems CSBS notes", 
+        "Financial Accounting & Business Statistics CSBS",
+        "Computer Networks CSBS notes", "Software Engineering CSBS", "Artificial Intelligence CSBS notes", 
+        "Web Technologies CSBS", "Business Analytics CSBS",
+        "Machine Learning CSBS notes", "Cloud Computing CSBS", "Information Security CSBS", 
+        "Organizational Behavior CSBS",
+        "Big Data Analytics CSBS", "Internet of Things CSBS",
+        "Engineering Graphics CSBS", "Environmental Studies CSBS", "Discrete Mathematics CSBS",
+        "Theory of Computation CSBS", "Design and Analysis of Algorithms CSBS",
+        "Marketing Management CSBS", "Economics for Engineers CSBS", "HR Management CSBS", 
+        "Supply Chain Management CSBS", "FABS", "FLAT", "Statistics",
+        "Physics lab manual BMSCE", "Chemistry lab manual BMSCE", "C Programming lab codes BMSCE"
       ]
     },
     {
@@ -84,7 +88,7 @@ const Keywords = () => {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
       <SEOHead
-        title="Knowledge Index & SEO Directory | Notes CSBS — BMSCE Academic Repository"
+        title="Knowledge Index & SEO Directory | Notes CSBS - BMSCE Academic Repository"
         description="Comprehensive index of all CSBS academic topics, subjects, and study materials at BMSCE. Explore our vast repository of notes, PYQs, and verified resources."
         canonicalPath="/keywords"
         keywords="csbs notes, bmsce notes index, vtu subject directory, engineering notes bangalore, tushar jain, ayush kumar"

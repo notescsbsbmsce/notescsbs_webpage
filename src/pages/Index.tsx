@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
 import { fetchSemesters } from "@/lib/admin-utils";
 import { Header } from "@/components/Header";
 import { SemesterCard } from "@/components/SemesterCard";
@@ -13,6 +14,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
 import { AEOContent } from "@/components/AEOContent";
 import { SubscriptionNotification } from "@/components/SubscriptionNotification";
+import { HiddenSEOLayer } from "@/components/seo/HiddenSEOLayer";
+import { HiddenSubjectSEO } from "@/components/seo/HiddenSubjectSEO";
+import { HiddenSemesterSEO } from "@/components/seo/HiddenSemesterSEO";
+import { SUBJECT_SEO, SEMESTER_SEO } from "@/config/seo-data";
+import { buildOrganizationSchema, buildEducationalOrgSchema, buildWebSiteSchema, buildFAQSchema, buildHowToSchema, buildCourseSchema, buildArticleSchema, buildCollectionPageSchema } from "@/config/seo-schemas";
 
 const Index = () => {
   const { toast } = useToast();
@@ -89,51 +95,144 @@ const Index = () => {
 
   const aeoKeywords = "notes csbs, notes, note bms, note csbs vtu, bms vtu, bmsce csbs notes, csbs notes, note csbs, pyq csbs bmsce, bmsce pyq, bms pyq, csbs bmsce pyq, bsmce pyq csbs, csbs, csbs bms, csbs bmsce, BMSCE, CSBS, Computer Science and Business Systems, Lecture Notes, PYQ, Question Papers, VTU, BMSCE Notes, Study Material, Engineering Notes, BMS College of Engineering, Bengaluru, CIE, SEE, Semester Notes, DSA Notes, DBMS Notes, Machine Learning Notes, BMSCE CSBS Notes, VTU Notes 2024, VTU Notes 2025, Engineering Study Materials, BMSCE Academics, CSBS VTU Syllabus, Previous Year Papers VTU, Tushar Jain, Ayush Kumar, FABS, FLAT, Statistics, Stats for CSBS, Financial Accounting, Business Statistics, Formal Languages, Automata Theory, Discrete Mathematics, DE, Digital Electronics, UNIX, COA, DBMS, OS, Operating Systems, Computer Networks, CN, SE, Software Engineering, AI, Artificial Intelligence, ML, Machine Learning, BA, Business Analytics, WEB, Web Tech, CC, Cloud Computing, IS, Information Security, OB, Org Behavior, BD, Big Data, IOT, Internet of Things, Cyber Security, Cryptography, CSBS BMSCE, BMSCE CSBS Branch, BMSCE Placements, BMSCE Subjects, VTU Syllabus 2022 Scheme, VTU Syllabus 2021 Scheme, how to make csbs notes, csbs notes pdf, csbs pyq download, bmsce question bank, csbs book bank, csbs library, academic repository bmsce";
 
+  const location = useLocation();
+  const rawPath = location.pathname.toLowerCase().replace(/^\/|\/$/g, "");
+
+  // Find matching subject or semester
+  let matchedSubjectCode: string | null = null;
+  let matchedSemesterId: number | null = null;
+
+  const semMatch = rawPath.match(/^(\d)(?:st|nd|rd|th)?-sem-notes$/);
+  if (semMatch) {
+    matchedSemesterId = parseInt(semMatch[1]);
+  } else if (rawPath !== "") {
+    for (const [code, seo] of Object.entries(SUBJECT_SEO)) {
+      const slugBase = seo.slug.replace("-notes", "");
+      if (
+        rawPath === seo.slug ||
+        rawPath === `${slugBase}-pyq` ||
+        rawPath === `${slugBase}-important-questions` ||
+        rawPath.startsWith(`${slugBase}-unit-`) ||
+        rawPath.includes(code.toLowerCase()) ||
+        seo.keywords.some(k => rawPath.includes(k.toLowerCase().replace(/\s+/g, "-")))
+      ) {
+        matchedSubjectCode = code;
+        matchedSemesterId = seo.semester;
+        break;
+      }
+    }
+  }
+
+  // Get SEO configuration dynamically based on matched path
+  let seoTitle = "Notes CSBS | BMSCE CSBS Academic Repository | Lecture Notes, PYQs & Study Materials";
+  let seoDescription = "NOTESCSBS is the definitive, meticulously organized repository for CSBS academic assets at BMS College of Engineering. Access lecture notes, previous year question papers (PYQs), and premium study materials for all 8 semesters.";
+  let seoKeywords = aeoKeywords;
+  let seoJsonLd: any[] = [
+    buildOrganizationSchema(),
+    buildWebSiteSchema(),
+    buildEducationalOrgSchema(),
+    buildBreadcrumbJsonLd([{ name: "Home", path: "/" }]),
+    buildFAQSchema([
+      { question: "What is Notes CSBS?", answer: "Notes CSBS is the definitive academic repository for CSBS students at BMSCE, providing free lecture notes, PYQs, question banks, and study materials for all 8 semesters." },
+      { question: "Where can I find BMSCE CSBS notes?", answer: "You can find comprehensive BMSCE CSBS notes at Notes CSBS (notescsbs.vercel.app). We provide verified lecture notes, PYQs, and study materials for all subjects." },
+      { question: "Does Notes CSBS provide PYQs?", answer: "Yes, Notes CSBS provides an extensive collection of previous year question papers (PYQs) with solutions for CIE and SEE exams." },
+      { question: "Are the notes verified?", answer: "Yes, all study materials are verified by top student contributors and academic representatives from BMSCE." },
+      { question: "Is Notes CSBS free?", answer: "Yes, all notes, PYQs, question banks, and study materials are completely free to access and download." },
+      { question: "Does Notes CSBS follow VTU syllabus?", answer: "Yes, all materials are aligned with the latest VTU syllabus for CSBS (2022/2021 scheme)." },
+      { question: "How to prepare for CSBS exams at BMSCE?", answer: "Use verified notes from Notes CSBS, solve PYQs, focus on important questions, and practice lab programs for CIE and SEE preparation." },
+      { question: "What subjects are in CSBS?", answer: "CSBS covers core CS subjects (DSA, DBMS, OS, CN, AI, ML), mathematics (M1-M4), and business subjects (FABS, BA, OB) across 8 semesters." },
+      { question: "Who created Notes CSBS?", answer: "Notes CSBS was created by Tushar Jain and Ayush Kumar, students at BMS College of Engineering, Bengaluru." },
+      { question: "Can I download PDFs from Notes CSBS?", answer: "Yes, all study materials are available as downloadable PDFs for offline access." }
+    ]),
+    buildHowToSchema({
+      name: "How to Use Notes CSBS for Exam Preparation",
+      description: "Step-by-step guide to prepare for CSBS exams using Notes CSBS resources.",
+      steps: [
+        { name: "Select Your Semester", text: "Visit notescsbs.vercel.app and select your semester from the homepage." },
+        { name: "Choose a Subject", text: "Click on a subject to access unit-wise notes, PYQs, and study materials." },
+        { name: "Download Notes", text: "Download PDF notes for offline study and revision." },
+        { name: "Solve PYQs", text: "Practice with previous year question papers for CIE and SEE." },
+        { name: "Review Important Questions", text: "Focus on frequently asked questions for last-minute preparation." }
+      ]
+    })
+  ];
+
+  if (matchedSubjectCode) {
+    const seoData = SUBJECT_SEO[matchedSubjectCode];
+    if (seoData) {
+      seoTitle = `${seoData.name} (${seoData.code}) | Notes, PYQs & Books | BMSCE CSBS`;
+      seoDescription = seoData.description;
+      seoKeywords = `${seoData.keywords.join(", ")}, ${aeoKeywords}`;
+      seoJsonLd = [
+        buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: `Semester ${seoData.semester}`, path: `/semester/${seoData.semester}` },
+          { name: seoData.name, path: `/${seoData.slug}` }
+        ]),
+        buildCourseSchema({
+          name: seoData.name,
+          code: seoData.code,
+          description: seoData.description,
+          semester: seoData.semester,
+          topics: seoData.topics,
+        }),
+        buildFAQSchema(seoData.faqs),
+        buildArticleSchema({
+          title: `${seoData.name} (${seoData.code}) notes, PYQs & books`,
+          description: seoData.description,
+          path: `/${rawPath}`,
+          section: `Semester ${seoData.semester}`,
+          keywords: seoData.keywords,
+        })
+      ];
+    }
+  } else if (matchedSemesterId) {
+    const seoData = SEMESTER_SEO[matchedSemesterId];
+    if (seoData) {
+      seoTitle = `Semester ${matchedSemesterId} | CSBS Notes, PYQs & Study Material | BMSCE NOTESCSBS`;
+      seoDescription = seoData.description;
+      seoKeywords = `${seoData.keywords.join(", ")}, ${aeoKeywords}`;
+      seoJsonLd = [
+        buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: `Semester ${matchedSemesterId}`, path: `/${rawPath}` }
+        ]),
+        buildCollectionPageSchema({
+          name: `Semester ${matchedSemesterId} | CSBS Notes BMSCE`,
+          description: seoData.description,
+          path: `/${rawPath}`,
+          items: Object.values(SUBJECT_SEO)
+            .filter(s => s.semester === matchedSemesterId && !s.isLab)
+            .map(s => ({
+              name: `${s.name} (${s.code})`,
+              url: `https://notescsbs.vercel.app/subject/${s.code}`
+            }))
+        }),
+        buildFAQSchema(seoData.faqs)
+      ];
+    }
+  }
+
+  let subType: "notes" | "pyq" | "questions" | "unit1" | "unit2" | "unit3" | "unit4" | "unit5" = "notes";
+  if (rawPath.endsWith("-pyq")) {
+    subType = "pyq";
+  } else if (rawPath.endsWith("-important-questions")) {
+    subType = "questions";
+  } else {
+    const unitMatch = rawPath.match(/-unit-(\d)-notes$/);
+    if (unitMatch) {
+      subType = `unit${unitMatch[1]}` as any;
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary">
       <SEOHead
-        title="Notes CSBS | BMSCE CSBS Academic Repository — Lecture Notes, PYQs & Study Materials"
-        description="NOTESCSBS is the definitive, meticulously organized repository for CSBS academic assets at BMS College of Engineering. Access lecture notes, previous year question papers (PYQs), and premium study materials for all 8 semesters."
-        canonicalPath="/"
-        keywords={aeoKeywords}
-        jsonLd={[
-          {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "Notes CSBS",
-            url: "https://notescsbs.vercel.app",
-            logo: "https://notescsbs.vercel.app/notes-csbs-logo.png",
-            description: "Student-built academic repository for CSBS department at BMSCE, Bengaluru.",
-            sameAs: [
-              "https://github.com/Tusharjain-19"
-            ]
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Notes CSBS",
-            url: "https://notescsbs.vercel.app",
-            description: "Access lecture notes, PYQs, and study materials for CSBS at BMSCE.",
-            potentialAction: {
-              "@type": "SearchAction",
-              target: "https://notescsbs.vercel.app/semester/{search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
-          },
-          buildBreadcrumbJsonLd([
-            { name: "Home", path: "/" }
-          ]),
-          {
-            "@context": "https://schema.org",
-            "@type": "EducationalOrganization",
-            name: "BMS College of Engineering",
-            department: {
-              "@type": "Organization",
-              name: "Department of Computer Science and Business Systems (CSBS)"
-            },
-            url: "https://www.bmsce.ac.in/"
-          }
-        ]}
+        title={seoTitle}
+        description={seoDescription}
+        canonicalPath={rawPath ? `/${rawPath}` : "/"}
+        keywords={seoKeywords}
+        jsonLd={seoJsonLd}
       />
       <Header />
       
@@ -178,7 +277,11 @@ const Index = () => {
                 Explore Repository
                 <ArrowRight className="ml-2 sm:ml-3 h-4 sm:h-5 w-4 sm:w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl border-white/10 hover:bg-white/5 font-black transition-all shadow-xl w-full sm:w-auto text-sm sm:text-base" onClick={() => window.location.href = '/notices'}>
+              <Button size="lg" variant="outline" className="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl border-[1.5px] border-primary/50 bg-primary/5 hover:bg-primary/10 text-primary font-black transition-all shadow-[0_0_20px_rgba(var(--primary),0.2)] hover:shadow-[0_0_30px_rgba(var(--primary),0.4)] w-full sm:w-auto text-sm sm:text-base gap-3 group" onClick={() => window.location.href = '/notices'}>
+                <div className="relative flex items-center justify-center">
+                  <div className="absolute inset-0 bg-primary/20 blur-md rounded-full animate-pulse"></div>
+                  <img src="/notes-csbs-logo.png" alt="Logo" className="w-5 h-5 sm:w-6 sm:h-6 object-contain relative z-10 group-hover:scale-110 transition-transform" />
+                </div>
                 Notice Board
               </Button>
             </div>
@@ -291,6 +394,13 @@ const Index = () => {
       </main>
       
       <AEOContent />
+      {matchedSubjectCode ? (
+        <HiddenSubjectSEO subjectCode={matchedSubjectCode} semester={matchedSemesterId || 1} subType={subType} />
+      ) : matchedSemesterId ? (
+        <HiddenSemesterSEO semester={matchedSemesterId} />
+      ) : (
+        <HiddenSEOLayer />
+      )}
       <Footer />
       <SubscriptionNotification />
     </div>

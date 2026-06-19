@@ -32,22 +32,22 @@ function onFormSubmit(e) {
     return;
   }
   
-  const subject = "✈️ Welcome Aboard Air CSBS! Your Flight Begins 🚀";
+  const subject = "Welcome to Notes CSBS - Registration Confirmed";
   
-  // High-Fidelity Editorial Email Template
+  // Clean, professional, brand-aligned email template to avoid spam filters
   const htmlBody = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet">
       <style>
         body { 
           margin: 0; 
           padding: 0; 
-          background-color: #f1f5f9; 
-          font-family: 'Outfit', -apple-system, sans-serif;
+          background-color: #f8fafc; 
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
           -webkit-font-smoothing: antialiased;
         }
         .wrapper {
@@ -57,119 +57,99 @@ function onFormSubmit(e) {
           max-width: 600px;
           margin: 0 auto;
           background-color: #ffffff;
-          border-radius: 32px;
+          border-radius: 16px;
           border: 1px solid #e2e8f0;
           overflow: hidden;
-          box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
-        .hero {
-          background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-          padding: 60px 40px;
+        .header {
+          padding: 40px 40px 20px 40px;
           text-align: center;
-          position: relative;
+          border-bottom: 1px solid #f8fafc;
         }
         .logo {
-          color: #ffffff;
           font-weight: 900;
-          font-size: 36px;
+          font-size: 28px;
           letter-spacing: -1px;
-          margin-bottom: 8px;
-        }
-        .tagline {
-          color: rgba(255, 255, 255, 0.9);
-          font-size: 12px;
+          color: #0f172a;
           text-transform: uppercase;
-          font-weight: 900;
-          letter-spacing: 3px;
+        }
+        .logo-accent {
+          color: #2563eb;
+          font-style: italic;
         }
         .main-content {
-          padding: 50px 40px;
-          color: #1e293b;
+          padding: 40px;
+          color: #334155;
         }
         h1 {
-          font-weight: 900;
-          font-size: 40px;
+          font-weight: 800;
+          font-size: 24px;
           color: #0f172a;
-          line-height: 1;
-          margin: 0 0 24px 0;
-          letter-spacing: -1.5px;
+          margin: 0 0 20px 0;
+          letter-spacing: -0.5px;
         }
         p {
           font-size: 16px;
           line-height: 1.6;
-          color: #475569;
           margin-bottom: 24px;
-          font-weight: 500;
-        }
-        .highlight {
-          color: #8b5cf6;
-          font-weight: 700;
+          color: #475569;
         }
         .cta-container {
           text-align: center;
           margin-top: 40px;
+          margin-bottom: 10px;
         }
         .button {
           display: inline-block;
-          background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+          background-color: #2563eb;
           color: #ffffff !important;
-          padding: 16px 32px;
-          border-radius: 100px;
+          padding: 14px 32px;
+          border-radius: 8px;
           text-decoration: none;
-          font-weight: 900;
-          font-size: 14px;
-          text-transform: uppercase;
-          letter-spacing: 1.5px;
-          box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.4);
-          transition: transform 0.2s;
+          font-weight: 600;
+          font-size: 15px;
+          box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
         }
         .footer {
           padding: 30px 40px;
           background-color: #f8fafc;
-          border-top: 1px solid #f1f5f9;
           text-align: center;
+          border-top: 1px solid #f1f5f9;
         }
         .footer-text {
-          font-size: 12px;
-          color: #94a3b8;
-          font-weight: 700;
-          letter-spacing: 0.5px;
+          font-size: 13px;
+          color: #64748b;
           margin: 0;
-        }
-        .accent-emoji {
-          font-size: 48px;
-          margin-bottom: 16px;
         }
       </style>
     </head>
     <body>
       <div class="wrapper">
         <div class="container">
-          <div class="hero">
-            <div class="accent-emoji">✈️</div>
-            <div class="logo">Air CSBS</div>
-            <div class="tagline">Flight #BMSCE is ready for takeoff</div>
+          <div class="header">
+            <div class="logo">NOTES<span class="logo-accent">CSBS</span></div>
           </div>
           
           <div class="main-content">
-            <h1>Welcome Aboard! 👋</h1>
+            <h1>Registration Confirmed</h1>
             <p>
-              Sup bestie! You've officially secured your boarding pass for the ultimate academic flight. Fasten your seatbelts because we're taking your grades to the <span class="highlight">stratosphere!</span> 🚀
+              Hello there,
             </p>
             <p>
-              No more stressing over lost notes or gatekeeping. We're dropping verified resources, PYQs, and curriculum updates straight to your inbox. You just sit back, relax, and vibe while we do the heavy lifting.
+              Welcome to the Notes CSBS institutional registry. Your email has been successfully registered to receive real-time curriculum notifications and curated academic resource drops for BMSCE students.
             </p>
             <p>
-              Ready to hit cruising altitude? Enter the VIP lounge below to access the full archive.
+              We are dedicated to providing you with the highest quality lecture notes, previous year question papers (PYQs), and study materials across all semesters.
             </p>
             
             <div class="cta-container">
-              <a href="https://notescsbs.vercel.app/" class="button">TAKE OFF NOW 🛫</a>
+              <a href="https://notescsbs.vercel.app/" class="button">Access the Repository</a>
             </div>
           </div>
           
           <div class="footer">
-            <p class="footer-text">Made with 💖 by NOTESCSBS • BMSCE</p>
+            <p class="footer-text">© Notes CSBS. All rights reserved.</p>
           </div>
         </div>
       </div>

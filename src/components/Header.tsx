@@ -38,6 +38,18 @@ export function Header() {
               <Users className="h-3.5 w-3.5" />
               <span>Contributors</span>
             </Link>
+            <Link
+              to="/notices"
+              className={`flex items-center gap-2 px-4 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 border-[1.5px] border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.15)] hover:shadow-[0_0_25px_rgba(var(--primary),0.3)] hover:-translate-y-0.5 hover:border-primary ${
+                location.pathname === "/notices" ? "bg-primary/10 text-primary border-primary" : "bg-background/50 text-foreground"
+              }`}
+            >
+              <div className="relative flex items-center justify-center">
+                <div className="absolute inset-0 bg-primary/20 blur-md rounded-full animate-pulse"></div>
+                <img src="/notes-csbs-logo.png" alt="Logo" className="w-4 h-4 object-contain relative z-10" />
+              </div>
+              <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent font-extrabold">Notice Board</span>
+            </Link>
             <Button
               variant="ghost"
               size="sm"

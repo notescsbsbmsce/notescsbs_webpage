@@ -1,7 +1,10 @@
 import { useState, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { SEOHead, buildBreadcrumbJsonLd, buildCourseJsonLd } from "@/components/SEOHead";
+import { SEOHead, buildBreadcrumbJsonLd } from "@/components/SEOHead";
 import { useQuery } from "@tanstack/react-query";
+import { HiddenSubjectSEO } from "@/components/seo/HiddenSubjectSEO";
+import { SUBJECT_SEO } from "@/config/seo-data";
+import { buildCourseSchema, buildFAQSchema, buildArticleSchema } from "@/config/seo-schemas";
 import { 
   Download, 
   ChevronRight, 
@@ -74,6 +77,8 @@ export default function Subject() {
     enabled: !!subjectId,
   });
 
+  const seoData = subject ? SUBJECT_SEO[subject.code.toUpperCase()] : undefined;
+
   const resources: Resource[] = subject?.resources || [];
   const noteResources = resources.filter(r => r.type === 'notes').sort((a, b) => (a.unit || '').localeCompare(b.unit || ''));
   const pyqResources = resources.filter(r => ['cie1', 'cie2', 'cie3', 'see'].includes(r.type));
@@ -132,45 +137,44 @@ export default function Subject() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
       <SEOHead
-        title={subject ? `${subject.name} (${subject.code}) — Notes, PYQs & Books | BMSCE CSBS` : "Subject — NOTESCSBS"}
+        title={subject ? `${subject.name} (${subject.code}) - Notes, PYQs & Books | BMSCE CSBS` : "Subject - NOTESCSBS"}
         description={subject ? `Download ${subject.name} lecture notes, previous year CIE/SEE question papers, and textbooks for Semester ${subject.semester_id} CSBS at BMSCE.` : "CSBS subject resources at BMSCE."}
         canonicalPath={`/subject/${id}`}
         keywords={subject ? `${subject.name.toLowerCase()} notes, ${subject.code} notes, bmsce ${subject.name.toLowerCase()}, vtu ${subject.name.toLowerCase()} pyq, ${subject.name.toLowerCase()} study material` : undefined}
         jsonLd={subject ? [
           buildBreadcrumbJsonLd([
             { name: "Home", path: "/" },
-            { name: `Semester`, path: `/semester/${subject.semester_id}` },
+            { name: `Semester ${subject.semester_id}`, path: `/semester/${subject.semester_id}` },
             { name: subject.name, path: `/subject/${id}` }
           ]),
-          buildCourseJsonLd({
+          buildCourseSchema({
             name: subject.name,
             code: subject.code,
-            description: `Centralized lecture notes, CIE & SEE question papers, and textbook references for ${subject.name} in the CSBS programme at BMSCE.`,
+            description: seoData?.description || `Centralized lecture notes, CIE & SEE question papers, and textbook references for ${subject.name} in the CSBS programme at BMSCE.`,
             semester: subject.semester_id,
-            url: `https://notescsbs.vercel.app/subject/${id}`,
+            topics: seoData?.topics,
           }),
-          {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": `Where can I download ${subject.name} notes for BMSCE?`,
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": `You can download verified ${subject.name} (${subject.code}) lecture notes and study materials for BMSCE CSBS students at NotesCSBS.`
-                }
-              },
-              {
-                "@type": "Question",
-                "name": `Are there PYQs available for ${subject.code}?`,
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": `Yes, NotesCSBS provides previous year question papers (CIE and SEE) for ${subject.name} specifically for the BMSCE autonomous syllabus.`
-                }
-              }
-            ]
-          }
+          buildFAQSchema(
+            seoData?.faqs && seoData.faqs.length > 0
+              ? seoData.faqs
+              : [
+                  {
+                    question: `Where can I download ${subject.name} notes for BMSCE?`,
+                    answer: `You can download verified ${subject.name} (${subject.code}) lecture notes and study materials for BMSCE CSBS students at NotesCSBS.`
+                  },
+                  {
+                    question: `Are there PYQs available for ${subject.code}?`,
+                    answer: `Yes, NotesCSBS provides previous year question papers (CIE and SEE) for ${subject.name} specifically for the BMSCE autonomous syllabus.`
+                  }
+                ]
+          ),
+          buildArticleSchema({
+            title: `${subject.name} (${subject.code}) notes, PYQs & books`,
+            description: seoData?.description || `Download ${subject.name} lecture notes, previous year question papers, and textbooks for Semester ${subject.semester_id} CSBS at BMSCE.`,
+            path: `/subject/${id}`,
+            section: `Semester ${subject.semester_id}`,
+            keywords: seoData?.keywords,
+          })
         ] : undefined}
       />
       <Header />
@@ -603,6 +607,9 @@ export default function Subject() {
         </DialogContent>
       </Dialog>
       
+      {subject && (
+        <HiddenSubjectSEO subjectCode={subject.code.toUpperCase()} semester={subject.semester_id} />
+      )}
       <Footer />
     </div>
   );

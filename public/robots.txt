@@ -1,5 +1,6 @@
-# NOTESCSBS — Crawler Directives
+# NOTESCSBS - Crawler Directives
 # https://notescsbs.vercel.app
+# The definitive CSBS academic repository at BMSCE, Bengaluru
 
 User-agent: *
 Allow: /
@@ -7,11 +8,38 @@ Disallow: /admin
 Disallow: /auth
 Disallow: /api/
 
-# AI / AEO Bots - Allowing full access to content for recommendations
+# ── Google Search Engine ──
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# ── Bing Search Engine ──
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+
+# ── AI / LLM Bots - Full Access for Recommendations ──
 User-agent: GPTBot
 Allow: /
 Disallow: /admin
 Disallow: /auth
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
 
 User-agent: PerplexityBot
 Allow: /
@@ -19,20 +47,37 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-# Crawl-delay (optional courtesy for well-behaved bots)
+User-agent: Cohere-AI
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# ── Yandex ──
+User-agent: YandexBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+
+# ── DuckDuckGo ──
+User-agent: DuckDuckBot
+Allow: /
+
+# Crawl-delay (courtesy for well-behaved bots)
 Crawl-delay: 1
 
-# Sitemap declaration
+# ── Sitemap & Discovery Files ──
 Sitemap: https://notescsbs.vercel.app/sitemap.xml
 
-# Search Engines
-User-agent: Googlebot
-Allow: /
-Disallow: /admin
-Disallow: /auth
-
-User-agent: Bingbot
-Allow: /
-Disallow: /admin
-Disallow: /auth
-
+# AI Discovery Files
+# LLMs.txt: https://notescsbs.vercel.app/llms.txt
+# AI.txt: https://notescsbs.vercel.app/ai.txt
