@@ -277,11 +277,7 @@ const Index = () => {
                 Explore Repository
                 <ArrowRight className="ml-2 sm:ml-3 h-4 sm:h-5 w-4 sm:w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl border-[1.5px] border-primary/50 bg-primary/5 hover:bg-primary/10 text-primary font-black transition-all shadow-[0_0_20px_rgba(var(--primary),0.2)] hover:shadow-[0_0_30px_rgba(var(--primary),0.4)] w-full sm:w-auto text-sm sm:text-base gap-3 group" onClick={() => window.location.href = '/notices'}>
-                <div className="relative flex items-center justify-center">
-                  <div className="absolute inset-0 bg-primary/20 blur-md rounded-full animate-pulse"></div>
-                  <img src="/notes-csbs-logo.png" alt="Logo" className="w-5 h-5 sm:w-6 sm:h-6 object-contain relative z-10 group-hover:scale-110 transition-transform" />
-                </div>
+              <Button size="lg" variant="outline" className="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl border-[1.5px] border-primary/50 bg-primary/5 hover:bg-primary/10 text-primary font-black transition-all shadow-[0_0_20px_rgba(var(--primary),0.2)] hover:shadow-[0_0_30px_rgba(var(--primary),0.4)] w-full sm:w-auto text-sm sm:text-base group" onClick={() => window.location.href = '/notices'}>
                 Notice Board
               </Button>
             </div>

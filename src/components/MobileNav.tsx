@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Users, Mail, Settings } from "lucide-react";
+import { Home, Users, Mail, Bell } from "lucide-react";
 
 export function MobileNav() {
   const location = useLocation();
 
   const navItems = [
     { label: "Home", href: "/", icon: <Home className="h-5 w-5" /> },
-    { label: "Notices", href: "/notices", icon: <img src="/notes-csbs-logo.png" alt="Notices" className="h-5 w-5 object-contain" /> },
+    { label: "Notices", href: "/notices", icon: <Bell className="h-5 w-5" /> },
     { label: "Contributors", href: "/contributors", icon: <Users className="h-5 w-5" /> },
     { label: "Feedback", href: "mailto:notescsbsbmsce@gmail.com", icon: <Mail className="h-5 w-5" />, isExternal: true },
   ];

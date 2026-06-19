@@ -11,6 +11,7 @@ import { useAnalytics } from "./hooks/useAnalytics";
 // Core index page direct for maximum landing performance
 import Index from "./pages/Index";
 import ScrollToTop from "./components/ScrollToTop";
+import { LiveNotificationListener } from "./components/LiveNotificationListener";
 
 // Remaining pages lazy loaded
 const Admin = lazy(() => import("./pages/Admin"));
@@ -141,6 +142,7 @@ const App = () => (
             <Route path="*" element={<WildcardRoute />} />
           </Routes>
           <MobileNav />
+          <LiveNotificationListener />
         </AnalyticsWrapper>
       </BrowserRouter>
     </TooltipProvider>
