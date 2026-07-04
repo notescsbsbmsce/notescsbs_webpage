@@ -5,7 +5,7 @@
  */
 
 const BASE_URL = "https://notescsbs.vercel.app";
-const LOGO_URL = `${BASE_URL}/notes-csbs-logo.png`;
+const LOGO_URL = `${BASE_URL}/newlogo.png`;
 const SITE_NAME = "Notes CSBS";
 
 // ── Organization Schema ──

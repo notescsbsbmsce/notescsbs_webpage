@@ -17,7 +17,7 @@ interface SEOHeadProps {
 }
 
 const BASE_URL = "https://notescsbs.vercel.app";
-const DEFAULT_IMAGE = `${BASE_URL}/notes-csbs-logo.png`;
+const DEFAULT_IMAGE = `${BASE_URL}/newlogo.png`;
 const SITE_NAME = "Notes CSBS | BMSCE";
 
 /**
