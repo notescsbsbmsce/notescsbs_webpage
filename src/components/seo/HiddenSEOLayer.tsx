@@ -14,6 +14,12 @@ import {
   UNIVERSITY_KEYWORDS,
   SEARCH_INTENT_KEYWORDS,
   LONG_TAIL_KEYWORDS,
+  ENGINEERING_BROAD_KEYWORDS,
+  PROTOCOL_PATTERN_KEYWORDS,
+  ALL_ENGINEERING_SUBJECTS,
+  BEST_WEBSITE_KEYWORDS,
+  EXAM_PATTERN_KEYWORDS,
+  COMPETITIVE_KEYWORDS,
   SEMESTER_SEO,
   SUBJECT_SEO,
   generateSubjectParagraph,
@@ -353,6 +359,12 @@ export const HiddenSEOLayer = () => {
         <p>{SEARCH_INTENT_KEYWORDS.join(", ")}.</p>
         <p>{LONG_TAIL_KEYWORDS.join(", ")}.</p>
         <p>{EXTRA_KEYWORDS.join(", ")}.</p>
+        <p>{ENGINEERING_BROAD_KEYWORDS.join(", ")}.</p>
+        <p>{PROTOCOL_PATTERN_KEYWORDS.join(", ")}.</p>
+        <p>{ALL_ENGINEERING_SUBJECTS.join(", ")}.</p>
+        <p>{BEST_WEBSITE_KEYWORDS.join(", ")}.</p>
+        <p>{EXAM_PATTERN_KEYWORDS.join(", ")}.</p>
+        <p>{COMPETITIVE_KEYWORDS.join(", ")}.</p>
       </section>
 
       {/* ── SEMANTIC LONG-FORM PARAGRAPHS ── */}
@@ -391,6 +403,88 @@ export const HiddenSEOLayer = () => {
         </p>
       </section>
 
+      {/* ── BEST WEBSITE POSITIONING ── */}
+      <section>
+        <h2>Best Notes Website for Engineering Students</h2>
+        <p>
+          Notes CSBS is the best notes website for BMSCE students, the best notes website for
+          VTU students, and the best free engineering notes website in India. Whether you are
+          looking for the best notes website for BMS College, the best notes website for CSE,
+          the best notes website for CSBS, or the best engineering notes website in Bangalore,
+          Notes CSBS provides verified, free, and comprehensive study materials. Our platform
+          is better than paid alternatives - no login required, no signup, no paywall. Just
+          free, verified engineering notes for every student.
+        </p>
+        <p>
+          Students searching for the best website to download engineering notes, the best website
+          to download VTU notes, the best website for engineering PDF notes, or the best website
+          for VTU question papers will find Notes CSBS to be the most reliable and comprehensive
+          resource available. We are the number one notes website for VTU engineering students,
+          the most popular notes website for BMSCE, and the most trusted notes website for CSBS.
+          Our platform serves as a free alternative to Studocu, CourseHero, Scribd, and other
+          paid note-sharing platforms, specifically tailored for VTU and BMSCE students.
+        </p>
+      </section>
+
+      {/* ── PROTOCOL KEYWORDS SECTION ── */}
+      <section>
+        <h2>Protocol Notes for Engineering</h2>
+        <p>
+          Looking for protocol notes? Protocol BMSCE notes, protocol VTU notes, protocol
+          engineering notes, protocol Data Structures notes, protocol DBMS notes, protocol
+          OS notes, protocol Computer Networks notes, protocol Machine Learning notes,
+          protocol Artificial Intelligence notes, protocol Software Engineering notes,
+          protocol Cloud Computing notes, protocol Web Technologies notes, protocol
+          Mathematics notes, protocol Physics notes, protocol Chemistry notes - all
+          available free at Notes CSBS. Download protocol notes PDF, protocol notes free,
+          protocol notes for VTU exams, protocol notes for BMSCE students.
+        </p>
+      </section>
+
+      {/* ── CROSS-BRANCH ENGINEERING DISCOVERY ── */}
+      <section>
+        <h2>Engineering Notes for All Branches</h2>
+        <p>
+          Notes CSBS provides notes that are useful across all engineering branches at BMSCE
+          and VTU. Whether you are a CSE student, ISE student, ECE student, EEE student,
+          ME student, CV student, or AIML student, our shared first-year and common subject
+          notes cover Engineering Mathematics (M1, M2, M3, M4), Engineering Physics,
+          Engineering Chemistry, Basic Electrical Engineering, Basic Electronics, Constitution
+          of India, and more. BMSCE CSE notes, BMSCE ISE notes, BMSCE ECE notes, BMSCE EEE
+          notes, BMSCE ME notes, BMSCE CV notes, BMSCE AI ML notes - students from all
+          branches benefit from our comprehensive repository.
+        </p>
+        <p>
+          Our advanced CS subject notes including Data Structures, DBMS, Operating Systems,
+          Computer Networks, Machine Learning, Artificial Intelligence, Web Technologies,
+          Cloud Computing, and Information Security are relevant for CSE, ISE, CSBS, AIML,
+          and IT students across VTU. Whether you need DSA notes PDF free download, DBMS
+          notes PDF free download, Operating Systems notes PDF free, Computer Networks notes
+          PDF free, Machine Learning notes PDF free, or Artificial Intelligence notes PDF -
+          Notes CSBS has you covered with verified, unit-wise study materials.
+        </p>
+      </section>
+
+      {/* ── EXAM PREPARATION & COMPETITIVE SECTION ── */}
+      <section>
+        <h2>Exam Preparation and Competitive Resources</h2>
+        <p>
+          Prepare for VTU CIE and SEE exams with Notes CSBS. We provide VTU CIE 1 question
+          papers, VTU CIE 2 question papers, VTU CIE 3 question papers, VTU SEE question
+          papers, VTU model question papers, VTU blueprint, and VTU marking scheme resources.
+          Learn how to pass CIE VTU, how to score in CIE VTU, how to pass SEE VTU, and how
+          to score in SEE VTU with our exam preparation tips and verified study materials.
+          VTU last minute preparation notes, VTU crash course notes, and one day before exam
+          revision guides are available for quick preparation.
+        </p>
+        <p>
+          For competitive exam preparation, Notes CSBS provides GATE CSE notes, GATE
+          preparation notes, placement preparation notes for TCS, Infosys, Wipro, Cognizant,
+          and Accenture. Our DSA notes are perfect for coding interview preparation, and our
+          system design notes cover both LLD and HLD concepts essential for tech placements.
+        </p>
+      </section>
+
       {/* ── STUDY GUIDE ── */}
       <section>
         <h2>How to Use Notes CSBS for Exam Preparation</h2>
@@ -422,11 +516,103 @@ export const HiddenSEOLayer = () => {
               {subjects.map(s => `${s.name} unit wise notes`).join(", ")},
               {subjects.map(s => `${s.name} question bank PDF`).join(", ")},
               {subjects.map(s => `${s.name} handwritten notes`).join(", ")},
-              Semester {sem} topper notes CSBS BMSCE VTU, exam preparation semester {sem} CSBS.
+              Semester {sem} topper notes CSBS BMSCE VTU, exam preparation semester {sem} CSBS,
+              protocol {subjects.map(s => s.name).join(" notes, protocol ")} notes,
+              best notes for semester {sem} BMSCE, best notes website for semester {sem} VTU,
+              {subjects.map(s => `${s.name} BMSCE notes`).join(", ")},
+              {subjects.map(s => `${s.name} VTU notes`).join(", ")},
+              {subjects.map(s => `${s.name} notes PDF free download`).join(", ")},
+              {subjects.map(s => `${s.name} important questions with answers`).join(", ")},
+              {subjects.map(s => `${s.name} CIE papers`).join(", ")},
+              {subjects.map(s => `${s.name} SEE papers`).join(", ")}.
             </p>
           );
         })}
       </section>
+
+      {/* ── SUBJECT x BMSCE x VTU COMBINATION MATRIX ── */}
+      <section>
+        <h2>Subject Notes - BMSCE and VTU Combinations</h2>
+        {theorySubjects.map(subj => (
+          <p key={`combo-${subj.code}`}>
+            {subj.name} notes, {subj.name} notes PDF, {subj.name} notes BMSCE,
+            {subj.name} notes VTU, {subj.name} CSBS notes, {subj.name} PYQ,
+            {subj.name} PYQ BMSCE, {subj.name} PYQ VTU, {subj.name} important questions,
+            {subj.name} question bank, {subj.name} handwritten notes,
+            {subj.name} topper notes, {subj.name} revision notes,
+            {subj.name} unit wise notes PDF, {subj.name} CIE papers,
+            {subj.name} SEE papers, {subj.name} solved papers,
+            {subj.name} notes free download, best {subj.name} notes,
+            protocol {subj.name} notes, {subj.name} notes for engineering,
+            {subj.name} BMSCE CSBS, {subj.name} VTU CSBS,
+            {subj.code} notes, {subj.code} notes PDF, {subj.code} BMSCE,
+            {subj.code} VTU, {subj.code} PYQ, {subj.code} important questions,
+            {subj.code} question bank, {subj.code} notes download.
+          </p>
+        ))}
+      </section>
+
+      {/* ── E-E-A-T CREDIBILITY LAYER ── */}
+      <section>
+        <h2>Notes CSBS Editorial Standards, Authorship & Verification Policy</h2>
+        <article>
+          <h3>About the Authors and Curators</h3>
+          <p>
+            Notes CSBS was conceptualized, designed, and developed by Tushar Jain and Ayush Kumar,
+            undergraduate engineering students in the Department of Computer Science and Business
+            Systems (CSBS) at BMS College of Engineering (BMSCE), Bengaluru. Drawing from their
+            firsthand academic experience, the curators established this repository to solve the
+            issue of fragmented study resources. Both curators actively review, organize, and
+            update the academic datasets to maintain the highest quality standards.
+          </p>
+        </article>
+
+        <article>
+          <h3>Editorial and Content Verification Policy</h3>
+          <p>
+            To guarantee academic accuracy and syllabus alignment, Notes CSBS enforces a strict
+            3-tier validation protocol for all published assets:
+          </p>
+          <ol>
+            <li>
+              <strong>Sourcing:</strong> Study notes and question banks are collected exclusively
+              from academic representatives, branch toppers, and verified high-performing students
+              within the BMSCE CSBS department.
+            </li>
+            <li>
+              <strong>Syllabus Cross-Reference:</strong> Every document is audited against the official
+              autonomous BMSCE and Visvesvaraya Technological University (VTU) syllabus (2022 scheme
+              and 2021 scheme).
+            </li>
+            <li>
+              <strong>Peer Review:</strong> Content undergoes periodic reviews by subject-matter
+              representatives to correct errors, clarify derivations, and ensure compatibility with
+              CIE and SEE exam patterns.
+            </li>
+          </ol>
+        </article>
+
+        <article>
+          <h3>Resource Attribution & Academic Honesty</h3>
+          <p>
+            All lecture notes and study aids are structured based on reference textbooks prescribed in
+            the official VTU/BMSCE curriculum, including works by standard global publishers. We
+            acknowledge and credit the teaching faculty at the BMSCE Computer Science and Business
+            Systems department whose classroom presentations and curriculum designs form the baseline
+            structure of these notes. Materials are made available strictly for free educational use.
+          </p>
+        </article>
+
+        <article>
+          <h3>Platform Integrity and Continuous Updates</h3>
+          <p>
+            Notes CSBS is currently running on Version 3.0 (Last updated: July 2026). The platform
+            maintains redundancy backups of all study PDFs via secured cloud databases. We publish monthly
+            changelogs on our notice board to keep students informed of curriculum revisions or database expansions.
+          </p>
+        </article>
+      </section>
     </div>
   );
 };
+

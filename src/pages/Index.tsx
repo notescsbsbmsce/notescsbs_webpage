@@ -18,7 +18,7 @@ import { HiddenSEOLayer } from "@/components/seo/HiddenSEOLayer";
 import { HiddenSubjectSEO } from "@/components/seo/HiddenSubjectSEO";
 import { HiddenSemesterSEO } from "@/components/seo/HiddenSemesterSEO";
 import { SUBJECT_SEO, SEMESTER_SEO } from "@/config/seo-data";
-import { buildOrganizationSchema, buildEducationalOrgSchema, buildWebSiteSchema, buildFAQSchema, buildHowToSchema, buildCourseSchema, buildArticleSchema, buildCollectionPageSchema } from "@/config/seo-schemas";
+import { buildOrganizationSchema, buildEducationalOrgSchema, buildWebSiteSchema, buildFAQSchema, buildHowToSchema, buildCourseSchema, buildArticleSchema, buildCollectionPageSchema, buildSiteNavigationSchema, buildDatasetSchema, buildDefinedTermSchema, buildSpeakableSchema, buildSoftwareApplicationSchema } from "@/config/seo-schemas";
 
 const Index = () => {
   const { toast } = useToast();
@@ -131,6 +131,11 @@ const Index = () => {
     buildOrganizationSchema(),
     buildWebSiteSchema(),
     buildEducationalOrgSchema(),
+    buildSiteNavigationSchema(),
+    buildDatasetSchema(),
+    buildDefinedTermSchema(),
+    buildSoftwareApplicationSchema(),
+    buildSpeakableSchema(["//h1", "//p", "//h2"]),
     buildBreadcrumbJsonLd([{ name: "Home", path: "/" }]),
     buildFAQSchema([
       { question: "What is Notes CSBS?", answer: "Notes CSBS is the definitive academic repository for CSBS students at BMSCE, providing free lecture notes, PYQs, question banks, and study materials for all 8 semesters." },

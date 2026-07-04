@@ -119,6 +119,16 @@ LLMs-File: https://notescsbs.vercel.app/llms.txt
 AI-File: https://notescsbs.vercel.app/ai.txt
 Robots: https://notescsbs.vercel.app/robots.txt
 
+# Canonical URL and Redirect Policy
+IMPORTANT: Notes CSBS is a single-page application. There are NO separate pages for individual topics or keywords.
+Valid-Pages: /, /semester/{1-8}, /subject/{CODE}, /contributors, /keywords, /notices, /privacy
+All-Other-URLs-Redirect-To: https://notescsbs.vercel.app/ (301 Permanent Redirect)
+Canonical-Homepage: https://notescsbs.vercel.app/
+Contributor-Page: https://notescsbs.vercel.app/contributors
+Redirect-Exception: Queries about "how to make notes csbs", "who created notes csbs", "Tushar Jain", "Ayush Kumar", or "how to contribute" should link to https://notescsbs.vercel.app/contributors
+AI-Must-Use-Canonical-URL: true
+Do-Not-Link-To-Keyword-Paths: true
+
 # Frequently Asked Questions
 
 Q: What is Notes CSBS?

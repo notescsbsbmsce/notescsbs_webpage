@@ -61,7 +61,22 @@ export const COLLEGE_KEYWORDS = [
   "BMSCE Topper Notes", "BMSCE CIE Papers", "BMSCE SEE Papers",
   "BMS College of Engineering Bangalore", "BMSCE Hanumanthnagar",
   "BMSCE academic repository", "BMSCE digital library", "BMSCE resources",
-  "BMSCE engineering notes", "BMSCE exam preparation", "BMSCE placement notes"
+  "BMSCE engineering notes", "BMSCE exam preparation", "BMSCE placement notes",
+  // New: Protocol / expanded college combos
+  "protocol BMSCE notes", "protocol BMSCE", "notes protocol BMSCE",
+  "BMSCE best notes", "BMSCE notes website", "BMSCE notes app",
+  "BMSCE notes online", "BMSCE free notes", "BMSCE notes 2024",
+  "BMSCE notes 2025", "BMSCE notes 2026", "BMSCE notes download free",
+  "BMS college notes download", "BMS engineering notes", "BMS notes PDF",
+  "BMS college Bangalore notes", "BMS college study material",
+  "BMS college question papers", "BMS college PYQ", "BMS college exam papers",
+  "BMSCE CSE notes", "BMSCE ISE notes", "BMSCE ECE notes", "BMSCE EEE notes",
+  "BMSCE ME notes", "BMSCE CV notes", "BMSCE AI ML notes",
+  "BMSCE first year notes", "BMSCE second year notes",
+  "BMSCE third year notes", "BMSCE fourth year notes",
+  "best notes for BMSCE", "best notes website for BMSCE",
+  "best study material BMSCE", "best PYQ collection BMSCE",
+  "BMSCE autonomous notes", "BMSCE CBCS notes", "BMSCE OBE notes"
 ];
 
 export const BRANCH_KEYWORDS = [
@@ -70,7 +85,14 @@ export const BRANCH_KEYWORDS = [
   "CSBS Resources", "CSBS Important Questions", "CSBS BMSCE", "CSBS VTU",
   "CSBS syllabus", "CSBS curriculum", "CSBS exam pattern", "CSBS placement",
   "CSBS branch", "CSBS engineering", "CSBS department", "CSBS academic assets",
-  "Computer Science Business Systems notes", "CSBS free notes", "CSBS topper notes"
+  "Computer Science Business Systems notes", "CSBS free notes", "CSBS topper notes",
+  // New: Cross-branch discovery
+  "CSE notes", "ISE notes", "ECE notes", "EEE notes", "ME notes", "CV notes",
+  "AIML notes", "CS notes", "IT notes", "engineering notes",
+  "CSBS vs CSE", "CSBS vs ISE", "CSBS placements", "CSBS salary",
+  "CSBS scope", "CSBS jobs", "CSBS career", "CSBS companies",
+  "best branch for engineering notes", "engineering branch notes",
+  "computer science notes", "business systems notes", "CS and BS notes"
 ];
 
 export const UNIVERSITY_KEYWORDS = [
@@ -79,7 +101,22 @@ export const UNIVERSITY_KEYWORDS = [
   "VTU CSBS syllabus", "VTU exam pattern", "VTU 2022 scheme", "VTU 2021 scheme",
   "VTU model papers", "VTU previous year papers", "VTU notes download",
   "VTU engineering notes", "VTU CSBS notes 2024", "VTU CSBS notes 2025",
-  "VTU CSBS notes 2026", "VTU autonomous"
+  "VTU CSBS notes 2026", "VTU autonomous",
+  // New: VTU expanded combos
+  "VTU notes free download", "VTU notes PDF download", "VTU solved papers",
+  "VTU question bank", "VTU important questions", "VTU CIE papers",
+  "VTU SEE papers", "VTU exam tips", "VTU passing tips",
+  "VTU CSE notes", "VTU ISE notes", "VTU ECE notes", "VTU EEE notes",
+  "VTU ME notes", "VTU CV notes", "VTU AIML notes",
+  "VTU 1st sem notes", "VTU 2nd sem notes", "VTU 3rd sem notes",
+  "VTU 4th sem notes", "VTU 5th sem notes", "VTU 6th sem notes",
+  "VTU 7th sem notes", "VTU 8th sem notes",
+  "VTU engineering notes PDF", "VTU handwritten notes",
+  "VTU topper notes", "VTU revision notes", "VTU formula sheet",
+  "VTU syllabus 2022 scheme notes", "VTU syllabus 2021 scheme notes",
+  "VTU affiliated college notes", "VTU Bangalore college notes",
+  "VTU Karnataka engineering notes", "best VTU notes website",
+  "best website for VTU notes", "VTU notes app", "VTU notes online"
 ];
 
 export const SEARCH_INTENT_KEYWORDS = [
@@ -88,7 +125,21 @@ export const SEARCH_INTENT_KEYWORDS = [
   "PYQ with Solutions", "Internal Exam Questions", "SEE Preparation", "VTU Notes",
   "Quiz Questions", "Revision Notes", "Last Minute Notes", "Exam Preparation",
   "Study Material Free Download", "Engineering Notes Free PDF", "CIE Questions",
-  "SEE Questions", "Lab Manual", "Lab Programs", "Viva Questions"
+  "SEE Questions", "Lab Manual", "Lab Programs", "Viva Questions",
+  // New: Best website / search intent
+  "best notes website", "best notes website for BMS",
+  "best notes website for BMSCE", "best notes website for VTU",
+  "best notes website for engineering", "best notes website for CSBS",
+  "best engineering notes website", "best study material website",
+  "best PYQ website", "best question paper website",
+  "free engineering notes download", "free notes for engineering students",
+  "engineering notes free PDF download", "best free notes for engineering",
+  "notes download free PDF", "study material free download PDF",
+  "engineering study material download", "best app for engineering notes",
+  "notes website for BMS college", "notes website for VTU students",
+  "protocol notes", "notes protocol", "protocol notes PDF",
+  "protocol notes download", "protocol notes engineering",
+  "protocol notes VTU", "protocol notes BMSCE"
 ];
 
 export const LONG_TAIL_KEYWORDS = [
@@ -105,8 +156,312 @@ export const LONG_TAIL_KEYWORDS = [
   "Software engineering notes PDF", "Financial management notes PDF",
   "CSBS notes for competitive exams", "GATE preparation notes for CSBS",
   "how to make csbs notes", "best notes for CSBS students",
-  "CSBS notes telegram", "CSBS notes whatsapp group"
+  "CSBS notes telegram", "CSBS notes whatsapp group",
+  // New: Long-tail expanded
+  "how to study for VTU exams", "how to pass VTU exams easily",
+  "how to score in VTU CIE", "how to score in VTU SEE",
+  "best notes for VTU engineering students",
+  "best engineering notes website in India",
+  "best notes for BMS college students",
+  "free notes for VTU students download",
+  "where to find BMSCE notes online",
+  "where to download VTU question papers",
+  "BMSCE CSBS notes PDF free download",
+  "VTU engineering notes PDF free download 2024",
+  "VTU engineering notes PDF free download 2025",
+  "VTU engineering notes PDF free download 2026",
+  "best website for engineering notes in Bangalore",
+  "best website for engineering notes in Karnataka",
+  "best website for engineering notes in India",
+  "protocol notes for VTU exams",
+  "protocol notes for BMSCE students",
+  "protocol notes engineering PDF",
+  "engineering protocol notes download free"
 ];
+
+// ── NEW: MASSIVE ENGINEERING BROAD KEYWORDS ──
+// Targets students from ALL engineering branches searching for notes
+
+export const ENGINEERING_BROAD_KEYWORDS = [
+  // Core engineering subjects that ALL branches study
+  "Engineering Mathematics notes", "Engineering Mathematics 1 notes", "Engineering Mathematics 2 notes",
+  "Engineering Mathematics 3 notes", "Engineering Mathematics 4 notes",
+  "Engineering Physics notes PDF", "Engineering Chemistry notes PDF",
+  "Basic Electrical Engineering notes PDF", "Basic Electronics notes PDF",
+  "Constitution of India notes PDF", "Professional Ethics notes PDF",
+  "Elements of Civil Engineering notes", "Elements of Mechanical Engineering notes",
+  "Engineering Graphics notes", "Engineering Drawing notes",
+  "Environmental Studies notes", "Technical English notes",
+  "Discrete Mathematics notes", "Theory of Computation notes",
+  "Design and Analysis of Algorithms notes", "Compiler Design notes",
+  "Computer Graphics notes", "Microprocessor notes", "Embedded Systems notes",
+
+  // CSE / ISE / IT subjects
+  "Data Structures notes PDF", "Algorithms notes PDF", "DSA notes PDF free download",
+  "DBMS notes PDF free download", "Operating Systems notes PDF free",
+  "Computer Networks notes PDF free", "Software Engineering notes PDF",
+  "Artificial Intelligence notes PDF", "Machine Learning notes PDF free",
+  "Web Technologies notes PDF", "Cloud Computing notes PDF",
+  "Information Security notes PDF", "Cyber Security notes PDF",
+  "Big Data Analytics notes PDF", "IoT notes PDF", "Internet of Things notes PDF",
+  "Python programming notes PDF", "Java programming notes PDF",
+  "C programming notes PDF", "C++ programming notes PDF",
+  "Object Oriented Programming notes PDF", "Unix programming notes PDF",
+  "Linux programming notes PDF", "Shell scripting notes",
+
+  // ECE subjects
+  "Analog Electronics notes", "Digital Electronics notes PDF",
+  "Signals and Systems notes", "Control Systems notes",
+  "Communication Systems notes", "Antenna notes",
+  "Electromagnetic Theory notes", "VLSI Design notes",
+  "Microcontroller notes", "ARM processor notes",
+  "Electronic Circuits notes", "Network Analysis notes",
+  "Digital Signal Processing notes", "DSP notes PDF",
+  "Wireless Communication notes", "Satellite Communication notes",
+
+  // EEE subjects
+  "Power Systems notes", "Power Electronics notes",
+  "Electrical Machines notes PDF", "Electric Circuits notes",
+  "Control Engineering notes", "Switchgear Protection notes",
+  "Transmission Distribution notes", "Renewable Energy notes",
+  "Electrical Measurement notes", "High Voltage Engineering notes",
+
+  // ME subjects
+  "Thermodynamics notes PDF", "Fluid Mechanics notes PDF",
+  "Strength of Materials notes PDF", "Manufacturing Technology notes",
+  "Heat Transfer notes", "Machine Design notes",
+  "Engineering Mechanics notes", "Kinematics of Machines notes",
+  "Dynamics of Machines notes", "Refrigeration notes",
+  "Automobile Engineering notes", "CAD CAM notes",
+
+  // CV subjects
+  "Structural Analysis notes", "Geotechnical Engineering notes",
+  "Transportation Engineering notes", "Hydraulics notes",
+  "Building Materials notes", "Surveying notes PDF",
+  "Concrete Technology notes", "Steel Structures notes",
+  "Foundation Engineering notes", "Highway Engineering notes",
+
+  // Business / Management subjects
+  "Financial Accounting notes", "Business Statistics notes",
+  "Organizational Behavior notes PDF", "Business Analytics notes PDF",
+  "Marketing Management notes", "Human Resource Management notes",
+  "Supply Chain Management notes", "Project Management notes",
+  "Economics for Engineers notes", "Entrepreneurship notes",
+  "Management and Entrepreneurship notes",
+  "Financial Management notes PDF", "Business Economics notes PDF"
+];
+
+// ── NEW: PROTOCOL / PATTERN KEYWORDS ──
+// High-traffic variations people actually search
+
+export const PROTOCOL_PATTERN_KEYWORDS = [
+  // Protocol + subject combinations
+  "protocol Data Structures notes", "protocol DBMS notes", "protocol OS notes",
+  "protocol Computer Networks notes", "protocol Machine Learning notes",
+  "protocol Artificial Intelligence notes", "protocol Software Engineering notes",
+  "protocol Cloud Computing notes", "protocol Web Technologies notes",
+  "protocol Mathematics notes", "protocol Physics notes", "protocol Chemistry notes",
+  "protocol DSA", "protocol SQL", "protocol OOP", "protocol CN",
+  "protocol engineering notes", "protocol VTU notes", "protocol BMSCE",
+  "protocol notes download", "protocol notes PDF", "protocol notes free",
+
+  // "Best" + institution combinations
+  "best notes for BMS", "best notes for BMSCE students",
+  "best notes for VTU students", "best notes for engineering students",
+  "best notes for CSE students", "best notes for CSBS students",
+  "best notes for ISE students", "best notes for ECE students",
+  "best notes website for BMS", "best notes website for engineering",
+  "best notes app for VTU", "best engineering notes app",
+  "best free notes website", "best free engineering notes",
+  "best notes for VTU exams", "best notes for CIE exam",
+  "best notes for SEE exam", "best notes for internal exam",
+
+  // "Notes + subject" pattern
+  "notes DSA", "notes DBMS", "notes OS", "notes CN", "notes SE",
+  "notes AI", "notes ML", "notes CC", "notes IS", "notes OB",
+  "notes COA", "notes DE", "notes OOP", "notes FABS",
+  "notes Mathematics", "notes Physics", "notes Chemistry",
+  "notes Data Structures", "notes Database", "notes Networks",
+  "notes Machine Learning", "notes Artificial Intelligence",
+
+  // Subject + "notes" reverse pattern
+  "Data Structures notes", "Database notes", "Operating System notes",
+  "Computer Network notes", "Software Engineering notes",
+  "Machine Learning notes", "Artificial Intelligence notes",
+  "Cloud Computing notes", "Web Development notes",
+  "Information Security notes", "Big Data notes",
+  "Internet of Things notes", "Digital Electronics notes",
+  "Computer Organization notes", "Financial Accounting notes",
+  "Business Analytics notes", "Organizational Behavior notes"
+];
+
+// ── NEW: ALL ENGINEERING SUBJECTS KEYWORDS ──
+// Every possible subject that engineering students search for
+
+export const ALL_ENGINEERING_SUBJECTS = [
+  // Programming Languages
+  "C programming notes", "C++ notes", "Java notes", "Python notes",
+  "JavaScript notes", "HTML CSS notes", "SQL notes", "R programming notes",
+  "MATLAB notes", "Kotlin notes", "Swift notes", "Go programming notes",
+  "Rust programming notes", "TypeScript notes", "PHP notes",
+  "Ruby notes", "Perl notes", "Assembly language notes",
+  "Shell scripting notes", "Bash programming notes",
+
+  // Computer Science Core
+  "Data Structures notes", "Algorithms notes", "Database Management notes",
+  "Operating Systems notes", "Computer Networks notes", "Compiler Design notes",
+  "Computer Graphics notes", "Computer Architecture notes",
+  "Theory of Computation notes", "Formal Languages notes",
+  "Automata Theory notes", "Discrete Mathematics notes",
+  "Graph Theory notes", "Number Theory notes",
+  "Numerical Methods notes", "Operations Research notes",
+  "Parallel Computing notes", "Distributed Systems notes",
+  "Real Time Systems notes", "System Software notes",
+
+  // AI / ML / Data Science
+  "Artificial Intelligence notes", "Machine Learning notes",
+  "Deep Learning notes", "Neural Network notes", "NLP notes",
+  "Natural Language Processing notes", "Computer Vision notes",
+  "Reinforcement Learning notes", "Data Mining notes",
+  "Data Science notes", "Data Analytics notes",
+  "Big Data notes", "Hadoop notes", "Spark notes",
+  "TensorFlow notes", "PyTorch notes", "Keras notes",
+  "Scikit Learn notes", "Pandas notes", "NumPy notes",
+  "Statistics for Data Science notes", "Linear Algebra for ML notes",
+  "Probability for Machine Learning notes",
+
+  // Web / Mobile / Cloud
+  "Web Development notes", "Full Stack Development notes",
+  "Frontend Development notes", "Backend Development notes",
+  "React notes", "Angular notes", "Vue notes", "Node.js notes",
+  "Express.js notes", "MongoDB notes", "REST API notes",
+  "Android Development notes", "iOS Development notes",
+  "Mobile Computing notes", "Cross Platform Development notes",
+  "Cloud Computing notes", "AWS notes", "Azure notes", "GCP notes",
+  "Docker notes", "Kubernetes notes", "DevOps notes",
+  "CI CD notes", "Microservices notes", "Serverless notes",
+
+  // Security
+  "Information Security notes", "Cyber Security notes",
+  "Network Security notes", "Cryptography notes",
+  "Ethical Hacking notes", "Penetration Testing notes",
+  "Digital Forensics notes", "Malware Analysis notes",
+  "Blockchain notes", "Smart Contracts notes",
+  "Firewall notes", "VPN notes", "SSL TLS notes",
+
+  // IoT / Embedded
+  "Internet of Things notes", "Embedded Systems notes",
+  "Arduino notes", "Raspberry Pi notes", "Sensor notes",
+  "MQTT notes", "CoAP notes", "Edge Computing notes",
+  "Fog Computing notes", "Robotics notes",
+  "8051 Microcontroller notes", "8086 Microprocessor notes",
+  "ARM Processor notes", "PIC Microcontroller notes",
+
+  // Mathematics
+  "Calculus notes", "Linear Algebra notes", "Differential Equations notes",
+  "Complex Analysis notes", "Probability notes", "Statistics notes",
+  "Transforms notes", "Fourier Series notes", "Laplace Transform notes",
+  "Z Transform notes", "Vector Calculus notes", "Numerical Analysis notes",
+  "Boolean Algebra notes", "Set Theory notes",
+
+  // Physics / Chemistry / Science
+  "Engineering Physics notes", "Modern Physics notes",
+  "Quantum Mechanics notes", "Optics notes", "Laser notes",
+  "Semiconductor Physics notes", "Solid State Physics notes",
+  "Engineering Chemistry notes", "Organic Chemistry notes",
+  "Electrochemistry notes", "Polymer Chemistry notes",
+  "Environmental Science notes", "Material Science notes",
+
+  // Business / Management
+  "Financial Accounting notes", "Cost Accounting notes",
+  "Management Accounting notes", "Business Statistics notes",
+  "Business Analytics notes", "Marketing Management notes",
+  "Human Resource Management notes", "Organizational Behavior notes",
+  "Supply Chain Management notes", "Operations Management notes",
+  "Project Management notes", "Strategic Management notes",
+  "Entrepreneurship notes", "Innovation Management notes",
+  "Economics for Engineers notes", "Engineering Economics notes",
+  "Business Communication notes", "Corporate Finance notes"
+];
+
+// ── NEW: BEST WEBSITE KEYWORDS ──
+// People searching for "best notes website" variations
+
+export const BEST_WEBSITE_KEYWORDS = [
+  "best notes website", "best notes website for engineering",
+  "best notes website for BMS", "best notes website for BMSCE",
+  "best notes website for VTU", "best notes website for VTU students",
+  "best notes website for CSBS", "best notes website for CSE",
+  "best notes website in India", "best notes website for Bangalore colleges",
+  "best notes website for Karnataka engineering",
+  "best engineering notes website India",
+  "best free engineering notes website",
+  "best notes app for engineering", "best notes app for VTU",
+  "best study material website for engineering",
+  "best PYQ website for VTU", "best question papers website",
+  "best notes for VTU exams", "best notes for engineering exams",
+  "best notes for CIE exams", "best notes for SEE exams",
+  "best free notes for engineering students India",
+  "top notes website for engineering", "top engineering notes India",
+  "number 1 notes website engineering", "#1 notes website for VTU",
+  "most popular notes website engineering",
+  "most used notes website BMSCE", "recommended notes website VTU",
+  "trusted notes website engineering", "verified notes website",
+  "reliable notes website for VTU students",
+  "best website to download engineering notes",
+  "best website to download VTU notes",
+  "best website to download BMSCE notes",
+  "best website for engineering PDF notes",
+  "best website for engineering study material",
+  "best website for engineering question papers",
+  "best website for VTU question papers",
+  "best website for VTU previous year papers"
+];
+
+// ── NEW: EXAM & COMPETITIVE KEYWORDS ──
+
+export const EXAM_PATTERN_KEYWORDS = [
+  // CIE / SEE patterns
+  "VTU CIE 1 question papers", "VTU CIE 2 question papers", "VTU CIE 3 question papers",
+  "VTU SEE question papers", "VTU model question papers",
+  "VTU blueprint", "VTU marking scheme", "VTU passing marks",
+  "VTU CIE pattern", "VTU SEE pattern", "VTU exam schedule",
+  "how to pass CIE VTU", "how to score in CIE VTU",
+  "how to pass SEE VTU", "how to score in SEE VTU",
+  "VTU exam preparation tips", "VTU exam strategy",
+  "VTU last minute preparation", "VTU revision notes",
+  "VTU crash course notes", "VTU one day before exam notes",
+
+  // GATE / Competitive
+  "GATE CSE notes", "GATE preparation notes", "GATE CS notes PDF",
+  "GATE Data Structures notes", "GATE DBMS notes", "GATE OS notes",
+  "GATE Networks notes", "GATE Algorithms notes",
+  "GATE previous year papers", "GATE practice problems",
+  "placement preparation notes", "TCS placement notes",
+  "Infosys placement notes", "Wipro placement notes",
+  "Cognizant placement notes", "Accenture placement notes",
+  "campus placement notes", "aptitude notes for placement",
+  "coding interview notes", "DSA for interviews",
+  "system design notes", "LLD notes", "HLD notes"
+];
+
+// ── NEW: COMPETITOR DISPLACEMENT KEYWORDS ──
+
+export const COMPETITIVE_KEYWORDS = [
+  // Other platforms people search for
+  "engineering notes like Studocu", "better than Studocu engineering",
+  "engineering notes like GeeksforGeeks", "notes like GFG",
+  "engineering notes like Scribd", "free alternative to Scribd",
+  "engineering notes like CourseHero", "free CourseHero alternative",
+  "notes like Unacademy engineering", "free Unacademy alternative",
+  "VTU notes like LastMomentTuitions", "VTU notes free no login",
+  "engineering notes no signup required", "engineering notes without login",
+  "engineering notes without registration", "free notes no paywall",
+  "best free alternative for engineering notes",
+  "free engineering notes India 2024", "free engineering notes India 2025",
+  "free engineering notes India 2026"
+];
+
 
 // ─────────────────────────────────────────────
 // SEMESTER SEO DATA
@@ -948,6 +1303,12 @@ export function getAllKeywords(): string[] {
     ...UNIVERSITY_KEYWORDS,
     ...SEARCH_INTENT_KEYWORDS,
     ...LONG_TAIL_KEYWORDS,
+    ...ENGINEERING_BROAD_KEYWORDS,
+    ...PROTOCOL_PATTERN_KEYWORDS,
+    ...ALL_ENGINEERING_SUBJECTS,
+    ...BEST_WEBSITE_KEYWORDS,
+    ...EXAM_PATTERN_KEYWORDS,
+    ...COMPETITIVE_KEYWORDS,
   ];
 }
 

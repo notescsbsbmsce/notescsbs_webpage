@@ -139,7 +139,7 @@ const Admin = () => {
     return () => { isMounted = false; subscription.unsubscribe(); };
   }, [navigate]);
 
-  const { data: semesters } = useQuery({
+  const { data: semesters, isLoading: isLoadingSemesters } = useQuery({
     queryKey: ["semesters"],
     queryFn: async () => await fetchSemesters(),
     staleTime: 10 * 1000,
@@ -173,7 +173,7 @@ const Admin = () => {
     enabled: !!selectedSubject,
   });
 
-  const { data: resources } = useQuery({
+  const { data: resources, isLoading: isLoadingResources } = useQuery({
     queryKey: ["resources", selectedSubject],
     queryFn: async () => {
       const client = getSupabaseClient(semesterNumber);
@@ -184,7 +184,7 @@ const Admin = () => {
     enabled: !!selectedSubject,
   });
 
-  const { data: subscribers } = useQuery({
+  const { data: subscribers, isLoading: isLoadingSubscribers } = useQuery({
     queryKey: ["subscribers"],
     queryFn: async () => {
       const { data, error } = await supabase.from("subscribers").select("*").order("created_at", { ascending: false });
@@ -194,7 +194,7 @@ const Admin = () => {
     enabled: activeView === "community",
   });
 
-  const { data: notices } = useQuery({
+  const { data: notices, isLoading: isLoadingNotices } = useQuery({
     queryKey: ["notices"],
     queryFn: async () => {
       const { data, error } = await supabase.from("notices").select("*").order("created_at", { ascending: false });
@@ -604,7 +604,7 @@ const Admin = () => {
                 </Select>
               </div>
 
-              {selectedSubject && resources && (
+              {selectedSubject && (
                 <div className="space-y-8 animate-in fade-in duration-500">
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 pb-6 pt-2">
                     <div className="relative flex-1 w-full">
@@ -628,19 +628,31 @@ const Admin = () => {
                   </div>
 
                   <div className="grid gap-4">
-                    {resources.filter(r => filterType === 'all' || r.type === filterType).filter(r => r.title.toLowerCase().includes(searchQuery.toLowerCase())).map((resource) => (
-                      <ResourceCard
-                        key={resource.id}
-                        id={resource.id}
-                        title={resource.title}
-                        type={resource.type}
-                        unit={resource.unit}
-                        year={resource.year}
-                        file_url={resource.file_url}
-                        onEdit={(r) => { setEditResource(r as Resource); setIsEditOpen(true); }}
-                        onDelete={(id, title) => setDeleteDialog({ open: true, id, title })}
-                      />
-                    ))}
+                    {isLoadingResources ? (
+                      Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="flex flex-col sm:flex-row gap-4 p-4 rounded-[28px] border border-border bg-card">
+                          <Skeleton className="h-16 w-16 sm:h-20 sm:w-20 rounded-[20px] bg-muted/50 shrink-0" />
+                          <div className="flex-1 space-y-3 py-2">
+                            <Skeleton className="h-4 w-1/4 bg-muted/50" />
+                            <Skeleton className="h-6 w-3/4 bg-muted/50" />
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      resources?.filter(r => filterType === 'all' || r.type === filterType).filter(r => r.title.toLowerCase().includes(searchQuery.toLowerCase())).map((resource) => (
+                        <ResourceCard
+                          key={resource.id}
+                          id={resource.id}
+                          title={resource.title}
+                          type={resource.type}
+                          unit={resource.unit}
+                          year={resource.year}
+                          file_url={resource.file_url}
+                          onEdit={(r) => { setEditResource(r as Resource); setIsEditOpen(true); }}
+                          onDelete={(id, title) => setDeleteDialog({ open: true, id, title })}
+                        />
+                      ))
+                    )}
                   </div>
                 </div>
               )}
@@ -822,21 +834,26 @@ const Admin = () => {
               <div className="space-y-6">
                 <h3 className="text-xl font-bold">Active Announcements</h3>
                 <div className="grid gap-4">
-                  {notices && notices.map(notice => (
-                    <div key={notice.id} className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-border bg-card/50">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <Badge variant="outline" className="text-[9px] uppercase tracking-widest bg-primary/10 text-primary border-primary/20">{notice.type}</Badge>
-                          <span className="text-[10px] text-muted-foreground">{new Date(notice.created_at).toLocaleDateString()}</span>
+                  {isLoadingNotices ? (
+                    Array.from({ length: 3 }).map((_, i) => (
+                      <Skeleton key={i} className="h-20 w-full rounded-2xl bg-muted/50" />
+                    ))
+                  ) : notices && notices.length > 0 ? (
+                    notices.map(notice => (
+                      <div key={notice.id} className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-border bg-card/50">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge variant="outline" className="text-[9px] uppercase tracking-widest bg-primary/10 text-primary border-primary/20">{notice.type}</Badge>
+                            <span className="text-[10px] text-muted-foreground">{new Date(notice.created_at).toLocaleDateString()}</span>
+                          </div>
+                          <h4 className="font-bold">{notice.title}</h4>
                         </div>
-                        <h4 className="font-bold">{notice.title}</h4>
+                        <Button variant="ghost" size="icon" onClick={() => deleteNoticeMutation.mutate(notice.id)} className="text-destructive hover:bg-destructive/10 shrink-0" disabled={deleteNoticeMutation.isPending}>
+                          <Trash className="h-4 w-4" />
+                        </Button>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => deleteNoticeMutation.mutate(notice.id)} className="text-destructive hover:bg-destructive/10 shrink-0" disabled={deleteNoticeMutation.isPending}>
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                  {(!notices || notices.length === 0) && (
+                    ))
+                  ) : (
                     <div className="text-center py-12 border border-dashed border-border rounded-3xl text-muted-foreground text-sm">
                       No notices published yet.
                     </div>

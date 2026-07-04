@@ -45,7 +45,7 @@ export function Header() {
         <Link to="/" className="flex items-center gap-3 transition-all hover:scale-105 active:scale-95 group shrink-0">
           <div className="relative">
             <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full group-hover:bg-primary/30 transition-all"></div>
-            <img src="/notes-csbs-logo.png" alt="NOTESCSBS Logo" className="relative h-9 w-9 sm:h-10 sm:w-10 object-contain" />
+            <img src="/notes-csbs-logo.png" alt="NOTESCSBS Logo" title="Notes CSBS - BMSCE CSBS Academic Repository" className="relative h-9 w-9 sm:h-10 sm:w-10 object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="font-extrabold text-foreground text-lg sm:text-xl leading-tight tracking-tight uppercase">NOTES<span className="text-primary italic">CSBS</span></span>

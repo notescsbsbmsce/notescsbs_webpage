@@ -282,3 +282,124 @@ export function buildCreativeWorkSchema(opts: {
     ...(opts.subject && { about: { "@type": "Thing", name: opts.subject } })
   };
 }
+
+// ── SiteNavigationElement Schema ──
+export function buildSiteNavigationSchema() {
+  const items = [
+    { name: "Home", url: `${BASE_URL}/` },
+    { name: "Notice Board", url: `${BASE_URL}/notices` },
+    { name: "Contributors", url: `${BASE_URL}/contributors` },
+    { name: "Knowledge Directory", url: `${BASE_URL}/keywords` },
+    { name: "Privacy Policy", url: `${BASE_URL}/privacy` },
+    ...Array.from({ length: 8 }, (_, i) => ({
+      name: `Semester ${i + 1} Notes`,
+      url: `${BASE_URL}/semester/${i + 1}`
+    }))
+  ];
+  return {
+    "@context": "https://schema.org",
+    "@graph": items.map((item, i) => ({
+      "@context": "https://schema.org",
+      "@type": "SiteNavigationElement",
+      "@id": `${BASE_URL}/#nav-${i}`,
+      name: item.name,
+      url: item.url
+    }))
+  };
+}
+
+// ── Dataset Schema ──
+export function buildDatasetSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: "Notes CSBS Academic Resource Database",
+    description: "Verified academic dataset containing lecture notes, previous year question papers (PYQs), question banks, and lab manuals for the Computer Science and Business Systems program at BMSCE.",
+    url: BASE_URL,
+    keywords: ["academic dataset", "engineering resources", "CSBS notes database", "BMSCE academic records"],
+    creator: [
+      { "@type": "Person", name: "Tushar Jain" },
+      { "@type": "Person", name: "Ayush Kumar" }
+    ],
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME
+    },
+    license: "https://creativecommons.org/licenses/by/4.0/"
+  };
+}
+
+// ── DefinedTerm Schema ──
+export function buildDefinedTermSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "@id": `${BASE_URL}/keywords/#defined-terms`,
+    name: "CSBS Academic Terminology Glossary",
+    hasDefinedTerm: [
+      {
+        "@type": "DefinedTerm",
+        name: "CSBS",
+        description: "Computer Science and Business Systems. An integrated undergraduate engineering course designed by TCS to combine computing expertise with business principles.",
+        inDefinedTermSet: `${BASE_URL}/keywords/#defined-terms`
+      },
+      {
+        "@type": "DefinedTerm",
+        name: "BMSCE",
+        description: "B.M.S. College of Engineering. A premier autonomous engineering institute in Bengaluru, affiliated to Visvesvaraya Technological University.",
+        inDefinedTermSet: `${BASE_URL}/keywords/#defined-terms`
+      },
+      {
+        "@type": "DefinedTerm",
+        name: "VTU",
+        description: "Visvesvaraya Technological University. One of the largest technological universities in India, located in Belagavi, Karnataka.",
+        inDefinedTermSet: `${BASE_URL}/keywords/#defined-terms`
+      }
+    ]
+  };
+}
+
+// ── Speakable Schema ──
+export function buildSpeakableSchema(xpathExpressions: string[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: `${SITE_NAME} Speakable Sections`,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      xpath: xpathExpressions
+    },
+    url: BASE_URL
+  };
+}
+
+// ── SoftwareApplication Schema ──
+export function buildSoftwareApplicationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: SITE_NAME,
+    operatingSystem: "All",
+    applicationCategory: "EducationalApplication",
+    browserRequirements: "Requires HTML5 compatible browser with JavaScript enabled.",
+    url: BASE_URL,
+    downloadUrl: BASE_URL,
+    screenshot: LOGO_URL,
+    softwareVersion: "3.0",
+    author: [
+      { "@type": "Person", name: "Tushar Jain" },
+      { "@type": "Person", name: "Ayush Kumar" }
+    ],
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: { "@type": "ImageObject", url: LOGO_URL }
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0.00",
+      priceCurrency: "INR"
+    }
+  };
+}
+
