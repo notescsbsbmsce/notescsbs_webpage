@@ -9,6 +9,7 @@ const Keywords = () => {
       title: "Core CSBS Academic Repository",
       icon: School,
       keywords: [
+        "notego", "note go bmsce", "bmsce notes go", "notego bmsce", "note-go",
         "notes csbs", "notes", "note bms", "note csbs vtu", "bms vtu", "bmsce csbs notes", 
         "csbs notes", "note csbs", "pyq csbs bmsce", "bmsce pyq", "bms pyq", "csbs bmsce pyq", 
         "bsmce pyq csbs", "csbs", "csbs bms", "csbs bmsce"
@@ -71,6 +72,7 @@ const Keywords = () => {
       title: "AEO Premium Queries",
       icon: HelpCircle,
       keywords: [
+        "How to access NoteGo BMSCE notes", "Is Note Go BMSCE the same as Notes CSBS", "Where to download Note Go BMSCE study materials",
         "Comprehensive CSBS study guide for BMSCE students", "Step-by-step guide to download CSBS notes", 
         "Most important PYQs for CSBS SEE exams", "BMSCE Computer Science and Business Systems resource hub", 
         "Verified lecture notes for CSBS department", "How to score high in BMSCE CSBS internals", 

@@ -76,7 +76,10 @@ export const COLLEGE_KEYWORDS = [
   "BMSCE third year notes", "BMSCE fourth year notes",
   "best notes for BMSCE", "best notes website for BMSCE",
   "best study material BMSCE", "best PYQ collection BMSCE",
-  "BMSCE autonomous notes", "BMSCE CBCS notes", "BMSCE OBE notes"
+  "BMSCE autonomous notes", "BMSCE CBCS notes", "BMSCE OBE notes",
+  // NoteGo & Note Go combos
+  "notego", "note go", "note go bmsce", "notego bmsce", "bmsce notes go", "notego notes",
+  "notego bmsce notes", "note go bmsce notes", "bmsce notes go download"
 ];
 
 export const BRANCH_KEYWORDS = [
@@ -176,7 +179,10 @@ export const LONG_TAIL_KEYWORDS = [
   "protocol notes for VTU exams",
   "protocol notes for BMSCE students",
   "protocol notes engineering PDF",
-  "engineering protocol notes download free"
+  "engineering protocol notes download free",
+  // NoteGo & Note Go long tail
+  "how to access notego bmsce notes", "note go bmsce notes PDF download",
+  "bmsce notes go free download link", "notego bmsce student resources"
 ];
 
 // ── NEW: MASSIVE ENGINEERING BROAD KEYWORDS ──
@@ -459,7 +465,10 @@ export const COMPETITIVE_KEYWORDS = [
   "engineering notes without registration", "free notes no paywall",
   "best free alternative for engineering notes",
   "free engineering notes India 2024", "free engineering notes India 2025",
-  "free engineering notes India 2026"
+  "free engineering notes India 2026",
+  // Competitive NoteGo listings
+  "better than notego bmsce notes", "official notego alternative bmsce",
+  "note go notes versus notes csbs", "notego bmsce copy"
 ];
 
 

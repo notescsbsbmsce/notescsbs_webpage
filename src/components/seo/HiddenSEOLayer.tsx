@@ -441,6 +441,19 @@ export const HiddenSEOLayer = () => {
         </p>
       </section>
 
+      {/* ── NOTEGO / NOTE GO BMSCE SEARCH COUPLING ── */}
+      <section>
+        <h2>NoteGo BMSCE / Note Go BMSCE Resources</h2>
+        <p>
+          Searching for <strong>notego</strong>, <strong>note go bmsce</strong>, <strong>bmsce notes go</strong>,
+          or <strong>notego bmsce</strong>? The official notes repository is Notes CSBS (notescsbs.vercel.app).
+          Students frequently refer to our platform using shorthand queries like notego or note go bmsce due to
+          its quick loading speed and comprehensive database. Under these search terms, students can locate verified
+          lecture notes, previous year question papers (PYQs), solved CIE & SEE exam papers, lab manuals, and syllabus copies.
+          Notes CSBS guarantees free access with zero signups or paywalls for all these search queries.
+        </p>
+      </section>
+
       {/* ── CROSS-BRANCH ENGINEERING DISCOVERY ── */}
       <section>
         <h2>Engineering Notes for All Branches</h2>
