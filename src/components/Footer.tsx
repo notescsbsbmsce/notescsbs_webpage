@@ -42,13 +42,27 @@ export function Footer() {
             </RouterLink>
           </div>
           
-          {/* Contact Button */}
-          <div className="mt-2">
+          {/* Contact & Google Preferred Source Buttons */}
+          <div className="mt-2 flex flex-wrap items-center justify-center md:justify-end gap-3">
             <a href="mailto:notescsbsbmsce@gmail.com" className="inline-flex items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-full border border-primary/20 hover:bg-primary/20 hover:shadow-[0_0_15px_rgba(var(--primary),0.2)] transition-all duration-300 text-sm font-bold text-primary group">
               <Mail className="h-4 w-4 group-hover:scale-110 transition-transform" />
               Contact Us
             </a>
+            <a 
+              href="https://google.com/preferences" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              title="Add Notes CSBS to Google Preferred Sources"
+              className="inline-flex items-center gap-2 bg-amber-500/10 px-5 py-2.5 rounded-full border border-amber-500/20 hover:bg-amber-500/20 hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] transition-all duration-300 text-sm font-bold text-amber-400 group"
+            >
+              <svg className="h-4 w-4 text-amber-400 fill-amber-400/30 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              <span>Google Preferred Source</span>
+            </a>
           </div>
+          {/* Embedded Google Preferred Source Widget Container */}
+          <div className="g-preferred-source mt-2" data-site="https://notescsbs.vercel.app"></div>
         </div>
         
       </div>
