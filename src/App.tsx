@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { MobileNav } from "@/components/MobileNav";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAnalytics } from "./hooks/useAnalytics";
 
 // Core index page direct for maximum landing performance
@@ -115,38 +116,41 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        <AnalyticsWrapper>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Suspense fallback={<PageLoader />}><Auth /></Suspense>} />
-            <Route path="/admin" element={<ProtectedAdminRoute><Suspense fallback={<PageLoader />}><Admin /></Suspense></ProtectedAdminRoute>} />
-            
-            {/* Lazy loaded routes wrapped in Suspense */}
-            <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />
-            <Route path="/subject/:id" element={<Suspense fallback={<PageLoader />}><Subject /></Suspense>} />
-            <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
-            <Route path="/privacy" element={<Suspense fallback={<PageLoader />}><Privacy /></Suspense>} />
-            <Route path="/keywords" element={<Suspense fallback={<PageLoader />}><Keywords /></Suspense>} />
-            <Route path="/notices" element={<Suspense fallback={<PageLoader />}><NoticeBoard /></Suspense>} />
-            <Route path="*" element={<WildcardRoute />} />
-          </Routes>
-          <MobileNav />
-          <LiveNotificationListener />
-        </AnalyticsWrapper>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          <AnalyticsWrapper>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Suspense fallback={<PageLoader />}><Auth /></Suspense>} />
+              <Route path="/admin" element={<ProtectedAdminRoute><Suspense fallback={<PageLoader />}><Admin /></Suspense></ProtectedAdminRoute>} />
+              
+              {/* Lazy loaded routes wrapped in Suspense */}
+              <Route path="/semester/:id" element={<Suspense fallback={<PageLoader />}><Semester /></Suspense>} />
+              <Route path="/subject/:id" element={<Suspense fallback={<PageLoader />}><Subject /></Suspense>} />
+              <Route path="/contributors" element={<Suspense fallback={<PageLoader />}><Contributors /></Suspense>} />
+              <Route path="/privacy" element={<Suspense fallback={<PageLoader />}><Privacy /></Suspense>} />
+              <Route path="/keywords" element={<Suspense fallback={<PageLoader />}><Keywords /></Suspense>} />
+              <Route path="/notices" element={<Suspense fallback={<PageLoader />}><NoticeBoard /></Suspense>} />
+              <Route path="/404" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
+              <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
+            </Routes>
+            <MobileNav />
+            <LiveNotificationListener />
+          </AnalyticsWrapper>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;
